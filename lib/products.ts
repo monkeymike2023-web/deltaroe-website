@@ -56,12 +56,13 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: "chakra-bracelet",
-    name: "Seven Stone Chakra Bracelet",
+    name: "Hand-Strung Mala Beads",
     collection: "Chakra & Crystals",
     price: 42,
-    desc: "All seven energy centers on one wrist — genuine stones, root to crown, hand-strung and reiki-charged before shipping.",
-    detail: "8 mm natural stones · elastic fit · charged in-studio",
+    desc: "108 hand-knotted beads with a crystal guru stone — strung, blessed, and reiki-charged in-studio. Seven-stone chakra bracelets also available.",
+    detail: "Hand-knotted · crystal guru bead · charged in-studio",
     art: "bracelet",
+    image: "/img/products/mala-beads.jpg",
     badge: "Reiki-charged",
   },
   {
@@ -111,6 +112,7 @@ export const PRODUCTS: Product[] = [
     desc: "A caffeine-free blend of chamomile, tulsi, and blue lotus — the sound bath of teas.",
     detail: "Loose leaf · 20 servings · blended in California",
     art: "tea",
+    image: "/img/products/tea-ritual.jpg",
   },
   {
     id: "journal-gold",
@@ -129,7 +131,7 @@ export const PRODUCTS: Product[] = [
     desc: "A ritual delivered: each month an intention candle, a ritual oil or tea, a crystal chosen for the season, and a practice card from Tamika. Cancel anytime.",
     detail: "Ships monthly · free local pickup in Elk Grove · members save 10% in the Apothecary",
     art: "candle",
-    image: "/img/products/oil-grounding.jpg",
+    image: "/img/products/ritual-box.jpg",
     badge: "Monthly",
     sub: true,
   },
@@ -141,6 +143,7 @@ export const PRODUCTS: Product[] = [
     desc: "Tamika's original craft: one-of-a-kind crystal pendants personally charged in ceremony. Small batches, never repeated.",
     detail: "One of a kind · charged in-studio · gift boxed",
     art: "jewelry",
+    image: "/img/products/pendant.jpg",
     badge: "Limited",
   },
 ];

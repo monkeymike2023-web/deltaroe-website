@@ -66,9 +66,9 @@ const localBusinessSchema = {
 const NAV = [
   { href: "/services", label: "Services" },
   { href: "/memberships", label: "Memberships" },
+  { href: "/shop", label: "Apothecary" },
   { href: "/events", label: "Events" },
   { href: "/about", label: "About" },
-  { href: "/reviews", label: "Reviews" },
   { href: "/faq", label: "FAQ" },
 ];
 
