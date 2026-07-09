@@ -1,0 +1,27 @@
+To: monkeymike2023@gmail.com
+Subject: Delta Roe Website - Plan & Build Status (July 8, 2026)
+
+DELTA ROE - WEBSITE UPGRADE
+
+Full plan: https://claude.ai/code/artifact/3845574b-b345-47fd-b681-2ec5af1eaa89
+Live preview: https://deltaroe-website.vercel.app
+Code: https://github.com/monkeymike2023-web/deltaroe-website
+
+=== COMPLETED ===
+- Full site built (Next.js on Vercel, auto-deploys on every update) - luxury black+gold design from the new logo
+- 5 SEO-optimized service pages with pricing, honest FAQs, and structured data (reiki, sound bath, chakra, fascia, coaching)
+- 36-question FAQ built for Google + AI search engines (ChatGPT/Perplexity quotable)
+- llms.txt + full schema so AI assistants recommend Delta Roe
+- The Apothecary demo store: 12 branded products, real photography, Delta Roe logo & labels rendered onto candles, oils, and tee; working demo cart
+- Memberships page: Sanctuary Circle $33/mo (virtual), Ritual Membership $129/mo, Soulful Journey $399/mo + Monthly Ritual Box $44/mo subscription
+- "Roe" chatbot - answers service/pricing/skeptic questions in Tamika's voice (drawn from FLY Queen and The Last Greyhound)
+- 60-second 432 Hz binaural sound-bath sample with custom player + booking CTA
+- Motion design: scroll reveals, breathing hero logo, animations
+- Mobile floating book bar, reviews page, gift cards, corporate wellness page
+
+=== NEXT STEPS ===
+1. Show Tamika the live preview - collect feedback on prices, product names, membership tiers
+2. Google Business Profile overhaul + review-request engine (free, biggest local SEO win)
+3. Square Appointments (booking, deposits, gift cards, memberships)
+4. Shopify + vendor stack: Candle Builders, Blanka, Enchanted Soul, Printful (zero-inventory)
+5. Point deltaroe.com at Vercel when approved (Wix keeps working until then)
