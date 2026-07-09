@@ -173,21 +173,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------- soulful journey ---------- */}
+      {/* ---------- memberships ---------- */}
       <section>
-        <div className="narrow" style={{ textAlign: "center" }}>
-          <div className="eyebrow">Go Deeper</div>
-          <h2 style={{ margin: "12px 0 16px" }}>
-            The Soulful Journey Transformation Program
-          </h2>
-          <p style={{ maxWidth: 560, margin: "0 auto 12px", color: "var(--muted)", fontSize: 19 }}>
-            Twelve months of guided transformation — monthly master classes,
-            reiki sessions, bi-weekly one-on-one coaching, and a community
-            walking the same path.
-          </p>
-          <Link className="btn btn-ghost" href="/soulful-journey">
-            Explore the Program
-          </Link>
+        <div className="wrap">
+          <div style={{ textAlign: "center", marginBottom: 40 }}>
+            <div className="eyebrow">Go Deeper</div>
+            <h2 style={{ margin: "12px 0 16px" }}>Make healing a rhythm</h2>
+            <p style={{ maxWidth: 560, margin: "0 auto", color: "var(--muted)", fontSize: 19 }}>
+              One session feels wonderful. A practice changes your life.
+            </p>
+          </div>
+          <div className="grid-3">
+            <Link href="/memberships" className="card" style={{ textDecoration: "none" }}>
+              <h3>The Sanctuary Circle — $33/mo</h3>
+              <p>
+                Virtual membership: monthly live sound bath, the recorded
+                432 Hz library, and a new meditation every month.
+              </p>
+            </Link>
+            <Link href="/memberships" className="card" style={{ textDecoration: "none", borderColor: "var(--gold)" }}>
+              <h3>The Ritual Membership — $129/mo</h3>
+              <p>
+                A session every month — your choice — with rollover, priority
+                booking, and 10% off everything.
+              </p>
+            </Link>
+            <Link href="/soulful-journey" className="card" style={{ textDecoration: "none" }}>
+              <h3>The Soulful Journey — $399/mo</h3>
+              <p>
+                The 12-month transformation container: master classes, reiki,
+                and bi-weekly one-on-one coaching.
+              </p>
+            </Link>
+          </div>
+          <div style={{ marginTop: 32, textAlign: "center" }}>
+            <Link className="btn btn-ghost" href="/memberships">
+              Compare Memberships
+            </Link>
+          </div>
         </div>
       </section>
     </main>

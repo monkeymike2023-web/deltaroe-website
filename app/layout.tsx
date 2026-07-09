@@ -65,8 +65,8 @@ const localBusinessSchema = {
 
 const NAV = [
   { href: "/services", label: "Services" },
+  { href: "/memberships", label: "Memberships" },
   { href: "/events", label: "Events" },
-  { href: "/soulful-journey", label: "Soulful Journey" },
   { href: "/about", label: "About" },
   { href: "/reviews", label: "Reviews" },
   { href: "/faq", label: "FAQ" },
@@ -128,6 +128,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
               <div>
                 <h4>Explore</h4>
+                <Link href="/memberships">Memberships</Link>
                 <Link href="/events">Events</Link>
                 <Link href="/soulful-journey">Soulful Journey</Link>
                 <Link href="/corporate-wellness">Corporate Wellness</Link>

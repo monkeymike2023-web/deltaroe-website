@@ -8,6 +8,7 @@ export type Product = {
   art: "candle" | "oil" | "bracelet" | "crystals" | "smoke" | "tee" | "hat" | "tea" | "journal" | "jewelry";
   image?: string;
   badge?: string;
+  sub?: boolean; // monthly subscription
 };
 
 export const PRODUCTS: Product[] = [
@@ -119,6 +120,18 @@ export const PRODUCTS: Product[] = [
     desc: "Gold-foil hardcover journal with moon phases and chakra check-in pages. Where the session insights land.",
     detail: "Hardcover · 160 lined pages · foil-stamped",
     art: "journal",
+  },
+  {
+    id: "ritual-box",
+    name: "The Monthly Ritual Box",
+    collection: "Subscriptions",
+    price: 44,
+    desc: "A ritual delivered: each month an intention candle, a ritual oil or tea, a crystal chosen for the season, and a practice card from Tamika. Cancel anytime.",
+    detail: "Ships monthly · free local pickup in Elk Grove · members save 10% in the Apothecary",
+    art: "candle",
+    image: "/img/products/oil-grounding.jpg",
+    badge: "Monthly",
+    sub: true,
   },
   {
     id: "jewelry-limited",

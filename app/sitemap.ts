@@ -6,6 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     "",
     "/services",
+    "/memberships",
     "/events",
     "/soulful-journey",
     "/about",

@@ -26,7 +26,7 @@ export default function AboutPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/img/about.jpg"
-          alt="Hands holding a singing bowl above a patterned cloth during a sound healing session"
+          alt="Hands gently cradling a lit candle in a dark room"
           loading="eager"
         />
       </div>

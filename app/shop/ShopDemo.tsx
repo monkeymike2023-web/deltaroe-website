@@ -221,12 +221,15 @@ export default function ShopDemo() {
                   <div className="product-body">
                     <div className="product-head">
                       <h3>{p.name}</h3>
-                      <span className="product-price">${p.price}</span>
+                      <span className="product-price">
+                        ${p.price}
+                        {p.sub && <span style={{ fontSize: 13, color: "var(--muted)" }}>/mo</span>}
+                      </span>
                     </div>
                     <p className="product-desc">{p.desc}</p>
                     <p className="product-detail">{p.detail}</p>
                     <button className="btn btn-ghost product-add" onClick={() => add(p)}>
-                      {justAdded === p.id ? "Added ✓" : "Add to Cart"}
+                      {justAdded === p.id ? "Added ✓" : p.sub ? "Subscribe" : "Add to Cart"}
                     </button>
                   </div>
                 </article>
@@ -256,7 +259,10 @@ export default function ShopDemo() {
               <div className="cart-line" key={l.product.id}>
                 <div>
                   <div className="cart-name">{l.product.name}</div>
-                  <div className="cart-sub">${l.product.price}</div>
+                  <div className="cart-sub">
+                    ${l.product.price}
+                    {l.product.sub ? "/mo" : ""}
+                  </div>
                 </div>
                 <div className="cart-qty">
                   <button onClick={() => setQty(l.product.id, l.qty - 1)} aria-label="Decrease">−</button>
