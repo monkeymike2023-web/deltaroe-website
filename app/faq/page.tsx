@@ -1,60 +1,18 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/site";
+import { FAQ_CATEGORIES, ALL_FAQS } from "@/lib/faqs";
 
 export const metadata: Metadata = {
-  title: "FAQ — Reiki, Sound Baths & Energy Healing Questions Answered",
+  title: "FAQ — Honest Answers About Reiki, Sound Baths & Energy Healing",
   description:
-    "Everything first-timers ask about Delta Roe: what reiki feels like, what to wear, pricing, parking in Old Town Elk Grove, gift cards and more.",
+    "Real answers to real questions: what reiki feels like, the science, 432 Hz sound baths, chakras in plain English, pricing, parking in Old Town Elk Grove, and more.",
 };
-
-const FAQS = [
-  {
-    q: "Where is Delta Roe located?",
-    a: `Delta Roe is at ${"9075 Elk Grove Blvd, Suite 220A, Elk Grove, CA 95624"} — upstairs in historic Old Town Elk Grove. Free street parking is available on and around Elk Grove Blvd.`,
-  },
-  {
-    q: "How much do sessions cost?",
-    a: "Sound baths are $77, reiki sessions are $144, chakra alignment with sound bath is $177, the Fascia Flow Reset with sound bath is $188, and 90-minute life coaching is $250. A free 30-minute discovery call is available for anyone deciding where to start.",
-  },
-  {
-    q: "What should I expect at my first session?",
-    a: "You'll be welcomed into a candle-lit studio, talk briefly about what you're carrying, then rest fully clothed while Tamika works with energy, sound bowls, and essential oils. Most first-timers describe feeling lighter, calmer, and clearer afterward.",
-  },
-  {
-    q: "What should I wear?",
-    a: "Comfortable, loose clothing. You stay fully clothed for every service — only shoes come off.",
-  },
-  {
-    q: "Is reiki safe? Does it conflict with my religion or medical care?",
-    a: "Reiki is a gentle, non-invasive relaxation practice with no belief requirements — people of every faith and none receive it. It complements but never replaces medical or mental-health care.",
-  },
-  {
-    q: "Do you offer gift cards?",
-    a: "Yes — gift cards are available for every service and are the most-loved gift we sell. Contact the studio at (916) 206-1752 or Info@deltaroe.com, or see the Gift Cards page.",
-  },
-  {
-    q: "Can I book a private group event?",
-    a: "Yes. Private group sound baths and wellness circles are available for birthdays, teams, bridal parties, and celebrations — in-studio or on location around Elk Grove and Sacramento.",
-  },
-  {
-    q: "What is The Sound of Paint?",
-    a: "Delta Roe's signature workshop series: a live sound bath tuned to one chakra while you paint what the frequency moves in you. The series travels all seven energy centers, root to crown.",
-  },
-  {
-    q: "What is Sound-Integrated Self-Defense™?",
-    a: "A format created and trademarked by Delta Roe that weaves practical self-defense training with sound work — building physical confidence and inner calm in the same session.",
-  },
-  {
-    q: "Do you take walk-ins?",
-    a: "Sessions are by appointment so every client gets the room to themselves. Booking online takes under a minute, and same-week openings are common.",
-  },
-];
 
 export default function FaqPage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: FAQS.map((f) => ({
+    mainEntity: ALL_FAQS.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -70,28 +28,36 @@ export default function FaqPage() {
       <div className="svc-hero">
         <div className="narrow">
           <div className="eyebrow">Good Questions</div>
-          <h1 style={{ marginTop: 14 }}>Frequently asked</h1>
+          <h1 style={{ marginTop: 14 }}>Everything, answered honestly</h1>
           <p className="lede" style={{ marginTop: 16 }}>
-            Everything first-timers wonder and regulars forget to mention.
+            The questions first-timers actually ask — including the skeptical
+            ones. Especially the skeptical ones.
           </p>
         </div>
       </div>
 
       <section style={{ paddingTop: 8 }}>
         <div className="narrow">
-          {FAQS.map((f) => (
-            <details key={f.q}>
-              <summary>{f.q}</summary>
-              <p>{f.a}</p>
-            </details>
+          {FAQ_CATEGORIES.map((cat) => (
+            <div key={cat.title} style={{ marginBottom: 48 }}>
+              <div className="eyebrow" style={{ marginBottom: 6 }}>
+                {cat.title}
+              </div>
+              {cat.faqs.map((f) => (
+                <details key={f.q}>
+                  <summary>{f.q}</summary>
+                  <p>{f.a}</p>
+                </details>
+              ))}
+            </div>
           ))}
-          <div style={{ marginTop: 44, textAlign: "center" }}>
+          <div style={{ marginTop: 20, textAlign: "center" }}>
             <a className="btn btn-solid" href={SITE.bookingUrl}>
               Book a Session
             </a>
             <p style={{ marginTop: 16, color: "var(--muted)", fontSize: 16 }}>
-              Still curious? Call <a href={SITE.phoneHref}>{SITE.phone}</a> or
-              email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+              Still curious? Ask Roe — the gold chat button in the corner — or
+              call <a href={SITE.phoneHref}>{SITE.phone}</a>.
             </p>
           </div>
         </div>

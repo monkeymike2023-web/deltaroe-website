@@ -3,6 +3,8 @@ import { Cormorant_Garamond, Jost } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/site";
+import RoeChat from "./components/RoeChat";
+import MotionFx from "./components/MotionFx";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -166,6 +168,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             Book a Session
           </a>
         </div>
+
+        <MotionFx />
+        <RoeChat />
       </body>
     </html>
   );

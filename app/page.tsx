@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/site";
 import { SERVICES } from "@/lib/services";
+import SoundSample from "./components/SoundSample";
 
 export const metadata: Metadata = {
   title: "Delta Roe — Reiki, Sound Baths & Chakra Alignment in Elk Grove, CA",
@@ -76,6 +77,13 @@ export default function Home() {
             <a href={SITE.bookingUrl}>free 30-minute discovery call</a> — or
             simply book a sound bath, the gentlest first step.
           </p>
+        </div>
+      </section>
+
+      {/* ---------- hear it ---------- */}
+      <section>
+        <div className="wrap">
+          <SoundSample />
         </div>
       </section>
 

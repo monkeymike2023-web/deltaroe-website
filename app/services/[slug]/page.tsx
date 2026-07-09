@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITE } from "@/lib/site";
 import { SERVICES, getService } from "@/lib/services";
+import SoundSample from "@/app/components/SoundSample";
 
 export function generateStaticParams() {
   return SERVICES.map((s) => ({ slug: s.slug }));
@@ -115,6 +116,14 @@ export default async function ServicePage({
           <p style={{ color: "var(--muted)" }}>{svc.intro}</p>
         </div>
       </section>
+
+      {svc.slug === "sound-bath-elk-grove" && (
+        <section style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <SoundSample />
+          </div>
+        </section>
+      )}
 
       <section style={{ paddingTop: 0 }}>
         <div className="wrap">
