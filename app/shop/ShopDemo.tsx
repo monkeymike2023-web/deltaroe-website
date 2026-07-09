@@ -209,9 +209,14 @@ export default function ShopDemo() {
             <div className="shop-grid">
               {PRODUCTS.filter((p) => p.collection === col).map((p) => (
                 <article key={p.id} className="product-card">
-                  <div className="product-art">
+                  <div className={p.image ? "product-art has-photo" : "product-art"}>
                     {p.badge && <span className="product-badge">{p.badge}</span>}
-                    <ProductArt art={p.art} />
+                    {p.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={p.image} alt={p.name} loading="lazy" />
+                    ) : (
+                      <ProductArt art={p.art} />
+                    )}
                   </div>
                   <div className="product-body">
                     <div className="product-head">

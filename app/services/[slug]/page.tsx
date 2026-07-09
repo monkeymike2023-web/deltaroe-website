@@ -103,7 +103,12 @@ export default async function ServicePage({
         </div>
       </div>
 
-      <section style={{ paddingTop: 32 }}>
+      <div className="svc-photo">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={svc.image} alt={svc.imageAlt} loading="eager" />
+      </div>
+
+      <section style={{ paddingTop: 48 }}>
         <div className="narrow">
           {/* direct answer — quotable by AI engines */}
           <p style={{ fontSize: 21, color: "var(--text)" }}>{svc.answer}</p>

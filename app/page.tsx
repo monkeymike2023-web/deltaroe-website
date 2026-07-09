@@ -79,6 +79,16 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ---------- atmosphere strip ---------- */}
+      <div className="photo-strip" aria-hidden="true">
+        {/* eslint-disable @next/next/no-img-element */}
+        <img src="/img/service-sound-bath.jpg" alt="" loading="lazy" />
+        <img src="/img/service-coaching.jpg" alt="" loading="lazy" />
+        <img src="/img/service-chakra.jpg" alt="" loading="lazy" />
+        <img src="/img/service-reiki.jpg" alt="" loading="lazy" />
+        {/* eslint-enable @next/next/no-img-element */}
+      </div>
+
       {/* ---------- about teaser ---------- */}
       <section className="band-light">
         <div className="wrap grid-2" style={{ alignItems: "center", gap: 56 }}>

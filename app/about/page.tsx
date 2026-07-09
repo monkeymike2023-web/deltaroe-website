@@ -22,7 +22,16 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <section style={{ paddingTop: 24 }}>
+      <div className="svc-photo">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/img/about.jpg"
+          alt="Hands holding a singing bowl above a patterned cloth during a sound healing session"
+          loading="eager"
+        />
+      </div>
+
+      <section style={{ paddingTop: 48 }}>
         <div className="narrow">
           <p style={{ fontSize: 21 }}>
             Delta Roe is the work of <strong style={{ color: "var(--gold-bright)" }}>Tamika Banks</strong> —

@@ -35,7 +35,16 @@ export default function EventsPage() {
         </div>
       </div>
 
-      <section style={{ paddingTop: 24 }}>
+      <div className="svc-photo">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/img/events.jpg"
+          alt="Tibetan singing bowls with dried lavender and tingsha cymbals"
+          loading="eager"
+        />
+      </div>
+
+      <section style={{ paddingTop: 48 }}>
         <div className="wrap">
           <div className="eyebrow">Signature Series</div>
           <h2 style={{ margin: "12px 0 12px" }}>🎨 The Sound of Paint 🎶</h2>

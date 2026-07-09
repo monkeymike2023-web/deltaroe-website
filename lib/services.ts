@@ -18,6 +18,8 @@ export type Service = {
   review: { quote: string; source: string };
   seoTitle: string;
   seoDescription: string;
+  image: string;
+  imageAlt: string;
   chakra?: boolean; // page may use the ceremonial chakra spectrum
 };
 
@@ -82,6 +84,8 @@ export const SERVICES: Service[] = [
     seoTitle: "Reiki Healing in Elk Grove, CA | Delta Roe",
     seoDescription:
       "30-minute reiki sessions with a Certified Reiki Master in historic Old Town Elk Grove. Singing bowls, essential oils, deep relaxation. $144 — book online.",
+    image: "/img/service-reiki.jpg",
+    imageAlt: "Tingsha cymbals, healing crystals, an abalone shell and feather arranged for a reiki session",
   },
   {
     slug: "sound-bath-elk-grove",
@@ -139,6 +143,8 @@ export const SERVICES: Service[] = [
     seoTitle: "Sound Bath in Elk Grove, CA — 432 Hz Sound Healing | Delta Roe",
     seoDescription:
       "30-minute 432 Hz sound baths with Tibetan & crystal singing bowls in Old Town Elk Grove. Deep rest for busy minds. $77 — book online.",
+    image: "/img/service-sound-bath.jpg",
+    imageAlt: "Hammered Tibetan singing bowl with wooden mallet in warm candlelight",
   },
   {
     slug: "chakra-alignment",
@@ -197,6 +203,8 @@ export const SERVICES: Service[] = [
     seoTitle: "Chakra Alignment & Balancing in Elk Grove, CA | Delta Roe",
     seoDescription:
       "Intuitive chakra balancing with reiki, sound, and crystals in Old Town Elk Grove. Clear energetic blockages from root to crown. From $144 — book online.",
+    image: "/img/service-chakra.jpg",
+    imageAlt: "Quartz crystal towers and tumbled stones on black",
     chakra: true,
   },
   {
@@ -251,6 +259,8 @@ export const SERVICES: Service[] = [
     seoTitle: "Fascia Release + Sound Bath in Elk Grove, CA | Delta Roe",
     seoDescription:
       "The Fascia Flow Reset pairs gentle fascia release with a 432 Hz sound bath in Old Town Elk Grove. Release what stretching can't. $188 — book online.",
+    image: "/img/service-fascia.jpg",
+    imageAlt: "Amber massage-oil bottles with soft towels and linen",
   },
   {
     slug: "life-coaching",
@@ -308,6 +318,8 @@ export const SERVICES: Service[] = [
     seoTitle: "Life Coaching in Elk Grove, CA — Empowerment Coaching | Delta Roe",
     seoDescription:
       "90-minute one-on-one empowerment coaching with a certified life coach in Elk Grove. Clarity, healing & growth. $250 — free discovery call available.",
+    image: "/img/service-coaching.jpg",
+    imageAlt: "Candle flames glowing in a dark room",
   },
 ];
 
