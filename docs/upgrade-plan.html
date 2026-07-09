@@ -1,0 +1,491 @@
+<title>Delta Roe — Website Upgrade & Revenue Plan</title>
+<style>
+  :root{
+    --ink:#0C0A08;
+    --surface:#16120A;
+    --surface-2:#1D180E;
+    --line:#33291A;
+    --line-soft:#26200F;
+    --gold:#C9A464;
+    --gold-bright:#E6CD95;
+    --text:#E9E0CC;
+    --muted:#A79878;
+    --good:#8FBC8F;
+    --shadow:rgba(0,0,0,.5);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --ink:#F8F4EB;
+      --surface:#FFFDF7;
+      --surface-2:#F2ECDD;
+      --line:#DDD2B8;
+      --line-soft:#E8E0CC;
+      --gold:#8A6A2F;
+      --gold-bright:#6E5322;
+      --text:#241C10;
+      --muted:#71643F;
+      --good:#4E7D4E;
+      --shadow:rgba(90,70,30,.12);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#0C0A08; --surface:#16120A; --surface-2:#1D180E; --line:#33291A; --line-soft:#26200F;
+    --gold:#C9A464; --gold-bright:#E6CD95; --text:#E9E0CC; --muted:#A79878; --good:#8FBC8F; --shadow:rgba(0,0,0,.5);
+  }
+  :root[data-theme="light"]{
+    --ink:#F8F4EB; --surface:#FFFDF7; --surface-2:#F2ECDD; --line:#DDD2B8; --line-soft:#E8E0CC;
+    --gold:#8A6A2F; --gold-bright:#6E5322; --text:#241C10; --muted:#71643F; --good:#4E7D4E; --shadow:rgba(90,70,30,.12);
+  }
+  html{background:var(--ink);}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:Georgia,'Times New Roman',serif;
+    line-height:1.65;
+    margin:0;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:56px 24px 96px;}
+  .eyebrow{
+    font-family:'Avenir Next','Segoe UI',system-ui,sans-serif;
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--gold);font-weight:600;
+  }
+  h1{
+    font-family:Didot,'Bodoni MT','Playfair Display',Georgia,serif;
+    font-weight:400;font-size:44px;line-height:1.12;
+    letter-spacing:.06em;margin:.35em 0 .3em;text-wrap:balance;color:var(--gold-bright);
+  }
+  .sub{font-size:18px;color:var(--muted);font-style:italic;margin:0 0 8px;}
+  h2{
+    font-family:Didot,'Bodoni MT','Playfair Display',Georgia,serif;
+    font-weight:400;font-size:28px;letter-spacing:.05em;line-height:1.2;
+    margin:0 0 14px;text-wrap:balance;color:var(--gold-bright);
+  }
+  h3{
+    font-family:'Avenir Next','Segoe UI',system-ui,sans-serif;
+    font-size:14px;letter-spacing:.14em;text-transform:uppercase;
+    font-weight:600;color:var(--text);margin:28px 0 8px;
+  }
+  p{margin:0 0 14px;}
+  section{margin-top:64px;}
+  .rule{border:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold) 20%,var(--gold) 80%,transparent);opacity:.55;margin:0 0 26px;}
+  .hero-rule{margin:26px 0 0;}
+  ul,ol{padding-left:22px;margin:0 0 14px;}
+  li{margin-bottom:7px;}
+  li::marker{color:var(--gold);}
+  strong{color:var(--gold-bright);font-weight:600;}
+  em{color:var(--muted);}
+  .toc{
+    background:var(--surface);border:1px solid var(--line);border-radius:4px;
+    padding:22px 26px;margin-top:40px;
+  }
+  .toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 32px;font-size:15px;}
+  @media(max-width:560px){.toc-grid{grid-template-columns:1fr;}}
+  .toc a{color:var(--text);text-decoration:none;border-bottom:1px dotted var(--line);}
+  .toc a:hover,.toc a:focus-visible{color:var(--gold-bright);border-bottom-color:var(--gold);}
+  a:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  .toc-num{color:var(--gold);font-variant-numeric:tabular-nums;margin-right:10px;font-size:13px;}
+  .tablewrap{overflow-x:auto;margin:14px 0 20px;border:1px solid var(--line);border-radius:4px;}
+  table{border-collapse:collapse;width:100%;font-size:14.5px;background:var(--surface);}
+  th{
+    font-family:'Avenir Next','Segoe UI',system-ui,sans-serif;
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);
+    text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap;
+  }
+  td{padding:10px 14px;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+  tr:last-child td{border-bottom:0;}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .callout{
+    background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:0 4px 4px 0;padding:16px 20px;margin:18px 0;
+  }
+  .callout p:last-child{margin-bottom:0;}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+  @media(max-width:640px){.cards{grid-template-columns:1fr;}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:18px 20px;}
+  .card h4{
+    font-family:'Avenir Next','Segoe UI',system-ui,sans-serif;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;
+    margin:0 0 8px;color:var(--gold-bright);
+  }
+  .card p{font-size:14.5px;margin-bottom:0;color:var(--text);}
+  .swatches{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 20px;}
+  .swatch{width:112px;}
+  .swatch .chip{height:56px;border-radius:3px;border:1px solid var(--line);}
+  .swatch .lbl{font-family:'Avenir Next','Segoe UI',system-ui,sans-serif;font-size:11px;letter-spacing:.06em;color:var(--muted);margin-top:6px;line-height:1.4;}
+  .phase{display:flex;gap:18px;margin:0 0 22px;}
+  .phase-marker{flex:none;width:44px;text-align:center;}
+  .phase-marker .n{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:40px;height:40px;border-radius:50%;border:1px solid var(--gold);
+    font-family:Didot,'Bodoni MT',Georgia,serif;font-size:18px;color:var(--gold-bright);
+    background:var(--surface);
+  }
+  .phase-body h4{font-family:Didot,'Bodoni MT','Playfair Display',Georgia,serif;font-weight:400;font-size:20px;letter-spacing:.03em;margin:6px 0 6px;color:var(--gold-bright);}
+  .phase-body .meta{font-family:'Avenir Next','Segoe UI',system-ui,sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .phase-body p,.phase-body ul{font-size:15px;}
+  .kpi{color:var(--good);font-weight:600;}
+  .footer{margin-top:80px;text-align:center;color:var(--muted);font-size:13px;font-style:italic;}
+  .footer .mark{font-family:Didot,'Bodoni MT',Georgia,serif;font-style:normal;letter-spacing:.3em;color:var(--gold);font-size:14px;margin-bottom:6px;}
+  code{font-family:Consolas,'SF Mono',monospace;font-size:.88em;background:var(--surface-2);border:1px solid var(--line-soft);border-radius:3px;padding:1px 6px;color:var(--gold-bright);}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Confidential · Prepared July 2026</div>
+  <h1>Delta&nbsp;Roe</h1>
+  <p class="sub">Website upgrade &amp; revenue growth plan — luxury spa meets bohemian soul</p>
+  <p style="color:var(--muted);font-size:15px;">Reiki · Sound Baths · Chakra Alignment · Life Coaching — Historic Old Town Elk Grove, CA</p>
+  <hr class="rule hero-rule">
+  <nav class="toc" aria-label="Contents">
+    <div class="eyebrow" style="margin-bottom:10px;">Contents</div>
+    <div class="toc-grid">
+      <div><span class="toc-num">I</span><a href="#audit">Where things stand</a></div>
+      <div><span class="toc-num">II</span><a href="#brand">Brand &amp; design direction</a></div>
+      <div><span class="toc-num">III</span><a href="#architecture">Site architecture</a></div>
+      <div><span class="toc-num">IV</span><a href="#booking">The booking engine</a></div>
+      <div><span class="toc-num">V</span><a href="#shop">Shop &amp; private label</a></div>
+      <div><span class="toc-num">VI</span><a href="#passive">The passive-income ladder</a></div>
+      <div><span class="toc-num">VII</span><a href="#seo">SEO — owning Elk Grove</a></div>
+      <div><span class="toc-num">VIII</span><a href="#ai">AI-search optimization</a></div>
+      <div><span class="toc-num">IX</span><a href="#reviews">Reviews &amp; social proof</a></div>
+      <div><span class="toc-num">X</span><a href="#platform">Platform &amp; stack</a></div>
+      <div><span class="toc-num">XI</span><a href="#roadmap">Phased roadmap</a></div>
+      <div><span class="toc-num">XII</span><a href="#kpis">Targets &amp; measurement</a></div>
+    </div>
+  </nav>
+</header>
+
+<section id="audit">
+  <div class="eyebrow">I</div>
+  <h2>Where things stand</h2>
+  <hr class="rule">
+  <p>Delta Roe already has the hard part: a differentiated healer (Tamika Banks, Certified Reiki Master &amp; Empowerment Life Coach), glowing reviews, premium pricing power, a trademarked format (<strong>Sound-Integrated Self-Defense™</strong>), a recurring event series (<em>The Sound of Paint</em> chakra workshops), and now a genuinely beautiful logo. What's missing is a website that converts that reputation into revenue.</p>
+
+  <h3>Current site (Wix) — audit snapshot</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Area</th><th>Today</th><th>Opportunity</th></tr>
+    <tr><td><strong>Booking</strong></td><td>Wix Bookings works; 8 services $77–$250; buried behind clicks</td><td>Booking-first design, packages, deposits, rebooking loops</td></tr>
+    <tr><td><strong>E-commerce</strong></td><td>None (jewelry/oils/crystals mentioned but not sellable online)</td><td>Full branded shop, zero-inventory private label + POD</td></tr>
+    <tr><td><strong>SEO</strong></td><td>Generic titles, no service-level landing pages, thin schema</td><td>#1 local pack for reiki/sound bath in Elk Grove &amp; south Sacramento</td></tr>
+    <tr><td><strong>AI visibility</strong></td><td>Effectively invisible to ChatGPT/Perplexity/Gemini answers</td><td>Structured, citable content that AI engines recommend</td></tr>
+    <tr><td><strong>Social proof</strong></td><td>Great reviews exist on Google/Yelp but not surfaced on site</td><td>Review engine + on-site proof at every decision point</td></tr>
+    <tr><td><strong>Passive income</strong></td><td>One $399/mo program</td><td>Digital library, courses, memberships, affiliate, merch</td></tr>
+  </table></div>
+
+  <h3>Current bookable services (baseline)</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Service</th><th>Duration</th><th class="num">Price</th></tr>
+    <tr><td>Discovery Call</td><td>30 min</td><td class="num">Free</td></tr>
+    <tr><td>Sound Bath</td><td>30 min</td><td class="num">$77</td></tr>
+    <tr><td>Reiki Session</td><td>30 min</td><td class="num">$144</td></tr>
+    <tr><td>Reiki &amp; Chakra Alignment</td><td>30 min</td><td class="num">$144</td></tr>
+    <tr><td>Chakra Alignment + Sound Bath</td><td>30 min</td><td class="num">$177</td></tr>
+    <tr><td>Reiki + Sound Bath</td><td>30 min</td><td class="num">$188</td></tr>
+    <tr><td>Fascia Flow Reset + Sound Bath</td><td>30 min</td><td class="num">$188</td></tr>
+    <tr><td>Life Coaching — Clarity, Healing &amp; Growth</td><td>90 min</td><td class="num">$250</td></tr>
+    <tr><td>Soulful Journey Transformation Program</td><td>12 months</td><td class="num">$399/mo</td></tr>
+  </table></div>
+</section>
+
+<section id="brand">
+  <div class="eyebrow">II</div>
+  <h2>Brand &amp; design direction</h2>
+  <hr class="rule">
+  <p>The new logo sets the entire visual system: <strong>midnight black, antique gold, sacred geometry, the lotus, and the seven chakra lights</strong>. The site should feel like walking into a candle-lit luxury spa that happens to be run by a mystic — Aman Resorts meets a Joshua Tree apothecary. This document itself is set in that system.</p>
+
+  <h3>Palette — drawn from the logo</h3>
+  <div class="swatches">
+    <div class="swatch"><div class="chip" style="background:#0C0A08;"></div><div class="lbl">Midnight<br>#0C0A08 — grounds</div></div>
+    <div class="swatch"><div class="chip" style="background:#C9A464;"></div><div class="lbl">Antique Gold<br>#C9A464 — lines, accents</div></div>
+    <div class="swatch"><div class="chip" style="background:#E6CD95;"></div><div class="lbl">Champagne<br>#E6CD95 — headings</div></div>
+    <div class="swatch"><div class="chip" style="background:#E9E0CC;"></div><div class="lbl">Moonlight<br>#E9E0CC — body text</div></div>
+    <div class="swatch"><div class="chip" style="background:#F8F4EB;"></div><div class="lbl">Alabaster<br>#F8F4EB — light sections</div></div>
+    <div class="swatch"><div class="chip" style="background:linear-gradient(180deg,#B48CC8,#6A5ACD,#4A90D9,#57A85C,#E8C547,#E0813C,#C0392B);"></div><div class="lbl">Chakra Spectrum<br>ceremonial use only</div></div>
+  </div>
+  <div class="callout"><p><strong>The chakra spectrum rule:</strong> the seven colors appear only where they mean something — the chakra-alignment service page, the Sound of Paint series, product category markers. Everywhere else the site stays black + gold + cream. That restraint is what makes it read <em>luxury</em> instead of <em>craft fair</em>.</p></div>
+
+  <h3>Typography</h3>
+  <ul>
+    <li><strong>Display:</strong> a high-contrast Didone serif (Cormorant Garamond or Fraunces at light weight, self-hosted), generously letter-spaced in caps — echoing the DELTA ROE logotype with its triangle "A".</li>
+    <li><strong>Body:</strong> a warm humanist serif for storytelling sections; a clean geometric sans (e.g. Jost or Outfit) for UI, prices, and booking flows.</li>
+    <li><strong>Detail:</strong> gold hairline rules, small-caps eyebrows, roman-numeral section markers — the language of a fine spa menu.</li>
+  </ul>
+
+  <h3>Art direction</h3>
+  <ul>
+    <li>Dark, candle-lit photography: singing bowls with gold rim-light, crystals on black linen, incense smoke curls, hands in healing position. Shot or AI-assisted, but consistent — moody, warm, shallow depth.</li>
+    <li>The flower-of-life geometry from the logo as a barely-visible embossed watermark texture on dark sections (2–3% opacity).</li>
+    <li>Motion: one orchestrated page-load moment — the chakra column lights up the hero, top to bottom, once. Subtle gold shimmer on hover for CTAs. Nothing else moves. (<code>prefers-reduced-motion</code> respected.)</li>
+    <li>Boho warmth comes through texture and materials — linen, raw paper, dried botanicals — not through clutter.</li>
+  </ul>
+</section>
+
+<section id="architecture">
+  <div class="eyebrow">III</div>
+  <h2>Site architecture</h2>
+  <hr class="rule">
+  <p>Every page exists to do one of three jobs: <strong>book a session, sell a product, or earn a ranking.</strong></p>
+  <div class="tablewrap"><table>
+    <tr><th>Page</th><th>Job</th><th>Notes</th></tr>
+    <tr><td><strong>Home</strong></td><td>Book</td><td>Hero with logo animation, one-line promise, "Book a Session" + "Free Discovery Call" CTAs, review strip, service menu, Tamika intro, shop teaser</td></tr>
+    <tr><td><strong>/services/reiki-elk-grove</strong></td><td>Book + Rank</td><td>One landing page per service, each targeting its keyword — what happens in a session, benefits, FAQs, reviews, price, embedded booking</td></tr>
+    <tr><td><strong>/services/sound-bath-elk-grove</strong></td><td>Book + Rank</td><td>432 Hz story, Tibetan + crystal bowls, binaural beats — highly searchable</td></tr>
+    <tr><td><strong>/services/chakra-alignment</strong> · <strong>/life-coaching</strong> · <strong>/fascia-flow-reset</strong></td><td>Book + Rank</td><td>Same template; chakra page is where the spectrum palette lives</td></tr>
+    <tr><td><strong>/book</strong></td><td>Book</td><td>Single consolidated booking flow, sticky across the whole site</td></tr>
+    <tr><td><strong>/shop</strong> + category pages</td><td>Sell</td><td>Candles · Oils · Crystals · Chakra &amp; Reiki · Grounding · Apparel</td></tr>
+    <tr><td><strong>/events</strong> + event pages</td><td>Book + Rank</td><td>Sound of Paint series, Sound-Integrated Self-Defense™ (own trademark page), group sound baths</td></tr>
+    <tr><td><strong>/soulful-journey</strong></td><td>Sell (high-ticket)</td><td>The $399/mo program deserves a real sales page with application flow</td></tr>
+    <tr><td><strong>/about</strong></td><td>Trust</td><td>Tamika's story, Nirvana Love → Delta Roe evolution, certifications, the space</td></tr>
+    <tr><td><strong>/reviews</strong></td><td>Trust + Rank</td><td>Aggregated Google/Yelp reviews with Review schema</td></tr>
+    <tr><td><strong>/journal</strong> (blog)</td><td>Rank</td><td>The SEO/AI content engine — see §VII</td></tr>
+    <tr><td><strong>/gift-cards</strong></td><td>Sell</td><td>Instant digital gift cards — the highest-margin product a spa has</td></tr>
+    <tr><td><strong>/faq</strong> · <strong>/contact</strong></td><td>Trust + AI</td><td>FAQ page doubles as the AI-answer-engine feed</td></tr>
+  </table></div>
+</section>
+
+<section id="booking">
+  <div class="eyebrow">IV</div>
+  <h2>The booking engine — the #1 revenue lever</h2>
+  <hr class="rule">
+  <p>Nothing else in this plan pays off faster than making booking effortless and rebooking automatic.</p>
+  <div class="cards">
+    <div class="card"><h4>Always one tap away</h4><p>Persistent gold "Book a Session" button in the header and as a mobile floating bar. Every service page books directly in-page — no detour to a generic calendar.</p></div>
+    <div class="card"><h4>First-timer funnel</h4><p>A "New to energy healing?" path: free Discovery Call or a <strong>First Visit ritual bundle</strong> (Reiki + Sound Bath intro, $129) that removes the fear of the unknown.</p></div>
+    <div class="card"><h4>Packages &amp; series</h4><p>3-session and 6-session packs at 10–15% off, paid up front. Prepaid packages raise retention and smooth cash flow — the spa-industry standard.</p></div>
+    <div class="card"><h4>Deposits &amp; reminders</h4><p>Card-on-file deposits kill no-shows; automated SMS/email reminders with one-tap reschedule protect every hour on the table.</p></div>
+    <div class="card"><h4>The rebooking loop</h4><p>Post-session email: session notes / aftercare + "Book your next alignment" with the calendar pre-filtered. 48-hour rebooking discount window.</p></div>
+    <div class="card"><h4>Upsell at checkout</h4><p>Booking confirmation offers the matching product: booked a chakra alignment → chakra candle set; sound bath → the recorded 432 Hz library.</p></div>
+  </div>
+  <h3>New revenue-bearing offerings to add</h3>
+  <ul>
+    <li><strong>Group sound baths</strong> (6–10 people × $35–45) — same hour, multiplied revenue; the community on-ramp to 1:1 work.</li>
+    <li><strong>Couples / duo sessions</strong> at a premium.</li>
+    <li><strong>Corporate wellness</strong> page — on-site sound baths &amp; guided meditation for Sacramento-area offices; one contract can be worth a month of singles.</li>
+    <li><strong>Gift cards</strong> — promoted hard at Mother's Day, Valentine's, holidays. Pure prepaid margin.</li>
+    <li><strong>Reiki certification workshops</strong> (Level I/II) — Tamika is a Reiki Master; teaching is the highest-leverage weekend format ($225–$425/student × 6–10 students).</li>
+  </ul>
+</section>
+
+<section id="shop">
+  <div class="eyebrow">V</div>
+  <h2>Shop &amp; private label — zero-inventory merchandising</h2>
+  <hr class="rule">
+  <p>Everything below is fulfilled by vendors who print, pour, or pack <em>after</em> the order is placed, under the Delta Roe label — no inventory, no cash tied up. Every vendor here was verified live (July 2026), not assumed.</p>
+
+  <h3>The verified starter stack — 4 vendors, zero inventory</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Vendor</th><th>Covers</th><th>Private label</th><th>Minimums</th><th class="num">Margin</th></tr>
+    <tr><td><strong>Candle Builders</strong><br><em>candlebuilders.com</em></td><td>Entire candle line — 100% soy, cotton wicks, US-made, ships in 1–2 days</td><td>Fully your brand, $0 setup, no membership</td><td>None</td><td class="num">40–50%</td></tr>
+    <tr><td><strong>Blanka</strong><br><em>blankabrand.com</em></td><td>Body &amp; massage oils, skincare, spa-shelf products — US/Canada-made</td><td>Logo printed on product; branded samples</td><td>Zero MOQ — sell 1 unit</td><td class="num">40–60%</td></tr>
+    <tr><td><strong>Enchanted Soul</strong><br><em>enchantedsoul.store</em></td><td>Crystals, sage &amp; palo santo, ritual kits, pendulums, spell oils — the whole metaphysical shelf</td><td>Blind dropship under your brand</td><td>None, no upfront cost</td><td class="num">~keystone</td></tr>
+    <tr><td><strong>Printful</strong><br><em>printful.com</em></td><td>Tees (Bella+Canvas / AS Colour premium blanks), embroidered hats, hoodies, leggings, journals</td><td>Inside-label branding, branded packing slips</td><td>None</td><td class="num">40–60%</td></tr>
+  </table></div>
+
+  <h3>Add-ons as revenue justifies</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Vendor</th><th>Adds</th><th>Model</th></tr>
+    <tr><td><strong>Dripshipper</strong> <em>(dripshipper.io)</em></td><td>"Delta Roe Ritual Tea" — private-label tea, your branding on every bag, ships from San Diego (2-day CA delivery)</td><td>Dropship, zero minimums</td></tr>
+    <tr><td><strong>Faire</strong> <em>(faire.com)</em></td><td>Curated studio shelf: grounding sheets, artisan US-made orgonite, chakra jewelry</td><td>Wholesale on <strong>net-60 terms + free returns on first orders</strong> — near-zero cash risk, light inventory</td></tr>
+    <tr><td><strong>Get Grounded Shop</strong> affiliate</td><td>Grounding sheets ($220–425), mats, pillowcases — commission income, zero fulfillment</td><td>Affiliate</td></tr>
+    <tr><td><strong>Doba / Spocket</strong></td><td>Chakra bracelets ($3–10 base → 3–5× markup), orgonite pyramids, crystal lamps — US-stocked</td><td>Dropship subscription (~$30–60/mo)</td></tr>
+    <tr><td><strong>Bulk Apothecary</strong> ready-to-label</td><td>Bath salts, EO roll-ons — hand-labeled small batches for higher margin + in-studio sales</td><td>Low-case wholesale (step 2)</td></tr>
+    <tr><td><strong>MakePlayingCards / Game Crafter</strong></td><td>A custom <strong>Delta Roe oracle deck</strong> — decks from ~$22, dropships to customer; a true luxury differentiator if Tamika designs one</td><td>Print-on-demand</td></tr>
+  </table></div>
+
+  <div class="callout"><p><strong>Reality checks from the research:</strong> grounding <em>footwear</em> (Bahé, Groundz, Earth Runners) has no public wholesale/dropship program — plan affiliate links or direct outreach there, not dropship revenue. And the two strongest niche vendors (Candle Builders, Enchanted Soul) are <strong>Shopify-only</strong> — one more reason the stack in §X routes the shop through Shopify rather than Wix.</p></div>
+
+  <h3>Product roadmap</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Wave</th><th>Products</th><th>Fulfillment model</th><th class="num">Typical margin</th></tr>
+    <tr><td><strong>1 — Launch</strong></td><td>Delta Roe intention candles, ritual/massage oil blends, logo tees · hats · hoodies, chakra bracelet sets</td><td>Private-label dropship + print-on-demand</td><td class="num">45–65%</td></tr>
+    <tr><td><strong>2 — Expand</strong></td><td>Crystal kits by intention (grounding, abundance, sleep), sage &amp; palo santo ritual kits, bath soaks, herbal teas</td><td>Dropship + light in-studio kitting</td><td class="num">50–70%</td></tr>
+    <tr><td><strong>3 — Premium</strong></td><td>Grounding sheets &amp; earthing mats, orgone generators/orgonite, Sound of Paint merch, journals &amp; oracle decks</td><td>Wholesale-dropship (Faire) + affiliate for big-ticket</td><td class="num">30–55%</td></tr>
+  </table></div>
+
+  <div class="callout"><p><strong>Merch strategy:</strong> that logo belongs on products. A black candle vessel with the gold lotus mark, a black tee with the chakra-column motif, a gold-foil journal — clients who just had a transcendent session <em>want</em> to take the brand home. The in-studio shelf and the website sell the same SKUs.</p></div>
+
+  <h3>Retail-floor synergy</h3>
+  <ul>
+    <li>QR code on the studio shelf → product page, for "ship it to me" upsells after sessions.</li>
+    <li>Every physical order ships with a gift-card offer and a booking QR — merchandise feeds bookings, bookings feed merchandise.</li>
+    <li>Reiki-infused / hand-charged limited runs (jewelry Tamika already makes) as the premium in-house tier above the dropship line.</li>
+  </ul>
+</section>
+
+<section id="passive">
+  <div class="eyebrow">VI</div>
+  <h2>The passive-income ladder</h2>
+  <hr class="rule">
+  <p>Ordered by effort-to-launch. Each rung compounds: content feeds SEO, SEO feeds bookings, sessions feed content.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Rung</th><th>Product</th><th>Model</th><th>Why it works</th></tr>
+    <tr><td>1</td><td><strong>Digital gift cards</strong></td><td>One-time</td><td>Zero marginal cost, ~10–20% never redeemed, sells itself at holidays</td></tr>
+    <tr><td>2</td><td><strong>Recorded 432 Hz sound-bath library</strong></td><td>$11–13/mo subscription</td><td>Record once during real sessions; sell forever. Sleep, anxiety, chakra-series tracks</td></tr>
+    <tr><td>3</td><td><strong>Guided meditation packs</strong></td><td>$17–27 one-time</td><td>Chakra-by-chakra series mirrors the Sound of Paint brand</td></tr>
+    <tr><td>4</td><td><strong>Insight Timer + YouTube presence</strong></td><td>Ads/donations + funnel</td><td>Free distribution channels that feed the paid library and local bookings</td></tr>
+    <tr><td>5</td><td><strong>Online course: "Energy Hygiene for Professionals"</strong></td><td>$97–197</td><td>Aligns with her stated mission (professionals who need to realign); evergreen</td></tr>
+    <tr><td>6</td><td><strong>Reiki Level I/II certification — hybrid online + in-person attunement</strong></td><td>$225–425</td><td>Highest-ticket digital-adjacent product; creates devotees</td></tr>
+    <tr><td>7</td><td><strong>Affiliate income</strong></td><td>5–15% commissions</td><td>Earthing/grounding brands, crystal wholesalers, book lists — monetizes journal content</td></tr>
+    <tr><td>8</td><td><strong>Virtual memberships</strong></td><td>$29–49/mo</td><td>Monthly Zoom sound bath + meditation library + shop discount — scales beyond the room</td></tr>
+  </table></div>
+</section>
+
+<section id="seo">
+  <div class="eyebrow">VII</div>
+  <h2>SEO — owning Elk Grove &amp; south Sacramento</h2>
+  <hr class="rule">
+  <h3>Local SEO (the fastest wins)</h3>
+  <ul>
+    <li><strong>Google Business Profile overhaul:</strong> all services listed with prices, booking link, weekly photo uploads, Q&amp;A seeded, posts for every event. GBP is the #1 local ranking factor and it's free.</li>
+    <li><strong>Citations:</strong> consistent name/address/phone on Yelp, Apple Maps, Bing Places, Nextdoor, MindBody directories, wellness aggregators.</li>
+    <li><strong>"Best in Elk Grove" positioning:</strong> the review record backs it — say it, with the receipts, on the homepage and the /reviews page.</li>
+    <li><strong>Local landmarks content:</strong> "in historic Old Town Elk Grove" woven into copy — matches how locals search and how AI describes places.</li>
+  </ul>
+  <h3>Keyword targets</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Cluster</th><th>Example queries</th><th>Landing page</th></tr>
+    <tr><td>Reiki local</td><td>reiki elk grove · reiki near me · energy healing elk grove</td><td>/services/reiki-elk-grove</td></tr>
+    <tr><td>Sound bath</td><td>sound bath elk grove · sound bath sacramento · sound healing near me</td><td>/services/sound-bath-elk-grove</td></tr>
+    <tr><td>Chakra</td><td>chakra alignment near me · chakra balancing sacramento</td><td>/services/chakra-alignment</td></tr>
+    <tr><td>Coaching</td><td>life coach elk grove · spiritual life coach sacramento</td><td>/services/life-coaching</td></tr>
+    <tr><td>Commercial</td><td>corporate wellness sacramento · group sound bath private event</td><td>/corporate-wellness</td></tr>
+    <tr><td>Informational</td><td>what to expect first reiki session · 432 hz benefits · how sound baths work</td><td>/journal/*</td></tr>
+  </table></div>
+  <h3>Technical &amp; content engine</h3>
+  <ul>
+    <li><strong>Schema markup everywhere:</strong> <code>LocalBusiness</code> (HealthAndBeautyBusiness), <code>Service</code>, <code>Event</code> (every Sound of Paint date), <code>Product</code>, <code>FAQPage</code>, <code>Review</code>/<code>AggregateRating</code>. Rich results + AI legibility.</li>
+    <li><strong>Journal cadence:</strong> 2 posts/month answering real first-timer questions — each post targets one query, links to one service, ends with one CTA.</li>
+    <li><strong>Core Web Vitals:</strong> the custom build (see §X) should score 95+ on mobile — a real edge over the Wix competition.</li>
+  </ul>
+</section>
+
+<section id="ai">
+  <div class="eyebrow">VIII</div>
+  <h2>AI-search optimization (GEO)</h2>
+  <hr class="rule">
+  <p>A growing share of "reiki near me, is it worth it?" questions are now asked to ChatGPT, Perplexity, and Gemini. The sites those engines cite share traits Delta Roe can adopt wholesale:</p>
+  <ul>
+    <li><strong>Direct-answer content structure:</strong> every service page opens with a plain 2–3 sentence answer ("A reiki session at Delta Roe in Elk Grove lasts 30 minutes and costs $144…") before the storytelling. AI engines quote the quotable.</li>
+    <li><strong>FAQ pages with real questions</strong>, marked up with <code>FAQPage</code> schema — the single highest-yield AI-visibility asset for a local business.</li>
+    <li><strong><code>llms.txt</code></strong> at the site root summarizing the business, services, prices, location, and booking URL for AI crawlers.</li>
+    <li><strong>Entity consistency:</strong> identical business facts across site, GBP, Yelp, Facebook — AI engines cross-check sources before recommending.</li>
+    <li><strong>Third-party mentions:</strong> local press (Elk Grove Citizen), Sacramento wellness roundups, podcast guest spots — citations are what make an AI engine confident enough to name a business.</li>
+    <li><strong>Own the branded answers:</strong> pages that define "Sound-Integrated Self-Defense™" and "The Sound of Paint" so any AI asked about them has exactly one authoritative source.</li>
+  </ul>
+</section>
+
+<section id="reviews">
+  <div class="eyebrow">IX</div>
+  <h2>Reviews &amp; social proof engine</h2>
+  <hr class="rule">
+  <ul>
+    <li><strong>Ask at the peak:</strong> automated review request 2 hours post-session (the afterglow window), direct Google-review deep link. QR card handed at checkout.</li>
+    <li><strong>Surface everywhere:</strong> live Google rating badge in the site header, rotating review quotes on every service page matched to that service, full /reviews page with schema.</li>
+    <li><strong>Video testimonials:</strong> 3–5 short clips of clients describing their first session — the single most persuasive asset for a skeptical first-timer, reusable on social and ads.</li>
+    <li><strong>Respond to every review</strong> — response quality is itself a local-ranking and AI-trust signal.</li>
+  </ul>
+</section>
+
+<section id="platform">
+  <div class="eyebrow">X</div>
+  <h2>Platform &amp; stack recommendation</h2>
+  <hr class="rule">
+  <p>Wix caps what's possible on speed, SEO control, and design fidelity. Recommended target stack — the same architecture already proven on your other properties:</p>
+  <div class="tablewrap"><table>
+    <tr><th>Layer</th><th>Choice</th><th class="num">Cost</th><th>Why</th></tr>
+    <tr><td>Site</td><td><strong>Next.js on Vercel</strong></td><td class="num">$0</td><td>Total design control, 95+ Core Web Vitals, perfect schema/GEO control</td></tr>
+    <tr><td>Booking</td><td><strong>Square Appointments</strong> (embed + API)</td><td class="num">$0–29/mo</td><td>Free solo tier, deposits, SMS reminders, gift cards, packages; clean embed into custom pages</td></tr>
+    <tr><td>Shop</td><td><strong>Shopify Basic</strong> (Buy Buttons / headless into the Next.js site)</td><td class="num">$39/mo</td><td>Native apps for the entire private-label vendor stack — orders route to vendors automatically</td></tr>
+    <tr><td>Email/SMS</td><td><strong>Klaviyo</strong> (free tier to start)</td><td class="num">$0+</td><td>Post-session flows, abandoned cart, event announcements, review requests</td></tr>
+    <tr><td>Digital products</td><td>Shopify Digital Downloads or Gumroad</td><td class="num">~$0</td><td>Meditation library &amp; courses without another platform</td></tr>
+    <tr><td>Analytics</td><td>GA4 + Search Console + Clarity</td><td class="num">$0</td><td>Booking &amp; purchase conversion events wired from day one</td></tr>
+  </table></div>
+  <div class="callout"><p><strong>Pragmatic alternative:</strong> if minimal disruption matters most, Phase 1 can stay on Wix (SEO fixes + Wix Stores + review engine) while the custom build happens in parallel. But the custom stack is where the speed, design, and AI-visibility ceiling actually lifts — and it drops platform fees from ~$40/mo Wix Premium to near zero outside Shopify.</p></div>
+</section>
+
+<section id="roadmap">
+  <div class="eyebrow">XI</div>
+  <h2>Phased roadmap</h2>
+  <hr class="rule">
+
+  <div class="phase">
+    <div class="phase-marker"><span class="n">1</span></div>
+    <div class="phase-body">
+      <h4>Foundation — free wins</h4>
+      <div class="meta">Weeks 1–2 · No build required</div>
+      <ul>
+        <li>Google Business Profile overhaul + citation cleanup</li>
+        <li>Review-request flow live (SMS/QR) — start compounding immediately</li>
+        <li>GA4 + Search Console + conversion events on the current site</li>
+        <li>Quick Wix patches: titles/metas, FAQ page with schema, booking button prominence</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-marker"><span class="n">2</span></div>
+    <div class="phase-body">
+      <h4>The new site</h4>
+      <div class="meta">Weeks 2–6 · Design + build</div>
+      <ul>
+        <li>Full black-and-gold design system from the logo; hero with the chakra light moment</li>
+        <li>Service landing pages (one per keyword), /reviews, /about, /faq, journal shell</li>
+        <li>Square Appointments booking integrated; packages, deposits, gift cards live</li>
+        <li>Schema + <code>llms.txt</code> + GEO content structure baked in; launch cutover</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-marker"><span class="n">3</span></div>
+    <div class="phase-body">
+      <h4>The shop</h4>
+      <div class="meta">Weeks 5–9 · Commerce</div>
+      <ul>
+        <li>Shopify + vendor stack connected; Wave-1 SKUs designed (candles, oils, apparel, chakra sets)</li>
+        <li>Sample orders approved in hand before launch — quality gate on every SKU</li>
+        <li>Studio shelf + QR merchandising; launch email/social push</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-marker"><span class="n">4</span></div>
+    <div class="phase-body">
+      <h4>The compounding engine</h4>
+      <div class="meta">Week 8 onward · Ongoing</div>
+      <ul>
+        <li>Journal cadence (2/mo) + recorded sound-bath library + meditation packs</li>
+        <li>Virtual membership, corporate wellness outreach, Reiki certification weekends</li>
+        <li>Wave 2–3 products; affiliate program; quarterly content &amp; conversion reviews</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="kpis">
+  <div class="eyebrow">XII</div>
+  <h2>Targets &amp; measurement</h2>
+  <hr class="rule">
+  <div class="tablewrap"><table>
+    <tr><th>Metric</th><th>Baseline</th><th class="num">90 days</th><th class="num">12 months</th></tr>
+    <tr><td>Google Business Profile actions (calls/directions/bookings)</td><td>unmeasured</td><td class="num kpi">+50%</td><td class="num kpi">3×</td></tr>
+    <tr><td>Online bookings / month</td><td>current volume</td><td class="num kpi">+30–40%</td><td class="num kpi">2×</td></tr>
+    <tr><td>Local pack ranking — "reiki elk grove", "sound bath elk grove"</td><td>inconsistent</td><td class="num kpi">Top 3</td><td class="num kpi">#1</td></tr>
+    <tr><td>Shop revenue / month</td><td class="num">$0</td><td class="num kpi">$500–1,500</td><td class="num kpi">$3–6k</td></tr>
+    <tr><td>Passive/digital revenue / month</td><td class="num">~$0</td><td class="num kpi">$200–500</td><td class="num kpi">$1.5–3k</td></tr>
+    <tr><td>Google reviews (count)</td><td>current</td><td class="num kpi">+15–25</td><td class="num kpi">+75–100</td></tr>
+    <tr><td>AI-engine visibility (branded + "reiki elk grove" answers)</td><td>absent</td><td class="num kpi">cited</td><td class="num kpi">recommended</td></tr>
+  </table></div>
+  <p><em>Projections are directional, based on typical results for local wellness businesses executing this playbook — not guarantees. The measurement stack in §X makes every number verifiable.</em></p>
+</section>
+
+<div class="footer">
+  <div class="mark">△ DELTA ROE</div>
+  Mind · Body · Spirit — prepared as the blueprint for the build phase.
+</div>
+
+</div>
