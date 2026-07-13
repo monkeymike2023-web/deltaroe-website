@@ -3,7 +3,15 @@
  * Voice: Tamika Banks — warm big-sister energy, direct, empowering.
  * Rooted in her books: "FLY Queen: First Love Yourself" and "The Last Greyhound."
  * F.L.Y. = First Love Yourself. Everything points gently back to self-care — and booking it.
+ *
+ * Two layers, matched together (hand-written wins ties):
+ *   1. KB — hand-written entries in Roe's voice.
+ *   2. Generated — every site FAQ and every service's page content, ingested
+ *      automatically so the bot always knows what the website says.
  */
+
+import { SERVICES } from "./services";
+import { FAQ_CATEGORIES } from "./faqs";
 
 export type KbLink = { href: string; label: string };
 export type KbEntry = {
@@ -51,8 +59,10 @@ export const KB: KbEntry[] = [
     chips: ["Does reiki really work?", "What does reiki feel like?", "How much are sessions?"],
   },
   {
-    keywords: ["sound", "bath", "bowls", "432", "hz", "frequency", "singing", "listen", "hear", "sample", "audio"],
-    boost: ["sound bath", "432", "sample", "hear"],
+    // 432/hz stay out of the keywords: "why 432 Hz?" should route to the
+    // expert FAQ explanation, not this overview.
+    keywords: ["sound", "bath", "bowls", "frequency", "singing", "listen", "hear", "sample", "audio"],
+    boost: ["sound bath", "sample", "hear"],
     answer:
       "A sound bath is the easiest yes you'll ever say to yourself: 30 minutes ($77) lying wrapped in blankets while Tibetan and crystal bowls tuned to 432 Hz wash over you. Your brain slides into the same slow waves as deep meditation — no effort required. There's a 60-second sample on the Sound Bath page; put headphones on, and when it ends, notice that you wish it hadn't. That feeling? That's the whole point.",
     link: { href: "/services/sound-bath-elk-grove", label: "Listen & book a sound bath" },
@@ -75,8 +85,8 @@ export const KB: KbEntry[] = [
     chips: ["How do I know if I'm blocked?", "What is the Sound of Paint?", "Book a session"],
   },
   {
-    keywords: ["book", "booking", "appointment", "schedule", "reserve", "available", "availability", "openings"],
-    boost: ["book", "appointment", "schedule"],
+    keywords: ["book", "booking", "appointment", "schedule", "reserve", "available", "availability", "openings", "walk", "walk-in", "walk-ins", "drop"],
+    boost: ["book", "appointment", "schedule", "walk in", "walk-in"],
     answer:
       "Booking takes under a minute online — every session, including the free Discovery Call. Sessions are by appointment only, so the studio is always yours alone. Same-week openings are common, and Monday–Wednesday evenings (open until 9pm) are perfect for exhaling after work. Don't overthink it, love. The calendar is the easy part; showing up for yourself is the practice.",
     link: { href: "https://www.deltaroe.com/book-online", label: "Book now" },
@@ -99,7 +109,9 @@ export const KB: KbEntry[] = [
     chips: ["How do I book?", "Where are you located?"],
   },
   {
-    keywords: ["membership", "subscription", "monthly", "member", "ritual", "sanctuary", "circle", "plan"],
+    // "ritual" deliberately absent: "is the Ritual Membership worth it" should
+    // route to the specific FAQ answer, not this overview.
+    keywords: ["membership", "subscription", "monthly", "member", "sanctuary", "circle", "plan"],
     boost: ["membership", "subscription", "monthly"],
     answer:
       "Three ways to make healing a rhythm instead of a rescue: The Sanctuary Circle ($33/mo, fully virtual — live monthly sound bath, the recorded 432 Hz library, new meditations); The Ritual Membership ($129/mo — a session every month, your choice, with rollover and 10% off everything); and The Soulful Journey ($399/mo — the 12-month transformation container). One session feels wonderful. A practice changes your life.",
@@ -170,8 +182,8 @@ export const KB: KbEntry[] = [
     chips: ["What else is in the shop?", "Tell me about memberships"],
   },
   {
-    keywords: ["group", "event", "party", "private", "bridal", "birthday", "team", "corporate", "office", "work", "company"],
-    boost: ["group", "corporate", "party", "event"],
+    keywords: ["group", "event", "party", "private", "bridal", "birthday", "team", "corporate", "office", "work", "company", "couple", "couples", "partner"],
+    boost: ["group", "corporate", "party", "event", "couple"],
     answer:
       "Yes — and a shared sound bath is something a group never forgets. Private group sound baths work beautifully for 6–20 people: birthdays, bridal parties, girls' nights, grief circles, and corporate teams (on-site around Sacramento or in the Old Town studio). Tamika built Delta Roe partly for burnt-out professionals — your team is exactly who she had in mind. Email Info@deltaroe.com with your date and headcount.",
     link: { href: "/corporate-wellness", label: "Groups & corporate wellness" },
@@ -225,7 +237,7 @@ export const KB: KbEntry[] = [
   },
   {
     keywords: ["safe", "pregnant", "pregnancy", "medical", "condition", "doctor", "therapy", "medication", "health"],
-    boost: ["safe", "pregnant", "medical"],
+    boost: ["safe", "pregnant", "pregnan", "medical"],
     answer:
       "Reiki and sound baths are gentle, non-invasive, and safe for nearly everyone — including during pregnancy (many expecting mothers find sound baths deeply soothing). Two honest notes: these sessions complement your medical and mental-health care, never replace it; and if you have a sound-sensitive condition or use a pacemaker, mention it when booking so Tamika can adapt the session. When in doubt, ask your doctor and tell Tamika — both/and, always.",
     chips: ["What should I book first?", "Contact the studio"],
@@ -246,4 +258,170 @@ export const KB: KbEntry[] = [
     link: { href: "/contact", label: "Contact & directions" },
     chips: ["What are your hours?", "Book online instead"],
   },
+  {
+    keywords: ["fascia", "tension", "massage", "knots", "tight", "stiff", "shoulders", "neck", "back", "body", "release", "muscle"],
+    boost: ["fascia", "tension", "massage"],
+    answer:
+      "If massage and stretching keep not-fixing it, the tension probably lives in your fascia — the connective tissue wrapping every muscle, and the body's favorite place to store unfinished stress. The Fascia Flow Reset ($188, 30 min) pairs gentle, sustained fascia release with a live 432 Hz sound bath, so your nervous system stays in rest-and-release instead of bracing against the work. Clients describe it as the exhale their body's been waiting years for.",
+    link: { href: "/services/fascia-flow-reset", label: "Fascia Flow Reset details" },
+    chips: ["What should I wear?", "Sound bath or fascia first?", "Book a session"],
+  },
+  {
+    keywords: ["discovery", "call", "free", "consult", "consultation", "talk", "questions", "unsure", "intro"],
+    boost: ["discovery call", "free call", "consultation"],
+    answer:
+      "The Discovery Call is 30 minutes, completely free, and exactly what it sounds like: you and Tamika, talking about what you're carrying and which door makes sense — session work, coaching, or the Soulful Journey. No script, no pressure, no card required. If a session is a leap, this is the step. Every transformation at Delta Roe has started with this exact conversation.",
+    link: { href: "https://www.deltaroe.com/book-online", label: "Book your free Discovery Call" },
+    chips: ["What does coaching cost?", "Which session is right for me?"],
+  },
+  {
+    keywords: ["combo", "combination", "combined", "together", "difference", "versus", "vs", "compare", "both", "add", "pair", "sound", "bath", "reiki", "chakra", "fascia"],
+    boost: ["difference between", "difference", "at the same time", "combine", "sound bath or reiki", "reiki or sound"],
+    answer:
+      "Yes, love — the combos are where the magic multiplies. Reiki + Sound Bath ($188) is the most-booked pairing: hands-on energy work while the bowls hold the room. Chakra Alignment comes paired two ways — with a sound bath ($177) or with reiki ($144). And the Fascia Flow Reset ($188) is itself a combo: fascia release inside a live sound bath. Rule of thumb: sound reaches the mind, reiki reaches the heart, fascia reaches the body — combine the two you need most.",
+    link: { href: "/services", label: "Compare all sessions" },
+    chips: ["Which session is right for me?", "How much are sessions?", "Book a session"],
+  },
 ];
+
+/* ------------------------------------------------------------------ */
+/* Generated layer — the website's own content, ingested automatically */
+/* ------------------------------------------------------------------ */
+
+const STOP = new Set(
+  (
+    "the a an and or but of to in at on for with from by is are was were be been being am do does did doing " +
+    "have has had having i me my we our you your it its this that these those what which who whom when where " +
+    "why how can could should would will shall may might must not no yes if then than so as into out up down " +
+    "over under again once here there all any both each few more most other some such only own same too very " +
+    "just don now really actually like get got need want know tell about delta roe deltaroe"
+  ).split(" ")
+);
+
+// Plural-tolerant normalization: "sessions" matches "session", "bowls" → "bowl".
+function norm(w: string): string {
+  const x = w.toLowerCase();
+  return x.length > 3 && x.endsWith("s") && !x.endsWith("ss") ? x.slice(0, -1) : x;
+}
+
+function contentWords(text: string): string[] {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 1 && !STOP.has(w));
+}
+
+// Phrase signals from a question ("how often", "432 hz", "ritual membership")
+// — strong evidence the visitor is asking THIS question, not just nearby ones.
+// Glue words are excluded entirely: phrases like "reiki and" or "the difference"
+// match half the questions on the site and misroute more than they help.
+const GLUE = new Set(
+  "the a an and or but of to in at on i you it is are was were do does did my me we us about that this whats what".split(" ")
+);
+
+function bigrams(text: string): string[] {
+  const toks = text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 1);
+  const out: string[] = [];
+  for (let i = 0; i < toks.length - 1; i++) {
+    if (GLUE.has(toks[i]) || GLUE.has(toks[i + 1])) continue;
+    out.push(`${toks[i]} ${toks[i + 1]}`);
+  }
+  return [...new Set(out)];
+}
+
+// Where each FAQ category should send people.
+const CATEGORY_LINKS: Record<string, KbLink> = {
+  "New Here — Start With These": { href: "https://www.deltaroe.com/book-online", label: "Book your first session" },
+  "Reiki, Explained Honestly": { href: "/services/reiki-elk-grove", label: "Reiki details & booking" },
+  "Sound Baths & 432 Hz": { href: "/services/sound-bath-elk-grove", label: "Sound bath details & booking" },
+  "Chakras & Energy Work": { href: "/services/chakra-alignment", label: "Chakra alignment details" },
+  "Booking, Pricing & Policies": { href: "https://www.deltaroe.com/book-online", label: "Book now" },
+  "Memberships & Going Deeper": { href: "/memberships", label: "Compare memberships" },
+  "Local & Practical — Elk Grove": { href: "/contact", label: "Directions & hours" },
+  "Groups, Events & Corporate": { href: "/events", label: "See upcoming events" },
+};
+
+function buildGenerated(): KbEntry[] {
+  const out: KbEntry[] = [];
+
+  // Every Q&A on the /faq page becomes an answer the bot knows.
+  for (const cat of FAQ_CATEGORIES) {
+    for (const f of cat.faqs) {
+      const siblings = cat.faqs.filter((s) => s !== f).slice(0, 2).map((s) => s.q);
+      out.push({
+        keywords: [...new Set(contentWords(f.q).map(norm))],
+        boost: bigrams(f.q),
+        answer: f.a,
+        link: CATEGORY_LINKS[cat.title] ?? { href: "/faq", label: "More answers" },
+        chips: siblings,
+      });
+    }
+  }
+
+  // Every service: a rich overview entry plus its page FAQs.
+  for (const svc of SERVICES) {
+    const nameWords = contentWords(svc.name).map(norm);
+    const expectLine = svc.expect.map((e) => e.title.toLowerCase()).join(" → ");
+    out.push({
+      keywords: [
+        ...new Set([
+          ...nameWords,
+          ...contentWords(svc.short).map(norm),
+          ...contentWords(svc.tag).map(norm),
+        ]),
+      ],
+      boost: [...new Set([svc.name.toLowerCase(), svc.menuName.toLowerCase()])],
+      answer: `${svc.answer} The session moves through ${expectLine}. Clients book it for: ${svc.benefits[0].toLowerCase()}${svc.benefits[1] ? ", and " + svc.benefits[1].toLowerCase() : ""}.`,
+      link: { href: `/services/${svc.slug}`, label: `${svc.name} details & booking` },
+      chips: svc.faqs.slice(0, 2).map((f) => f.q),
+    });
+    for (const f of svc.faqs) {
+      out.push({
+        keywords: [...new Set([...contentWords(f.q).map(norm), ...nameWords])],
+        boost: bigrams(f.q),
+        answer: f.a,
+        link: { href: `/services/${svc.slug}`, label: `${svc.name} details & booking` },
+        chips: [`Book ${svc.name}`, ...svc.faqs.filter((s) => s !== f).slice(0, 1).map((s) => s.q)],
+      });
+    }
+  }
+
+  return out;
+}
+
+// Hand-written first: on a tie score, Roe answers in her own voice.
+export const ALL_KB: KbEntry[] = [...KB, ...buildGenerated()];
+
+// Rare keywords are strong signals — "fascia" alone should find its answer.
+const KW_FREQ = new Map<string, number>();
+for (const e of ALL_KB) {
+  for (const kw of new Set(e.keywords.map(norm))) {
+    KW_FREQ.set(kw, (KW_FREQ.get(kw) ?? 0) + 1);
+  }
+}
+
+export function findAnswer(input: string): KbEntry | null {
+  const q = input.toLowerCase().replace(/[^a-z0-9\s-]/g, " ");
+  const words = q.split(/\s+/).filter((w) => w.length > 1).map(norm);
+  let best: KbEntry | null = null;
+  let bestScore = 0;
+  for (const entry of ALL_KB) {
+    let score = 0;
+    for (const kw of new Set(entry.keywords.map(norm))) {
+      if (words.includes(kw)) score += (KW_FREQ.get(kw) ?? 1) <= 2 ? 2 : 1;
+    }
+    for (const b of entry.boost ?? []) {
+      if (q.includes(b)) score += 2.5;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      best = entry;
+    }
+  }
+  return bestScore >= 2 ? best : null;
+}

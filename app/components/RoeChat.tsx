@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { KB, GREETING, GREETING_CHIPS, FALLBACK, FALLBACK_CHIPS, type KbEntry } from "@/lib/roe-kb";
+import { findAnswer, GREETING, GREETING_CHIPS, FALLBACK, FALLBACK_CHIPS } from "@/lib/roe-kb";
 
 type Msg = {
   role: "roe" | "user";
@@ -11,27 +11,6 @@ type Msg = {
   link?: { href: string; label: string };
   chips?: string[];
 };
-
-function findAnswer(input: string): KbEntry | null {
-  const q = input.toLowerCase().replace(/[^a-z0-9\s-]/g, " ");
-  const words = q.split(/\s+/).filter((w) => w.length > 1);
-  let best: KbEntry | null = null;
-  let bestScore = 0;
-  for (const entry of KB) {
-    let score = 0;
-    for (const kw of entry.keywords) {
-      if (words.includes(kw)) score += 1;
-    }
-    for (const b of entry.boost ?? []) {
-      if (q.includes(b)) score += 2.5;
-    }
-    if (score > bestScore) {
-      bestScore = score;
-      best = entry;
-    }
-  }
-  return bestScore >= 2 ? best : null;
-}
 
 export default function RoeChat() {
   const [open, setOpen] = useState(false);
