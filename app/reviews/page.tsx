@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { SITE } from "@/lib/site";
+import Link from "next/link";
+import { SITE, YELP_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Reviews — What Clients Say About Delta Roe",
@@ -25,9 +26,27 @@ const REVIEWS = [
   },
 ];
 
+// Review markup only for the quotes actually shown on this page, attributed
+// to their real source platform — no invented aggregate numbers.
+const reviewSchema = {
+  "@context": "https://schema.org",
+  "@graph": REVIEWS.filter((r) => r.source === "Google review").map((r) => ({
+    "@type": "Review",
+    reviewBody: r.quote,
+    reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5 },
+    author: { "@type": "Person", name: "Verified client" },
+    publisher: { "@type": "Organization", name: "Google" },
+    itemReviewed: { "@id": `${SITE.url}/#business` },
+  })),
+};
+
 export default function ReviewsPage() {
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+      />
       <div className="svc-hero">
         <div className="narrow">
           <div className="eyebrow">Social Proof</div>
@@ -56,9 +75,9 @@ export default function ReviewsPage() {
       <section style={{ paddingTop: 0 }}>
         <div className="narrow" style={{ textAlign: "center" }}>
           <p style={{ color: "var(--muted)" }}>
-            Read more on{" "}
-            <a href="https://www.yelp.com/biz/delta-roe-elk-grove">Yelp</a> or{" "}
-            <a href={SITE.mapsUrl}>Google</a> — then come write your own.
+            Read more on <a href={YELP_URL}>Yelp</a> or{" "}
+            <a href={SITE.mapsUrl}>Google</a> — then{" "}
+            <Link href="/review">come write your own</Link>.
           </p>
           <a className="btn btn-solid" href={SITE.bookingUrl}>
             Book Your First Session

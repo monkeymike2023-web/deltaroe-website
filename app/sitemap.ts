@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/soulful-journey",
     "/about",
     "/reviews",
+    "/review",
     "/faq",
     "/gift-cards",
     "/corporate-wellness",

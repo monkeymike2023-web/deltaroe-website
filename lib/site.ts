@@ -1,3 +1,10 @@
+// TODO: replace with the real Google review short-link once the Google Business
+// Profile is verified — in the GBP dashboard click "Ask for reviews" and copy the
+// https://g.page/r/…/review link (see docs/gbp-kit.md, section 8).
+export const REVIEW_URL = "https://g.page/r/REPLACE_ME/review";
+
+export const YELP_URL = "https://www.yelp.com/biz/delta-roe-elk-grove";
+
 export const SITE = {
   name: "Delta Roe",
   tagline: "Mind · Body · Spirit",

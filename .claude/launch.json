@@ -6,7 +6,8 @@
       "cwd": "C:\\dev\\deltaroe-website",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 3000
+      "port": 3210,
+      "autoPort": true
     }
   ]
 }
