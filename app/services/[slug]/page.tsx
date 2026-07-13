@@ -18,7 +18,9 @@ export async function generateMetadata({
   const svc = getService(slug);
   if (!svc) return {};
   return {
-    title: svc.seoTitle,
+    // seoTitles already carry the "| Delta Roe" brand suffix — bypass the
+    // layout template or it doubles ("… | Delta Roe | Delta Roe").
+    title: { absolute: svc.seoTitle },
     description: svc.seoDescription,
     alternates: { canonical: `${SITE.url}/services/${svc.slug}` },
   };
