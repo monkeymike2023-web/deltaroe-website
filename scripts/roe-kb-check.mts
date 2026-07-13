@@ -1,8 +1,9 @@
 /**
- * Coverage check for Roe's knowledge base. Run: npx tsx scripts/roe-kb-check.mts
- * Fails (exit 1) if any suggested chip or battery question falls to the fallback.
+ * Coverage check for Roe's knowledge base. Runs automatically before every
+ * build (prebuild) — a content edit that breaks chat coverage fails the build.
+ * Manual run: npm run kb:check
  */
-import { findAnswer, ALL_KB, GREETING_CHIPS } from "../lib/roe-kb";
+import { findAnswer, suggestTopics, ALL_KB, GREETING_CHIPS } from "../lib/roe-kb";
 
 // Every chip the UI can ever show must resolve to a real answer.
 const chips = new Set<string>(GREETING_CHIPS);
@@ -77,6 +78,18 @@ const BATTERY = [
   "how does stress affect the nervous system",
   "what is fascia exactly",
   "is sound healing an ancient practice",
+  // journal-fed answers
+  "what if i fall asleep at my first sound bath",
+  "how do i prepare for my first sound bath",
+  "is reiki like a massage",
+  "can reiki help with pain",
+  "is 432 hz proven",
+  // typos — the fuzzy layer must catch these
+  "how much is a riki session",
+  "chackra alignment",
+  "sond bath price",
+  "fascha flow reset",
+  "what is a sound bathe like",
 ];
 
 let misses = 0;
@@ -90,6 +103,23 @@ const check = (label: string, q: string) => {
 
 for (const c of chips) check("chip", c);
 for (const q of BATTERY) check("battery", q);
+
+// Near-miss suggestions: a vague-but-topical question must yield "did you
+// mean" chips, and every suggested label must itself resolve to an answer.
+const NEAR = ["something for stress maybe", "help with sleep problems", "my energy feels off"];
+for (const q of NEAR) {
+  const s = suggestTopics(q, 3);
+  if (s.length === 0) {
+    misses++;
+    console.log(`MISS  [suggest] no suggestions for: ${q}`);
+  }
+  for (const label of s) {
+    if (!findAnswer(label)) {
+      misses++;
+      console.log(`MISS  [suggest] suggestion doesn't resolve: ${label}`);
+    }
+  }
+}
 
 console.log(`\n${ALL_KB.length} KB entries · ${chips.size} chips + ${BATTERY.length} battery questions · ${misses} misses`);
 if (misses > 0) process.exit(1);

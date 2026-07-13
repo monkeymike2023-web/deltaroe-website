@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 import { SERVICES } from "@/lib/services";
+import { ARTICLES } from "@/lib/journal";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
@@ -16,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/gift-cards",
     "/corporate-wellness",
     "/shop",
+    "/journal",
     "/contact",
   ].map((p) => ({
     url: `${SITE.url}${p}`,
@@ -29,5 +31,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
-  return [...staticPages, ...servicePages];
+  const articlePages = ARTICLES.map((a) => ({
+    url: `${SITE.url}/journal/${a.slug}`,
+    lastModified: a.date,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...staticPages, ...servicePages, ...articlePages];
 }

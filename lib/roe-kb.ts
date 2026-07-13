@@ -12,6 +12,7 @@
 
 import { SERVICES } from "./services";
 import { FAQ_CATEGORIES } from "./faqs";
+import { ARTICLES } from "./journal";
 
 export type KbLink = { href: string; label: string };
 export type KbEntry = {
@@ -20,6 +21,7 @@ export type KbEntry = {
   answer: string;
   link?: KbLink;
   chips?: string[]; // suggested follow-up questions
+  label?: string; // the question this entry answers — used for "did you mean" suggestions
 };
 
 export const GREETING =
@@ -34,6 +36,10 @@ export const GREETING_CHIPS = [
 
 export const FALLBACK =
   "That's a beautiful question, and I want you to get a real answer — not a canned one. Call Tamika's studio at (916) 206-1752 or email Info@deltaroe.com and you'll hear back quickly. Meanwhile, is there something else I can help with?";
+
+// Softer landing when the matcher found nearby topics but nothing certain.
+export const FALLBACK_NEAR =
+  "I want to point you to the right answer, not guess at it. Were you asking about one of these, love? If not, a real human is one call away: (916) 206-1752.";
 
 export const FALLBACK_CHIPS = [
   "What services do you offer?",
@@ -432,6 +438,7 @@ function buildGenerated(): KbEntry[] {
         answer: f.a,
         link: CATEGORY_LINKS[cat.title] ?? { href: "/faq", label: "More answers" },
         chips: siblings,
+        label: f.q,
       });
     }
   }
@@ -452,6 +459,7 @@ function buildGenerated(): KbEntry[] {
       answer: `${svc.answer} The session moves through ${expectLine}. Clients book it for: ${svc.benefits[0].toLowerCase()}${svc.benefits[1] ? ", and " + svc.benefits[1].toLowerCase() : ""}.`,
       link: { href: `/services/${svc.slug}`, label: `${svc.name} details & booking` },
       chips: svc.faqs.slice(0, 2).map((f) => f.q),
+      label: `What is ${svc.name} like at Delta Roe?`,
     });
     for (const f of svc.faqs) {
       out.push({
@@ -460,6 +468,21 @@ function buildGenerated(): KbEntry[] {
         answer: f.a,
         link: { href: `/services/${svc.slug}`, label: `${svc.name} details & booking` },
         chips: [`Book ${svc.name}`, ...svc.faqs.filter((s) => s !== f).slice(0, 1).map((s) => s.q)],
+        label: f.q,
+      });
+    }
+  }
+
+  // Journal articles: each one's quick answers join the knowledge base too.
+  for (const art of ARTICLES) {
+    for (const f of art.faqs) {
+      out.push({
+        keywords: [...new Set(contentWords(f.q).map(norm))],
+        boost: bigrams(f.q),
+        answer: f.a,
+        link: { href: `/journal/${art.slug}`, label: "Read the full guide" },
+        chips: art.faqs.filter((s) => s !== f).slice(0, 2).map((s) => s.q),
+        label: f.q,
       });
     }
   }
@@ -478,23 +501,82 @@ for (const e of ALL_KB) {
   }
 }
 
-export function findAnswer(input: string): KbEntry | null {
+// Edit distance ≤ 1 (insert / delete / substitute) — catches phone-keyboard
+// typos like "riki", "chackra", "sond" without a fuzzy-search dependency.
+function within1(a: string, b: string): boolean {
+  if (a === b) return true;
+  if (a.length > b.length) [a, b] = [b, a];
+  if (b.length - a.length > 1) return false;
+  let i = 0;
+  let j = 0;
+  let edits = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) {
+      i++;
+      j++;
+      continue;
+    }
+    if (++edits > 1) return false;
+    if (a.length === b.length) {
+      i++;
+      j++;
+    } else {
+      j++;
+    }
+  }
+  return edits + (b.length - j) + (a.length - i) <= 1;
+}
+
+function scoreEntry(entry: KbEntry, q: string, words: string[]): number {
+  let score = 0;
+  for (const kw of new Set(entry.keywords.map(norm))) {
+    const weight = (KW_FREQ.get(kw) ?? 1) <= 2 ? 2 : 1;
+    if (words.includes(kw)) {
+      score += weight;
+    } else if (kw.length >= 5) {
+      // fuzzy rescue for misspellings — only on words long enough to be distinctive
+      if (words.some((w) => w.length >= 4 && within1(w, kw))) score += weight;
+    }
+  }
+  for (const b of entry.boost ?? []) {
+    if (q.includes(b)) score += 2.5;
+  }
+  return score;
+}
+
+function tokenize(input: string): { q: string; words: string[] } {
   const q = input.toLowerCase().replace(/[^a-z0-9\s-]/g, " ");
-  const words = q.split(/\s+/).filter((w) => w.length > 1).map(norm);
+  return { q, words: q.split(/\s+/).filter((w) => w.length > 1).map(norm) };
+}
+
+export function findAnswer(input: string): KbEntry | null {
+  const { q, words } = tokenize(input);
   let best: KbEntry | null = null;
   let bestScore = 0;
   for (const entry of ALL_KB) {
-    let score = 0;
-    for (const kw of new Set(entry.keywords.map(norm))) {
-      if (words.includes(kw)) score += (KW_FREQ.get(kw) ?? 1) <= 2 ? 2 : 1;
-    }
-    for (const b of entry.boost ?? []) {
-      if (q.includes(b)) score += 2.5;
-    }
+    const score = scoreEntry(entry, q, words);
     if (score > bestScore) {
       bestScore = score;
       best = entry;
     }
   }
   return bestScore >= 2 ? best : null;
+}
+
+// "Did you mean…" — when nothing clears the answer threshold, surface the
+// closest labeled questions so a near-miss becomes a next tap, not a dead end.
+export function suggestTopics(input: string, n = 3): string[] {
+  const { q, words } = tokenize(input);
+  return ALL_KB.map((e) => ({
+    // Hand-written entries carry no label — their first follow-up chip is a
+    // routable stand-in (the check script proves every chip resolves).
+    label: e.label ?? e.chips?.[0],
+    score: scoreEntry(e, q, words),
+  }))
+    .filter((s): s is { label: string; score: number } => !!s.label && s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .reduce<string[]>((acc, s) => {
+      if (acc.length < n && !acc.includes(s.label)) acc.push(s.label);
+      return acc;
+    }, []);
 }

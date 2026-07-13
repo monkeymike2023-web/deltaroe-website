@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
 import { SITE, NAV, YELP_URL } from "@/lib/site";
 import RoeChat from "./components/RoeChat";
 import MobileNav from "./components/MobileNav";
@@ -91,10 +92,22 @@ const schemaGraph = {
   ],
 };
 
+// Optional analytics: set NEXT_PUBLIC_GA_ID in Vercel (a free GA4 property)
+// and page views + Roe chat questions start flowing — no code change needed.
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
       <body>
+        {GA_ID && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+            <Script id="ga4" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','${GA_ID}');`}
+            </Script>
+          </>
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaGraph) }}
@@ -154,6 +167,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link href="/corporate-wellness">Corporate Wellness</Link>
                 <Link href="/gift-cards">Gift Cards</Link>
                 <Link href="/shop">The Apothecary</Link>
+                <Link href="/journal">The Journal</Link>
                 <Link href="/contact">Contact</Link>
                 <Link href="/review" style={{ color: "var(--gold-bright)" }}>
                   Love your session? Review us

@@ -47,6 +47,7 @@ export const NAV = [
 
 // Extra destinations that only fit in the roomier mobile menu.
 export const NAV_MOBILE_EXTRA = [
+  { href: "/journal", label: "Journal" },
   { href: "/reviews", label: "Reviews" },
   { href: "/contact", label: "Contact" },
 ] as const;

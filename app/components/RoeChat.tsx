@@ -3,7 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { findAnswer, GREETING, GREETING_CHIPS, FALLBACK, FALLBACK_CHIPS } from "@/lib/roe-kb";
+import {
+  findAnswer,
+  suggestTopics,
+  GREETING,
+  GREETING_CHIPS,
+  FALLBACK,
+  FALLBACK_NEAR,
+  FALLBACK_CHIPS,
+} from "@/lib/roe-kb";
 
 type Msg = {
   role: "roe" | "user";
@@ -41,15 +49,36 @@ export default function RoeChat() {
     setInput("");
     setTyping(true);
     const entry = findAnswer(text);
+
+    // Telemetry: misses are the KB's training backlog (Vercel logs + GA4 if configured).
+    try {
+      fetch("/api/chat-log", {
+        method: "POST",
+        keepalive: true,
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ q: text.slice(0, 300), matched: !!entry }),
+      }).catch(() => {});
+      (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.(
+        "event",
+        "roe_chat_question",
+        { question: text.slice(0, 100), matched: !!entry }
+      );
+    } catch {}
+
     const delay = 700 + Math.min(1100, text.length * 18);
     setTimeout(() => {
       setTyping(false);
-      setMsgs((m) => [
-        ...m,
-        entry
-          ? { role: "roe", text: entry.answer, link: entry.link, chips: entry.chips }
-          : { role: "roe", text: FALLBACK, chips: FALLBACK_CHIPS },
-      ]);
+      let reply: Msg;
+      if (entry) {
+        reply = { role: "roe", text: entry.answer, link: entry.link, chips: entry.chips };
+      } else {
+        // Near-misses become "did you mean" chips instead of a dead end.
+        const near = suggestTopics(text, 3);
+        reply = near.length
+          ? { role: "roe", text: FALLBACK_NEAR, chips: near }
+          : { role: "roe", text: FALLBACK, chips: FALLBACK_CHIPS };
+      }
+      setMsgs((m) => [...m, reply]);
     }, delay);
   }
 
