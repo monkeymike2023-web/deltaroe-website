@@ -62,6 +62,21 @@ const BATTERY = [
   "should i eat before my session",
   "can i talk to a real person",
   "phone number",
+  // expert layer
+  "where does reiki come from",
+  "what does the word reiki mean",
+  "who invented reiki",
+  "are chakras real or made up",
+  "how old is the chakra system",
+  "what are binaural beats",
+  "is there any research on sound baths",
+  "has 432 hz actually been studied",
+  "why do i feel so tired after reiki",
+  "i cried after my session is that normal",
+  "what should i do after my session",
+  "how does stress affect the nervous system",
+  "what is fascia exactly",
+  "is sound healing an ancient practice",
 ];
 
 let misses = 0;

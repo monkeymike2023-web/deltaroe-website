@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
-import { SITE, YELP_URL } from "@/lib/site";
+import { SITE, NAV, YELP_URL } from "@/lib/site";
 import RoeChat from "./components/RoeChat";
+import MobileNav from "./components/MobileNav";
 import MotionFx from "./components/MotionFx";
 import "./globals.css";
 
@@ -90,15 +91,6 @@ const schemaGraph = {
   ],
 };
 
-const NAV = [
-  { href: "/services", label: "Services" },
-  { href: "/memberships", label: "Memberships" },
-  { href: "/shop", label: "Apothecary" },
-  { href: "/events", label: "Events" },
-  { href: "/about", label: "About" },
-  { href: "/faq", label: "FAQ" },
-];
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
@@ -123,6 +115,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 Book Now
               </a>
             </nav>
+            <MobileNav />
           </div>
         </header>
 

@@ -19,6 +19,17 @@ const QS = [
   "im pregnant is a sound bath ok",
   "tell me about the fascia flow reset",
   "what services do you offer",
+  "where does reiki come from",
+  "are chakras real",
+  "what are binaural beats",
+  "is there any research on sound baths",
+  "has 432 hz been studied",
+  "why do i feel tired after reiki",
+  "how does stress affect the nervous system",
+  "is sound healing ancient",
+  "does reiki really work",
+  "tell me about reiki",
+  "whats a sound bath like",
 ];
 
 for (const q of QS) {

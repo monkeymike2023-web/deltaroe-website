@@ -34,3 +34,19 @@ export const SITE = {
   founder: "Tamika Banks",
   credentials: "Certified Reiki Master & Empowerment Life Coach",
 };
+
+// One nav, both headers: desktop row and the mobile menu.
+export const NAV = [
+  { href: "/services", label: "Services" },
+  { href: "/memberships", label: "Memberships" },
+  { href: "/shop", label: "Apothecary" },
+  { href: "/events", label: "Events" },
+  { href: "/about", label: "About" },
+  { href: "/faq", label: "FAQ" },
+] as const;
+
+// Extra destinations that only fit in the roomier mobile menu.
+export const NAV_MOBILE_EXTRA = [
+  { href: "/reviews", label: "Reviews" },
+  { href: "/contact", label: "Contact" },
+] as const;

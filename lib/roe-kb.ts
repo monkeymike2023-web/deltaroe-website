@@ -214,10 +214,10 @@ export const KB: KbEntry[] = [
     chips: ["How does virtual reiki work?", "See memberships"],
   },
   {
-    keywords: ["work", "real", "science", "proof", "skeptic", "skeptical", "scam", "fake", "evidence", "actually"],
-    boost: ["science", "skeptic", "really work", "proof"],
+    keywords: ["work", "real", "science", "proof", "skeptic", "skeptical", "scam", "fake", "evidence", "actually", "really"],
+    boost: ["science", "skeptic", "really work", "actually work", "proof"],
     answer:
-      "I love this question — bring the skepticism, seriously. Honest answer: research consistently shows reiki and sound therapy reduce anxiety, stress, and pain perception, most likely by shifting your nervous system into its rest-and-repair state. The energy mechanism healers describe? Science hasn't measured it. Delta Roe holds both truths without flinching: whatever the mechanism, 30 minutes of that deep a rest changes how you sleep, cope, and carry things. Come as a skeptic. Leave as whatever you leave as.",
+      "I love this question — bring the skepticism, seriously. The honest picture: a UC San Diego study found singing-bowl meditation significantly reduced tension, anxiety, and low mood (first-timers most of all); reviews of reiki trials suggest real benefit for pain and anxiety with zero reported harms; a 22-study meta-analysis backs binaural beats for anxiety. The energy mechanism healers describe? Science hasn't measured it, and Delta Roe won't pretend otherwise. Whatever the mechanism, rest that deep changes how you sleep, cope, and carry things. Come as a skeptic. Leave as whatever you leave as.",
     link: { href: "/faq", label: "More honest answers" },
     chips: ["What does reiki feel like?", "Book a sound bath"],
   },
@@ -281,6 +281,79 @@ export const KB: KbEntry[] = [
       "Yes, love — the combos are where the magic multiplies. Reiki + Sound Bath ($188) is the most-booked pairing: hands-on energy work while the bowls hold the room. Chakra Alignment comes paired two ways — with a sound bath ($177) or with reiki ($144). And the Fascia Flow Reset ($188) is itself a combo: fascia release inside a live sound bath. Rule of thumb: sound reaches the mind, reiki reaches the heart, fascia reaches the body — combine the two you need most.",
     link: { href: "/services", label: "Compare all sessions" },
     chips: ["Which session is right for me?", "How much are sessions?", "Book a session"],
+  },
+
+  /* ---- expert layer: the deeper questions, answered honestly ---- */
+  {
+    keywords: ["reiki", "history", "origin", "come", "from", "mean", "meaning", "japanese", "japan", "usui", "invented", "word"],
+    boost: ["reiki come from", "reiki mean", "who invented reiki", "history of reiki", "where does reiki"],
+    answer:
+      "Reiki comes from Japan — developed by Mikao Usui in the early 1920s. The word joins two Japanese ideas: 'rei' (universal) and 'ki' (life energy), the same concept called chi or prana in other traditions. It traveled west through Hawayo Takata in the 1930s and is now offered in hospitals and hospice programs worldwide. A century later, the practice Tamika trained in as a Certified Reiki Master still follows Usui's lineage: light touch, quiet intention, and the body's own settling.",
+    link: { href: "/services/reiki-elk-grove", label: "Reiki at Delta Roe" },
+    chips: ["What does reiki feel like?", "Is there science behind reiki?", "Book a reiki session"],
+  },
+  {
+    keywords: ["chakra", "old", "ancient", "origin", "history", "sanskrit", "wheel", "real", "come", "tradition", "hindu", "yoga"],
+    boost: ["chakras real", "chakras come from", "how old", "chakra system"],
+    answer:
+      "The chakra system is at least 3,000 years old — it first appears in the Vedas, ancient India's oldest texts, and 'chakra' is Sanskrit for 'wheel.' Whether you take the seven centers literally or treat them as a brilliant ancient map of human experience — safety, creativity, power, love, truth, intuition, connection — is entirely up to you. Either way, moving attention through them one by one is a remarkably effective way to find where you're holding, and that's exactly how Tamika works an alignment.",
+    link: { href: "/services/chakra-alignment", label: "Chakra alignment details" },
+    chips: ["How do I know if I'm blocked?", "What happens in a chakra alignment session?"],
+  },
+  {
+    keywords: ["binaural", "beats", "beat", "headphones", "brainwaves", "brain", "waves", "theta", "entrainment"],
+    boost: ["binaural", "brainwave", "theta"],
+    answer:
+      "Binaural beats are a small piece of neuroscience magic: each ear receives a slightly different frequency, and your brain perceives a third 'beat' — the difference between them — then tends to sync toward it. Tuned low, that nudges you toward theta waves, the slow rhythm of deep meditation and the edge of sleep. And it's studied: a meta-analysis of 22 experiments found a consistent, significant effect on anxiety, with longer listening working better — which is exactly what 30 unbroken minutes under the bowls gives you.",
+    link: { href: "/services/sound-bath-elk-grove", label: "Experience it in a sound bath" },
+    chips: ["Why 432 Hz?", "Hear the sound bath", "Book a sound bath"],
+  },
+  {
+    keywords: ["research", "study", "studies", "sound", "bath", "bowl", "singing", "evidence", "data", "trial"],
+    boost: ["sound bath research", "research on sound", "studies on sound", "sound healing research", "singing bowl study"],
+    answer:
+      "There's real research here, love. A University of California San Diego study of 62 adults found singing-bowl meditation significantly reduced tension, anger, fatigue, and depressed mood — and here's my favorite part: first-timers showed the biggest drop in tension of anyone. Researchers called it a low-cost, low-risk intervention for anxiety and low mood. Delta Roe never overclaims — this is deep rest, not medicine — but the deep rest itself is measurably real.",
+    link: { href: "/services/sound-bath-elk-grove", label: "Book a sound bath" },
+    chips: ["Why 432 Hz?", "Is there science behind reiki?"],
+  },
+  {
+    keywords: ["432", "hz", "research", "study", "studied", "proven", "frequency", "science"],
+    boost: ["432 hz research", "432 hz studied", "research on 432", "432 hz science", "432 hz proven", "studied", "evidence for 432"],
+    answer:
+      "Honest answer, as always: the research on 432 Hz is young but interesting. Small controlled studies found music tuned to 432 Hz lowered heart rate (about 5 beats per minute versus standard 440 Hz tuning), nudged blood pressure and breathing down, and improved sleep quality in one clinical pilot. These are pilots, not proof — but they match what clients report in the room: 432 feels warmer, rounder, easier to surrender to. Put headphones on the 60-second sample and let your own nervous system vote.",
+    link: { href: "/services/sound-bath-elk-grove", label: "Hear the 432 Hz sample" },
+    chips: ["What are binaural beats?", "Book a sound bath"],
+  },
+  {
+    keywords: ["fascia", "science", "works", "nerve", "nerves", "sensory", "connective", "tissue", "stores", "trauma"],
+    boost: ["fascia work", "what is fascia", "fascia science", "body keeps"],
+    answer:
+      "Fascia is the connective web wrapping every muscle, organ, and nerve — one continuous sheet from scalp to sole. Researchers now consider it one of the body's richest sensory organs, packed with nerve endings that register tension and threat. When stress becomes chronic, fascia is where the bracing lives — that armor massage keeps finding but not releasing. The Fascia Flow Reset works because of the pairing: gentle sustained release while the sound bath keeps your nervous system in rest-and-release instead of guarding.",
+    link: { href: "/services/fascia-flow-reset", label: "Fascia Flow Reset details" },
+    chips: ["Book the Fascia Flow Reset", "What should I wear?"],
+  },
+  {
+    keywords: ["nervous", "system", "parasympathetic", "vagus", "cortisol", "stress", "hormone", "fight", "flight", "regulate", "regulation", "calm"],
+    boost: ["nervous system", "fight or flight", "cortisol", "vagus"],
+    answer:
+      "Here's the thread under everything at Delta Roe: your nervous system has two gears — fight-or-flight (sympathetic) and rest-and-repair (parasympathetic) — and modern life leaves most of us stuck in the first one, marinating in cortisol. Sound, reiki, breath, and stillness are all doorways to the second gear: heart rate settles, breathing slows, digestion and repair switch back on. That's why 30 minutes can change your whole week — you're not escaping your life, you're switching the gear it runs in.",
+    link: { href: "https://www.deltaroe.com/book-online", label: "Give your nervous system 30 minutes" },
+    chips: ["Which session is right for me?", "Will I fall asleep?"],
+  },
+  {
+    keywords: ["after", "afterwards", "aftercare", "tired", "sleepy", "emotional", "headache", "water", "hydrate", "following", "later", "cry", "crying"],
+    boost: ["after my session", "after a session", "feel tired", "aftercare", "feel after"],
+    answer:
+      "Sweet question — the session keeps working after you leave. Most people float out calm and clear; some feel wonderfully sleepy, extra emotional, or thirsty for a few hours — that's your system completing what it started on the table, not something going wrong. The care plan is simple: drink more water than usual, keep the evening soft if you can, let feelings move through without gripping them, and sleep. Tamika sends you home with aftercare guidance tailored to what came up in your session.",
+    chips: ["How often should I come?", "Book my next session"],
+  },
+  {
+    keywords: ["sound", "healing", "ancient", "tradition", "history", "culture", "gong", "tibetan", "himalayan", "old", "long"],
+    boost: ["sound healing history", "how ancient", "ancient practice", "sound healing old", "ancient"],
+    answer:
+      "Older than almost anything else humans do together. Himalayan metal bowls have rung through meditation halls for many centuries; Australian didgeridoo traditions reach back millennia; ancient Greece — Pythagoras himself — prescribed specific modes of music for the body and soul. Nearly every culture found the same secret independently: sustained resonant tone settles a human being. What's new is only the science catching up. At Delta Roe you're not trying something trendy — you're joining one of humanity's oldest medicines.",
+    link: { href: "/services/sound-bath-elk-grove", label: "Experience a sound bath" },
+    chips: ["Is there research on sound baths?", "Book a session"],
   },
 ];
 
