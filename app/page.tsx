@@ -17,6 +17,15 @@ export default function Home() {
       {/* ---------- hero ---------- */}
       <div className="hero">
         <Image
+          src="/img/tamika-reiki.jpg"
+          alt="Tamika channels reiki energy over a resting client in the Delta Roe sanctuary"
+          fill
+          priority
+          sizes="100vw"
+          className="hero-photo"
+        />
+        <div className="hero-veil" aria-hidden="true" />
+        <Image
           src="/emblem.png"
           alt="Delta Roe — gold lotus within sacred geometry"
           width={280}
@@ -46,8 +55,10 @@ export default function Home() {
       <div className="review-strip">
         <div className="stars" aria-hidden="true">★★★★★</div>
         <div className="label">
-          Loved on Google &amp; Yelp — clients call it the best healing
-          experience in Elk Grove
+          <Link href="/reviews" style={{ color: "inherit", textDecoration: "none" }}>
+            Loved on Google &amp; Yelp — clients call it the best healing
+            experience in Elk Grove
+          </Link>
         </div>
       </div>
 
@@ -125,6 +136,56 @@ export default function Home() {
               wasn&rsquo;t touching them.
               <footer style={{ color: "#8a6a2f" }}>Google review</footer>
             </blockquote>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- the method ---------- */}
+      <section>
+        <div className="wrap">
+          <div className="eyebrow">The Delta Roe Method</div>
+          <h2 style={{ margin: "12px 0 12px" }}>How healing happens here</h2>
+          <p className="lede" style={{ marginBottom: 40, maxWidth: 620 }}>
+            Every session — whatever you book — moves through the same five
+            movements. It&rsquo;s why one visit feels complete, and a practice
+            becomes transformation.
+          </p>
+          <div className="steps">
+            <div className="step">
+              <h3>Ground</h3>
+              <p>
+                Arrive and land. Breath, warmth, and candlelight bring your
+                nervous system out of the day and into the room.
+              </p>
+            </div>
+            <div className="step">
+              <h3>Align</h3>
+              <p>
+                Sound and energy work find what&rsquo;s out of balance — the
+                noise, the blocks, the places you&rsquo;ve been holding.
+              </p>
+            </div>
+            <div className="step">
+              <h3>Restore</h3>
+              <p>
+                Reiki, 432 Hz frequency, and stillness do the work while you
+                rest. Nothing to perform, nothing to get right.
+              </p>
+            </div>
+            <div className="step">
+              <h3>Integrate</h3>
+              <p>
+                You&rsquo;re guided gently back, with space to name what moved
+                and simple practices to carry it home.
+              </p>
+            </div>
+            <div className="step">
+              <h3>Transform</h3>
+              <p>
+                Session by session, the calm stops being a visit and becomes
+                how you live.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -219,6 +280,26 @@ export default function Home() {
               Compare Memberships
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* ---------- corporate wellness ---------- */}
+      <section style={{ background: "var(--surface)", borderTop: "1px solid var(--line-soft)" }}>
+        <div className="wrap" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 24, paddingTop: 48, paddingBottom: 48 }}>
+          <div style={{ maxWidth: 560 }}>
+            <div className="eyebrow">For Teams</div>
+            <h2 style={{ margin: "10px 0 10px", fontSize: 30 }}>
+              Bring the calm to your workplace
+            </h2>
+            <p style={{ color: "var(--muted)", margin: 0 }}>
+              On-site sound baths and wellness sessions for teams in Elk Grove
+              and Sacramento — the meeting your people will actually thank you
+              for.
+            </p>
+          </div>
+          <Link className="btn btn-ghost" href="/corporate-wellness">
+            Corporate Wellness
+          </Link>
         </div>
       </section>
     </main>

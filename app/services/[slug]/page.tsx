@@ -39,8 +39,10 @@ export default async function ServicePage({
     name: svc.name,
     serviceType: svc.name,
     description: svc.seoDescription,
+    image: `${SITE.url}${svc.image}`,
     provider: {
       "@type": "HealthAndBeautyBusiness",
+      "@id": `${SITE.url}/#business`,
       name: SITE.name,
       telephone: "+1-916-206-1752",
       address: {
@@ -58,6 +60,17 @@ export default async function ServicePage({
       priceCurrency: "USD",
       url: SITE.bookingUrl,
     },
+  };
+
+  // Breadcrumb trail for rich results + AI navigation context.
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
+      { "@type": "ListItem", position: 2, name: "Services", item: `${SITE.url}/services` },
+      { "@type": "ListItem", position: 3, name: svc.name, item: `${SITE.url}/services/${svc.slug}` },
+    ],
   };
 
   const faqSchema = {
@@ -81,6 +94,10 @@ export default async function ServicePage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <div className="svc-hero">

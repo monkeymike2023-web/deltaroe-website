@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
-import { SITE } from "@/lib/site";
+import { SITE, YELP_URL } from "@/lib/site";
 import RoeChat from "./components/RoeChat";
 import MotionFx from "./components/MotionFx";
 import "./globals.css";
@@ -36,33 +36,58 @@ export const metadata: Metadata = {
   icons: { icon: "/logo.png", apple: "/logo.png" },
 };
 
-const localBusinessSchema = {
+// One connected graph: the business, and Tamika as a first-class entity —
+// AI answer engines resolve "who runs Delta Roe" from the Person node.
+const schemaGraph = {
   "@context": "https://schema.org",
-  "@type": "HealthAndBeautyBusiness",
-  name: SITE.name,
-  description: SITE.description,
-  url: SITE.url,
-  telephone: "+1-916-206-1752",
-  email: SITE.email,
-  image: `${SITE.url}/logo.png`,
-  logo: `${SITE.url}/logo.png`,
-  founder: { "@type": "Person", name: SITE.founder, jobTitle: SITE.credentials },
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: SITE.address.street,
-    addressLocality: SITE.address.city,
-    addressRegion: SITE.address.state,
-    postalCode: SITE.address.zip,
-    addressCountry: "US",
-  },
-  areaServed: ["Elk Grove CA", "Sacramento CA", "Laguna CA", "Galt CA"],
-  openingHoursSpecification: [
-    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday"], opens: "09:00", closes: "21:00" },
-    { "@type": "OpeningHoursSpecification", dayOfWeek: "Thursday", opens: "09:00", closes: "17:00" },
-    { "@type": "OpeningHoursSpecification", dayOfWeek: "Friday", opens: "13:00", closes: "15:00" },
-    { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "11:00", closes: "15:00" },
+  "@graph": [
+    {
+      "@type": "HealthAndBeautyBusiness",
+      "@id": `${SITE.url}/#business`,
+      name: SITE.name,
+      description: SITE.description,
+      url: SITE.url,
+      telephone: "+1-916-206-1752",
+      email: SITE.email,
+      image: `${SITE.url}/logo.png`,
+      logo: `${SITE.url}/logo.png`,
+      hasMap: SITE.mapsUrl,
+      sameAs: [YELP_URL],
+      founder: { "@id": `${SITE.url}/#tamika` },
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: SITE.address.street,
+        addressLocality: SITE.address.city,
+        addressRegion: SITE.address.state,
+        postalCode: SITE.address.zip,
+        addressCountry: "US",
+      },
+      areaServed: ["Elk Grove CA", "Sacramento CA", "Laguna CA", "Galt CA"],
+      openingHoursSpecification: [
+        { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday"], opens: "09:00", closes: "21:00" },
+        { "@type": "OpeningHoursSpecification", dayOfWeek: "Thursday", opens: "09:00", closes: "17:00" },
+        { "@type": "OpeningHoursSpecification", dayOfWeek: "Friday", opens: "13:00", closes: "15:00" },
+        { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "11:00", closes: "15:00" },
+      ],
+      priceRange: "$77 - $399",
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE.url}/#tamika`,
+      name: SITE.founder,
+      jobTitle: SITE.credentials,
+      url: `${SITE.url}/about`,
+      image: `${SITE.url}/img/tamika-reiki.jpg`,
+      worksFor: { "@id": `${SITE.url}/#business` },
+      knowsAbout: [
+        "Reiki healing",
+        "Sound bath therapy",
+        "432 Hz sound healing",
+        "Chakra alignment",
+        "Empowerment life coaching",
+      ],
+    },
   ],
-  priceRange: "$77 - $399",
 };
 
 const NAV = [
@@ -80,7 +105,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaGraph) }}
         />
         <header className="site-header">
           <div className="inner">
@@ -137,6 +162,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link href="/gift-cards">Gift Cards</Link>
                 <Link href="/shop">The Apothecary</Link>
                 <Link href="/contact">Contact</Link>
+                <Link href="/review" style={{ color: "var(--gold-bright)" }}>
+                  Love your session? Review us
+                </Link>
               </div>
               <div>
                 <h4>Hours</h4>

@@ -143,8 +143,8 @@ export const SERVICES: Service[] = [
     seoTitle: "Sound Bath in Elk Grove, CA — 432 Hz Sound Healing | Delta Roe",
     seoDescription:
       "30-minute 432 Hz sound baths with Tibetan & crystal singing bowls in Old Town Elk Grove. Deep rest for busy minds. $77 — book online.",
-    image: "/img/service-sound-bath.jpg",
-    imageAlt: "Hammered Tibetan singing bowl with wooden mallet in warm candlelight",
+    image: "/img/hero-sanctuary.jpg",
+    imageAlt: "Tamika sounds crystal singing bowls over a resting client amid candlelight at Delta Roe",
   },
   {
     slug: "chakra-alignment",

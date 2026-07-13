@@ -301,6 +301,32 @@ section {
   inset: 0;
   background: radial-gradient(ellipse 70% 55% at 50% 28%, rgba(201, 164, 100, 0.12), transparent 100%);
   pointer-events: none;
+  z-index: 2;
+}
+
+/* Real photography behind the hero — veiled dark enough that the gold type
+   stays luminous, fading into the page ink at the bottom edge. */
+.hero-photo {
+  object-fit: cover;
+  object-position: center 24%;
+  z-index: 0;
+}
+
+.hero-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(12, 10, 8, 0.62) 0%,
+    rgba(12, 10, 8, 0.74) 55%,
+    var(--ink) 100%
+  );
+}
+
+.hero > :not(.hero-photo):not(.hero-veil) {
+  position: relative;
+  z-index: 3;
 }
 
 .hero .logo {
