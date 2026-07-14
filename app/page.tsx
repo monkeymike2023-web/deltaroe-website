@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/site";
-import { SERVICES } from "@/lib/services";
+import { SERVICES, fmtPrice } from "@/lib/services";
 import SoundSample from "./components/SoundSample";
 
 export const metadata: Metadata = {
@@ -77,9 +77,9 @@ export default function Home() {
             {SERVICES.map((s) => (
               <Link key={s.slug} href={`/services/${s.slug}`} className="menu-item">
                 <span className="name">{s.name}</span>
-                <span className="price">${s.price}</span>
+                <span className="price">{fmtPrice(s.price)}</span>
                 <span className="desc">{s.short}</span>
-                <span className="meta">{s.duration}</span>
+                <span className="meta">{s.duration ?? s.tag}</span>
               </Link>
             ))}
           </div>

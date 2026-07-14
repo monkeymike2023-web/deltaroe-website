@@ -4,10 +4,10 @@ export type Service = {
   slug: string;
   name: string;
   menuName: string;
-  price: number;
+  price: number; // 0 = free (renders as "Free" via fmtPrice)
   priceNote?: string;
-  duration: string;
-  durationIso: string; // ISO 8601 for schema
+  duration?: string; // omit when the session length is set at booking
+  durationIso?: string; // ISO 8601 for schema
   tag: string;
   short: string; // one-line for menus
   answer: string; // direct-answer opening paragraph (AI/SEO)
@@ -150,7 +150,7 @@ const ALL_SERVICES: Service[] = [
   },
   {
     slug: "chakra-alignment",
-    name: "Chakra Alignment",
+    name: "Chakra Alignment + Sound Bath",
     menuName: "Chakra Alignment + Sound Bath",
     price: 177,
     priceNote: "with sound bath",
@@ -442,11 +442,192 @@ const ALL_SERVICES: Service[] = [
     image: "/img/tamika-reiki.jpg",
     imageAlt: "Tamika giving hands-on reiki over a resting client at Delta Roe",
   },
+  {
+    slug: "discovery-call",
+    name: "Discovery Call",
+    menuName: "Discovery Call",
+    price: 0,
+    duration: "30 minutes",
+    durationIso: "PT30M",
+    tag: "Start here",
+    short:
+      "A free 30-minute conversation with Tamika — where you are, what you're carrying, and which session fits. Zero pressure.",
+    answer:
+      "The Discovery Call at Delta Roe in Elk Grove is a free 30-minute conversation with Tamika Banks. You'll talk about where you are, what you're carrying, and which offering — reiki, sound bath, chakra alignment, coaching, or the Soulful Journey program — actually fits. No cost, no obligation.",
+    intro:
+      "Not sure where to start? That's exactly what this call is for. Thirty minutes, no charge, no pitch — just a real conversation about what brought you here and an honest recommendation for where to begin. Some people book a session afterward; some realize the Soulful Journey is what they've been circling; some just needed to be heard first. All three are wins.",
+    expect: [
+      {
+        title: "You talk, she listens",
+        body: "Tell Tamika what's going on — the stress, the stuck place, the thing you can't name. There's no wrong way to start.",
+      },
+      {
+        title: "Honest direction",
+        body: "Tamika will tell you plainly which offering fits — and if what you need is a therapist, a doctor, or simply rest, she'll say that too.",
+      },
+      {
+        title: "Your choice",
+        body: "You leave with a clear next step. Book it, sleep on it, or don't — the call costs nothing either way.",
+      },
+    ],
+    benefits: [
+      "Completely free — 30 minutes of real guidance, zero obligation",
+      "Find the right first session instead of guessing",
+      "The doorway to the Soulful Journey Transformation Program",
+      "Perfect if energy work is brand new to you",
+    ],
+    faqs: [
+      {
+        q: "Is the discovery call really free?",
+        a: "Really free. No card, no obligation, no hard sell — it exists so your first session is the right one.",
+      },
+      {
+        q: "Is it in person or by phone?",
+        a: "Either — most calls happen by phone or Zoom, so you can book one from anywhere.",
+      },
+      {
+        q: "What should I prepare?",
+        a: "Nothing. Come as you are; the conversation finds its own way.",
+      },
+    ],
+    review: {
+      quote:
+        "Queens don't stumble into sanctuaries by accident.",
+      source: "The Delta Roe welcome",
+    },
+    seoTitle: "Free Discovery Call — Start Your Healing Journey | Delta Roe",
+    seoDescription:
+      "A free 30-minute discovery call with Tamika Banks in Elk Grove, CA. Find the right session — reiki, sound bath, chakra alignment, or coaching. Book online.",
+    image: "/img/about.jpg",
+    imageAlt: "The candle-lit Delta Roe studio in Old Town Elk Grove",
+  },
+  {
+    slug: "diet-nutrition-coaching",
+    name: "Diet & Nutrition Coaching",
+    menuName: "Diet & Nutrition Coaching",
+    price: 88,
+    tag: "Nourish",
+    short:
+      "Grounded, results-driven nutrition coaching with Cline Moore — sustainable habits, energy optimization, and physical alignment.",
+    answer:
+      "Diet & Nutrition Coaching at Delta Roe in Elk Grove costs $88 per session and is led by nutrition coach Cline Moore. It's a grounded, results-driven approach — practical nutrition science paired with lifestyle awareness to build realistic, consistent, effective habits.",
+    intro:
+      "Healing isn't only energetic — the body keeps its own ledger. This is the practical side of the Delta Roe menu: nutrition coaching with Cline Moore that trades fads and restriction for habits you can actually keep. Sustainable health, steadier energy, and a body that feels aligned with the work you're doing on the table. It pairs naturally with the energy sessions — what reiki releases, nutrition sustains.",
+    expect: [
+      {
+        title: "Where you are",
+        body: "An honest look at how you eat, sleep, and move now — no judgment, no lecture, just a clear starting point.",
+      },
+      {
+        title: "The plan that fits your life",
+        body: "Practical nutrition science shaped around your schedule, culture, and preferences — realistic beats perfect, every time.",
+      },
+      {
+        title: "Habits that hold",
+        body: "Small, consistent changes with follow-through and accountability, so the results outlast the enthusiasm.",
+      },
+    ],
+    benefits: [
+      "Results-driven and grounded — no fads, no shame",
+      "Sustainable energy instead of crash-and-restrict cycles",
+      "Complements the energy work: nourish what you've cleared",
+      "The most affordable one-on-one offering after the sound bath",
+    ],
+    faqs: [
+      {
+        q: "Who leads the nutrition coaching?",
+        a: "Cline Moore, Delta Roe's nutrition coach — a grounded, practical guide focused on sustainable habits rather than quick fixes.",
+      },
+      {
+        q: "Is this a meal plan service?",
+        a: "It's bigger than a meal plan: nutrition science plus lifestyle awareness, built into habits that fit your real life. A rigid plan you'll abandon in three weeks isn't the goal — consistency is.",
+      },
+      {
+        q: "How long is a session?",
+        a: "Session length is set when you book — reach out at (916) 206-1752 or Info@deltaroe.com and we'll fit it to what you need.",
+      },
+    ],
+    review: {
+      quote:
+        "Designed to support sustainable health, energy optimization, and physical alignment.",
+      source: "The coaching promise",
+    },
+    seoTitle: "Diet & Nutrition Coaching in Elk Grove, CA | Delta Roe",
+    seoDescription:
+      "Grounded, results-driven nutrition coaching with Cline Moore at Delta Roe in Elk Grove. Sustainable habits and energy optimization. $88 per session.",
+    image: "/img/events.jpg",
+    imageAlt: "Warm, welcoming gathering space at Delta Roe",
+  },
+  {
+    slug: "chakra-alignment-session",
+    name: "Chakra Alignment",
+    menuName: "Chakra Alignment",
+    price: 120,
+    duration: "30 minutes",
+    durationIso: "PT30M",
+    tag: "Essential",
+    short:
+      "The essential chakra session — gentle energy healing with sound and crystals to clear blockages and restore balance.",
+    answer:
+      "A Chakra Alignment session at Delta Roe in Elk Grove lasts 30 minutes and costs $120. It's gentle energy healing focused on the seven chakras — hands-on or hands-above techniques with sound and crystals to clear energetic blockages and restore natural balance.",
+    intro:
+      "The essential version of Delta Roe's signature work: a focused half hour on the body's seven energy centers. Tamika works hands-on or hands-above — whichever your comfort calls for — using sound and crystals to activate the body's own intelligence and let it do what it was built to do: heal. Choose this when you want dedicated chakra work at its simplest; step up to the reiki or sound-bath pairings when you want the fuller immersion.",
+    expect: [
+      {
+        title: "Settle in",
+        body: "Fully clothed, candle-lit, a brief word about what feels blocked — stress, emotional heaviness, fatigue, or creativity that won't flow.",
+      },
+      {
+        title: "Center by center",
+        body: "Gentle hands-on or hands-above work through the seven chakras, with sound and crystals matched to each center.",
+      },
+      {
+        title: "Rebalanced",
+        body: "You leave grounded and lighter, with simple guidance for holding the balance between sessions.",
+      },
+    ],
+    benefits: [
+      "Targeted help for stress, emotional imbalance, chronic fatigue, and blocked creativity",
+      "Hands-on or hands-above — your comfort leads",
+      "The most affordable doorway into chakra work at Delta Roe",
+      "Upgrade any time: pair it with reiki ($144) or a sound bath ($177)",
+    ],
+    faqs: [
+      {
+        q: "How is this different from the $144 and $177 chakra sessions?",
+        a: "This is the essential chakra session — dedicated energy work on all seven centers. The $144 version wraps it in a full hands-on reiki treatment; the $177 version adds a 432 Hz sound bath. Start here if you're new to chakra work.",
+      },
+      {
+        q: "Do you have to touch me?",
+        a: "No — Tamika works hands-on or hands-above, whichever you prefer. You set the comfort level before the session begins.",
+      },
+      {
+        q: "How will I know it worked?",
+        a: "Most clients notice it immediately: lighter shoulders, quieter mind, steadier mood in the days after. Blocked creativity and heavy emotions tend to loosen first.",
+      },
+    ],
+    review: {
+      quote:
+        "My first Reiki/Crystal session was with Ms. Banks… my mind relaxed then my body followed.",
+      source: "Google review",
+    },
+    seoTitle: "Chakra Alignment Session in Elk Grove, CA — $120 | Delta Roe",
+    seoDescription:
+      "A 30-minute chakra alignment session with sound and crystals in Old Town Elk Grove. Clear blockages, restore balance. $120 — book online.",
+    image: "/img/service-chakra.jpg",
+    imageAlt: "Quartz crystal towers and tumbled stones on black",
+    chakra: true,
+  },
 ];
 
 // Menu rule (Tamika, 7/14/2026): services always list lowest price first.
 // Stable sort — equal-priced services keep their authored order.
 export const SERVICES: Service[] = [...ALL_SERVICES].sort((a, b) => a.price - b.price);
+
+/** menu price display — free offerings say "Free", never "$0" */
+export function fmtPrice(price: number): string {
+  return price === 0 ? "Free" : `$${price}`;
+}
 
 export function getService(slug: string) {
   return SERVICES.find((s) => s.slug === slug);

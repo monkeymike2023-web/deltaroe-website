@@ -146,4 +146,14 @@ export const PRODUCTS: Product[] = [
     image: "/img/products/pendant.jpg",
     badge: "Limited",
   },
+  {
+    id: "book-fly-queen",
+    name: "FLY Queen — by Tamika Banks",
+    collection: "Books & Journals",
+    price: 29.99,
+    desc: "Tamika's book: transformation starts the day you decide you're worth the work. The philosophy behind every Delta Roe session, in her own words.",
+    detail: "Paperback · signed copies while they last",
+    art: "journal",
+    badge: "By Tamika",
+  },
 ];

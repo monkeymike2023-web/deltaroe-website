@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITE } from "@/lib/site";
-import { SERVICES, getService } from "@/lib/services";
+import { SERVICES, getService, fmtPrice } from "@/lib/services";
 import SoundSample from "@/app/components/SoundSample";
 
 export function generateStaticParams() {
@@ -108,10 +108,10 @@ export default async function ServicePage({
           <h1 style={{ marginTop: 14 }}>{svc.name}</h1>
           <div className="meta">
             <span>
-              <strong>${svc.price}</strong>
+              <strong>{fmtPrice(svc.price)}</strong>
               {svc.priceNote ? ` — ${svc.priceNote}` : ""}
             </span>
-            <span>{svc.duration}</span>
+            {svc.duration && <span>{svc.duration}</span>}
             <span>Old Town Elk Grove</span>
           </div>
           {svc.chakra && <hr className="chakra-rule" />}
@@ -191,7 +191,7 @@ export default async function ServicePage({
           ))}
           <div style={{ marginTop: 44, textAlign: "center" }}>
             <a className="btn btn-solid" href={SITE.bookingUrl}>
-              Book {svc.name} — ${svc.price}
+              Book {svc.name} — {fmtPrice(svc.price)}
             </a>
             <p style={{ marginTop: 16, color: "var(--muted)", fontSize: 16 }}>
               Not sure yet? <a href={SITE.bookingUrl}>Book a free discovery call</a>{" "}
@@ -216,7 +216,7 @@ export default async function ServicePage({
               >
                 <h3>{o.name}</h3>
                 <p>
-                  {o.duration} · ${o.price}
+                  {o.duration ? `${o.duration} · ` : ""}{fmtPrice(o.price)}
                 </p>
               </Link>
             ))}
