@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
 import { SITE, NAV, YELP_URL } from "@/lib/site";
+import { SERVICES } from "@/lib/services";
 import RoeChat from "./components/RoeChat";
 import MobileNav from "./components/MobileNav";
 import MotionFx from "./components/MotionFx";
@@ -153,11 +154,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
               <div>
                 <h4>Sessions</h4>
-                <Link href="/services/reiki-elk-grove">Reiki Healing</Link>
-                <Link href="/services/sound-bath-elk-grove">Sound Bath</Link>
-                <Link href="/services/chakra-alignment">Chakra Alignment</Link>
-                <Link href="/services/fascia-flow-reset">Fascia Flow Reset</Link>
-                <Link href="/services/life-coaching">Life Coaching</Link>
+                {SERVICES.map((s) => (
+                  <Link key={s.slug} href={`/services/${s.slug}`}>
+                    {s.name}
+                  </Link>
+                ))}
               </div>
               <div>
                 <h4>Explore</h4>

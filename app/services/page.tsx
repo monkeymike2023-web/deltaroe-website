@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
-import { SERVICES, COMBOS } from "@/lib/services";
+import { SERVICES } from "@/lib/services";
 
 export const metadata: Metadata = {
   title: "Services & Pricing — Reiki, Sound Baths, Chakra Alignment",
   description:
-    "Delta Roe's full menu: reiki ($144), sound baths ($77), chakra alignment ($177), fascia flow reset ($188) and life coaching ($250) in Elk Grove, CA.",
+    "Delta Roe's full menu, lowest to highest: sound baths ($77), reiki & chakra alignment ($144), reiki ($144), chakra alignment + sound bath ($177), reiki + sound bath ($188), fascia flow reset ($188), life coaching ($250) in Elk Grove, CA.",
 };
 
 export default function ServicesPage() {
@@ -36,28 +36,6 @@ export default function ServicesPage() {
                 </span>
               </Link>
             ))}
-          </div>
-
-          <h2 style={{ margin: "64px 0 24px" }}>Pairings</h2>
-          <div className="tablewrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Combination</th>
-                  <th>Duration</th>
-                  <th className="num">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMBOS.map((c) => (
-                  <tr key={c.name}>
-                    <td>{c.name}</td>
-                    <td>{c.duration}</td>
-                    <td className="num">${c.price}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </div>
 
           <div style={{ marginTop: 48, textAlign: "center" }}>

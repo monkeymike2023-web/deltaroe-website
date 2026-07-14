@@ -23,7 +23,9 @@ export type Service = {
   chakra?: boolean; // page may use the ceremonial chakra spectrum
 };
 
-export const SERVICES: Service[] = [
+// Authored in menu order; the export below re-sorts lowest → highest price
+// (Tamika's rule, 7/14/2026) so every menu renders the same way.
+const ALL_SERVICES: Service[] = [
   {
     slug: "reiki-elk-grove",
     name: "Reiki Healing",
@@ -151,7 +153,7 @@ export const SERVICES: Service[] = [
     name: "Chakra Alignment",
     menuName: "Chakra Alignment + Sound Bath",
     price: 177,
-    priceNote: "with sound bath · Reiki & Chakra Alignment $144",
+    priceNote: "with sound bath",
     duration: "30 minutes",
     durationIso: "PT30M",
     tag: "Deep reset",
@@ -321,14 +323,130 @@ export const SERVICES: Service[] = [
     image: "/img/service-coaching.jpg",
     imageAlt: "Candle flames glowing in a dark room",
   },
+  {
+    slug: "reiki-chakra-alignment",
+    name: "Reiki & Chakra Alignment",
+    menuName: "Reiki & Chakra Alignment",
+    price: 144,
+    duration: "30 minutes",
+    durationIso: "PT30M",
+    tag: "Hands-on focus",
+    short:
+      "A full reiki session devoted to the seven energy centers — hands-on healing, center by center, from root to crown.",
+    answer:
+      "A Reiki & Chakra Alignment session at Delta Roe in Elk Grove lasts 30 minutes and costs $144. It's a hands-on reiki session focused entirely on the seven chakras — Tamika works center by center from root to crown, clearing and balancing each one with reiki energy healing.",
+    intro:
+      "This is chakra work at its most direct: a full reiki session where every minute is spent on the body's seven energy centers. Where the Chakra Alignment + Sound Bath surrounds the work with sound, this session keeps it hands-on — Tamika reads where energy is dense or depleted and works each center with reiki until the whole column flows. Choose it when you want the healing concentrated in the hands, not the room.",
+    expect: [
+      {
+        title: "Reading the field",
+        body: "A brief intuitive assessment finds which centers feel guarded, heavy, or depleted — most clients recognize the description immediately.",
+      },
+      {
+        title: "Root to crown",
+        body: "Hands-on reiki moves through each chakra in turn, staying longer where energy is stuck. Warmth, tingling, and waves of release are common.",
+      },
+      {
+        title: "Grounding",
+        body: "The session closes at the root — so you leave anchored, not floating — with simple guidance for holding the balance.",
+      },
+    ],
+    benefits: [
+      "The most focused chakra work on the menu — every minute hands-on",
+      "Clears looping emotions, mental fog, and the \"stuck\" feeling",
+      "Same $144 as a classic reiki session — the focus is the difference",
+      "Pairs beautifully with a sound bath on a later visit",
+    ],
+    faqs: [
+      {
+        q: "How is this different from the Chakra Alignment + Sound Bath?",
+        a: "Same intention, different vehicle. This session is hands-on reiki through all seven centers for $144; the $177 version wraps that work in a 432 Hz sound bath. Choose hands-on if touch is what settles you, sound if immersion is.",
+      },
+      {
+        q: "How is this different from a regular reiki session?",
+        a: "A classic reiki session goes where the energy calls. This one follows the map — all seven chakras, in order, every time. If you want structure and a full-column reset, book this.",
+      },
+      {
+        q: "Do I stay clothed?",
+        a: "Yes — fully clothed for the entire session, resting comfortably on the table in candle-light.",
+      },
+    ],
+    review: {
+      quote:
+        "My first Reiki/Crystal session was with Ms. Banks… my mind relaxed then my body followed.",
+      source: "Google review",
+    },
+    seoTitle: "Reiki & Chakra Alignment in Elk Grove, CA | Delta Roe",
+    seoDescription:
+      "A 30-minute hands-on reiki session focused on all seven chakras, root to crown, in Old Town Elk Grove. $144 — book online.",
+    image: "/img/service-chakra.jpg",
+    imageAlt: "Quartz crystal towers and tumbled stones on black",
+    chakra: true,
+  },
+  {
+    slug: "reiki-sound-bath",
+    name: "Reiki + Sound Bath",
+    menuName: "Reiki + Sound Bath",
+    price: 188,
+    duration: "30 minutes",
+    durationIso: "PT30M",
+    tag: "Most-booked pairing",
+    short:
+      "Hands-on reiki while 432 Hz singing bowls wash over you — energy healing and sound immersion in a single session.",
+    answer:
+      "A Reiki + Sound Bath session at Delta Roe in Elk Grove lasts 30 minutes and costs $188. It combines hands-on reiki energy healing with a full 432 Hz sound bath — Tamika works through the body's energy centers while Tibetan and crystal singing bowls carry the nervous system into deep rest.",
+    intro:
+      "Some sessions you choose; this one clients keep choosing — the most-booked pairing on the menu. Reiki opens and moves what the body has been holding while waves of 432 Hz sound keep the mind from standing guard. The two do together what neither does alone: the bowls quiet the thinking so the energy work lands deeper, and the reiki gives the sound somewhere to go.",
+    expect: [
+      {
+        title: "Cocoon in",
+        body: "You settle onto the table fully clothed, wrapped and supported, candle-light low, a brief word about what you're carrying.",
+      },
+      {
+        title: "Two currents at once",
+        body: "Hands-on reiki moves through the energy centers while Tibetan and crystal bowls tuned to 432 Hz sound around you. Most clients describe dropping deeper than either practice alone has taken them.",
+      },
+      {
+        title: "The slow return",
+        body: "Sound brings you back gently; you re-land, share what surfaced if you wish, and leave with aftercare guidance.",
+      },
+    ],
+    benefits: [
+      "The most-booked combination at Delta Roe — for a reason",
+      "Energy healing lands deeper when sound quiets the mind first",
+      "One session, two modalities — nothing else to schedule",
+      "The fullest 30 minutes on the menu short of a chakra alignment",
+    ],
+    faqs: [
+      {
+        q: "Should I start with this or with a plain sound bath?",
+        a: "If touch-based energy work is new to you and you'd rather ease in, start with the $77 sound bath. If you're ready for the full experience, this pairing is the one regulars book on repeat.",
+      },
+      {
+        q: "Is it still 30 minutes if it's two modalities?",
+        a: "Yes — the reiki and the sound happen together, not back-to-back. It's one seamless 30-minute immersion.",
+      },
+      {
+        q: "What should I wear?",
+        a: "Comfortable, loose clothing — you stay fully clothed, shoes off, wrapped in blankets.",
+      },
+    ],
+    review: {
+      quote:
+        "My mind relaxed, then my body followed. After my treatment I felt light, rejuvenated, and happy!",
+      source: "Google review",
+    },
+    seoTitle: "Reiki + Sound Bath in Elk Grove, CA | Delta Roe",
+    seoDescription:
+      "Hands-on reiki paired with a 432 Hz sound bath in one 30-minute session — Delta Roe's most-booked pairing. $188 in Old Town Elk Grove — book online.",
+    image: "/img/tamika-reiki.jpg",
+    imageAlt: "Tamika giving hands-on reiki over a resting client at Delta Roe",
+  },
 ];
 
-export const COMBOS = [
-  { name: "Reiki + Sound Bath", price: 188, duration: "30 min" },
-  { name: "Reiki & Chakra Alignment", price: 144, duration: "30 min" },
-  { name: "Chakra Alignment + Sound Bath", price: 177, duration: "30 min" },
-  { name: "Fascia Flow Reset + Sound Bath", price: 188, duration: "30 min" },
-];
+// Menu rule (Tamika, 7/14/2026): services always list lowest price first.
+// Stable sort — equal-priced services keep their authored order.
+export const SERVICES: Service[] = [...ALL_SERVICES].sort((a, b) => a.price - b.price);
 
 export function getService(slug: string) {
   return SERVICES.find((s) => s.slug === slug);
