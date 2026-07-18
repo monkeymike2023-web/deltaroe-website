@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Jost } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
 import { SITE, NAV, YELP_URL } from "@/lib/site";
 import { SERVICES } from "@/lib/services";
 import RoeChat from "./components/RoeChat";
@@ -207,6 +208,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <MotionFx />
         <RoeChat />
+        <Analytics />
       </body>
     </html>
   );
