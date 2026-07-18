@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SITE, NAV, YELP_URL } from "@/lib/site";
 import { SERVICES } from "@/lib/services";
 import RoeChat from "./components/RoeChat";
+import TrackFx from "./components/TrackFx";
 import MobileNav from "./components/MobileNav";
 import MotionFx from "./components/MotionFx";
 import "./globals.css";
@@ -209,6 +210,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <MotionFx />
         <RoeChat />
         <Analytics />
+        <TrackFx />
       </body>
     </html>
   );
