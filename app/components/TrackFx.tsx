@@ -8,10 +8,35 @@
 //   scroll_depth {page, depth} / engaged {page, seconds}
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { track } from "@vercel/analytics";
+import { track as vaTrack } from "@vercel/analytics";
+
+// Dual-write: Vercel Analytics (dashboard) + our own counter mirror (feeds the
+// automated email synopsis — Vercel has no data API). Counters only, no PII.
+const MIRROR = "https://robbjack.com/api/droe/track";
+function track(e: string, props?: Record<string, string | number>) {
+  vaTrack(e, props);
+  try {
+    const payload = JSON.stringify({ e, page: String(props?.page ?? location.pathname), extra: String(props?.service ?? props?.depth ?? props?.seconds ?? "") });
+    navigator.sendBeacon?.(MIRROR, new Blob([payload], { type: "text/plain" })) ||
+      fetch(MIRROR, { method: "POST", body: payload, keepalive: true }).catch(() => {});
+  } catch {
+    // best-effort
+  }
+}
 
 export default function TrackFx() {
   const pathname = usePathname();
+
+  // one mirrored page-view per route change (Vercel counts views natively)
+  useEffect(() => {
+    try {
+      const payload = JSON.stringify({ e: "view", page: pathname || "/" });
+      navigator.sendBeacon?.(MIRROR, new Blob([payload], { type: "text/plain" })) ||
+        fetch(MIRROR, { method: "POST", body: payload, keepalive: true }).catch(() => {});
+    } catch {
+      // best-effort
+    }
+  }, [pathname]);
 
   // click delegation
   useEffect(() => {
