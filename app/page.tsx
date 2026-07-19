@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { SITE } from "@/lib/site";
 import { SERVICES, fmtPrice } from "@/lib/services";
 import SoundSample from "./components/SoundSample";
+import ChakraHero from "./components/ChakraHero";
 
 export const metadata: Metadata = {
   title: "Delta Roe — Reiki, Sound Baths & Chakra Alignment in Elk Grove, CA",
@@ -14,42 +14,8 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main>
-      {/* ---------- hero ---------- */}
-      <div className="hero">
-        <Image
-          src="/img/tamika-reiki.jpg"
-          alt="Tamika channels reiki energy over a resting client in the Delta Roe sanctuary"
-          fill
-          priority
-          sizes="100vw"
-          className="hero-photo"
-        />
-        <div className="hero-veil" aria-hidden="true" />
-        <Image
-          src="/emblem.png"
-          alt="Delta Roe — gold lotus within sacred geometry"
-          width={280}
-          height={280}
-          priority
-          className="logo"
-        />
-        <h1>Return to yourself.</h1>
-        <p className="lede">
-          Reiki-infused sound baths, chakra alignment, and soul-level coaching
-          in a candle-lit sanctuary in historic Old Town Elk Grove.
-        </p>
-        <div className="ctas">
-          <a className="btn btn-solid" href={SITE.bookingUrl}>
-            Book a Session
-          </a>
-          <a className="btn btn-ghost" href={SITE.bookingUrl}>
-            Free Discovery Call
-          </a>
-        </div>
-        <div className="chakra-col" aria-hidden="true">
-          <span /><span /><span /><span /><span /><span /><span />
-        </div>
-      </div>
+      {/* ---------- hero — the chakra experience is the front door ---------- */}
+      <ChakraHero />
 
       {/* ---------- review strip ---------- */}
       <div className="review-strip">
