@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     "",
     "/services",
+    "/sound-chakras",
     "/memberships",
     "/events",
     "/soulful-journey",

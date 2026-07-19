@@ -38,6 +38,7 @@ export const SITE = {
 // One nav, both headers: desktop row and the mobile menu.
 export const NAV = [
   { href: "/services", label: "Services" },
+  { href: "/sound-chakras", label: "Chakras" },
   { href: "/memberships", label: "Memberships" },
   { href: "/shop", label: "Apothecary" },
   { href: "/events", label: "Events" },

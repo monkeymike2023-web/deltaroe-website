@@ -1,0 +1,378 @@
+/* /sound-chakras — interactive chakra + sound-bath stage.
+   Motion rules: compositor-only properties (transform/opacity), entrance
+   choreography < 1.2s, everything falls back to a static glow under
+   prefers-reduced-motion. */
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  gap: 56px;
+  align-items: center;
+}
+
+@media (max-width: 960px) {
+  .stage {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+/* ---------- figure ---------- */
+
+.figureWrap {
+  position: relative;
+  max-width: 520px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.figure {
+  animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- orbs ---------- */
+
+.orb {
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orbIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  outline: none;
+}
+
+.orb:focus-visible .core {
+  stroke: var(--gold-bright);
+  stroke-width: 2;
+}
+
+@keyframes orbIn {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.halo {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0.5;
+  animation: breathe 5.6s ease-in-out infinite;
+  transition: opacity 0.6s ease;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.14);
+  }
+}
+
+.core {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.orbActive .halo {
+  opacity: 1;
+}
+
+.orbActive .core {
+  transform: scale(1.4);
+}
+
+/* sound ripples — struck-bowl rings expanding from the active chakra */
+.ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: ripple 2.8s cubic-bezier(0.2, 0.55, 0.35, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.35);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(3.6);
+    opacity: 0;
+  }
+}
+
+/* ---------- side column: list + info panel ---------- */
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+@media (max-width: 960px) {
+  .list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+}
+
+.listBtn {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 9px 14px;
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.25s, border-color 0.25s, background 0.25s;
+}
+
+.listBtn:hover {
+  color: var(--text);
+}
+
+.listBtnActive {
+  color: var(--text);
+  border-color: var(--line);
+  background: var(--surface);
+}
+
+.listDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: none;
+  opacity: 0.55;
+  transition: opacity 0.25s, box-shadow 0.25s;
+}
+
+.listBtnActive .listDot {
+  opacity: 1;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.listSanskrit {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  opacity: 0.55;
+  margin-left: auto;
+  font-style: normal;
+}
+
+@media (max-width: 960px) {
+  .listSanskrit {
+    display: none;
+  }
+  .listBtn {
+    padding: 8px 12px;
+    border-color: var(--line-soft);
+  }
+}
+
+/* info panel */
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  padding: 26px 28px 24px;
+  min-height: 300px;
+}
+
+@media (max-width: 960px) {
+  .panel {
+    min-height: 0;
+  }
+}
+
+.panelInner {
+  animation: panelIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.panelEyebrow {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.panelName {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--gold-bright);
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+}
+
+.panelName em {
+  font-style: italic;
+  font-size: 22px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+.panelMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 14px;
+}
+
+.metaChip {
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  border: 1px solid var(--line);
+  padding: 6px 11px;
+  white-space: nowrap;
+}
+
+.metaChip strong {
+  font-weight: 600;
+  color: var(--gold-bright);
+}
+
+.panelBody {
+  color: var(--muted);
+  font-size: 16.5px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ---------- sound toggle ---------- */
+
+.soundBar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 960px) {
+  .soundBar {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+.soundBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  background: transparent;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  padding: 11px 22px;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s, box-shadow 0.25s;
+}
+
+.soundBtn:hover {
+  background: rgba(201, 164, 100, 0.12);
+}
+
+.soundBtnOn {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.soundBtnOn:hover {
+  background: var(--gold-bright);
+  box-shadow: 0 0 26px rgba(201, 164, 100, 0.35);
+}
+
+.soundNote {
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ---------- reduced motion: static glow, no ripples, no entrance ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .figure,
+  .orb,
+  .panelInner {
+    animation: none;
+  }
+  .halo {
+    animation: none;
+    opacity: 0.65;
+  }
+  .orbActive .halo {
+    opacity: 1;
+  }
+  .ripple {
+    animation: none;
+    opacity: 0.25;
+    transform: scale(1.6);
+  }
+  .core,
+  .listBtn,
+  .listDot {
+    transition: none;
+  }
+}

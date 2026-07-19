@@ -237,6 +237,28 @@ section {
   padding: 11px 22px;
 }
 
+/* laptop squeeze — seven links + Book Now need a little less air */
+@media (max-width: 1150px) {
+  .site-header .inner {
+    gap: 16px;
+  }
+  .nav {
+    gap: 17px;
+  }
+  .nav a {
+    font-size: 12px;
+    letter-spacing: 0.13em;
+  }
+  .nav .btn {
+    white-space: nowrap;
+    padding: 10px 16px;
+  }
+  .brand .word {
+    font-size: 18px;
+    letter-spacing: 0.24em;
+  }
+}
+
 @media (max-width: 900px) {
   .nav a:not(.btn) {
     display: none;
@@ -244,6 +266,14 @@ section {
   .brand .word {
     font-size: 17px;
     letter-spacing: 0.22em;
+  }
+}
+
+/* phones: the header Book Now clipped the wordmark, and the fixed bottom
+   bar already carries the booking CTA — drop the duplicate */
+@media (max-width: 480px) {
+  .nav .btn {
+    display: none;
   }
 }
 
