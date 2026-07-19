@@ -6,20 +6,42 @@
 .stage {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 400px;
-  gap: 56px;
-  align-items: center;
+  grid-template-areas:
+    "figure sound"
+    "figure list"
+    "figure panel";
+  column-gap: 56px;
+  row-gap: 22px;
 }
 
+/* Medium & small screens: the body and the info panel share a row so a
+   visitor can see where a chakra sits AND read what it supports at once.
+   The chakra list drops below as a full-width chip row. */
 @media (max-width: 960px) {
   .stage {
-    grid-template-columns: 1fr;
-    gap: 36px;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    grid-template-areas:
+      "sound sound"
+      "figure panel"
+      "list list";
+    column-gap: 20px;
+    row-gap: 26px;
+  }
+}
+
+@media (max-width: 560px) {
+  .stage {
+    grid-template-columns: minmax(0, 9fr) minmax(0, 11fr);
+    column-gap: 12px;
+    row-gap: 20px;
   }
 }
 
 /* ---------- figure ---------- */
 
 .figureWrap {
+  grid-area: figure;
+  align-self: center;
   position: relative;
   max-width: 520px;
   margin: 0 auto;
@@ -57,7 +79,7 @@
   outline: none;
 }
 
-.orb:focus-visible .core {
+.orb:focus-visible .core > circle:first-of-type {
   stroke: var(--gold-bright);
   stroke-width: 2;
 }
@@ -125,15 +147,10 @@
   }
 }
 
-/* ---------- side column: list + info panel ---------- */
-
-.side {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-}
+/* ---------- chakra list ---------- */
 
 .list {
+  grid-area: list;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -176,18 +193,17 @@
   background: var(--surface);
 }
 
-.listDot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+.listSym {
+  width: 19px;
+  height: 19px;
   flex: none;
-  opacity: 0.55;
-  transition: opacity 0.25s, box-shadow 0.25s;
+  opacity: 0.6;
+  transition: opacity 0.25s, filter 0.25s;
 }
 
-.listBtnActive .listDot {
+.listBtnActive .listSym {
   opacity: 1;
-  box-shadow: 0 0 10px currentColor;
+  filter: drop-shadow(0 0 5px currentColor);
 }
 
 .listSanskrit {
@@ -210,6 +226,16 @@
 
 /* info panel */
 
+.panelArea {
+  grid-area: panel;
+}
+
+@media (max-width: 960px) {
+  .panelArea {
+    align-self: center;
+  }
+}
+
 .panel {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -221,6 +247,7 @@
 @media (max-width: 960px) {
   .panel {
     min-height: 0;
+    padding: 18px 20px 16px;
   }
 }
 
@@ -294,9 +321,51 @@
   margin: 0;
 }
 
+@media (max-width: 960px) {
+  .panelName {
+    font-size: 24px;
+  }
+  .panelName em {
+    font-size: 16px;
+  }
+  .panelMeta {
+    margin: 12px 0 10px;
+  }
+  .panelBody {
+    font-size: 14.5px;
+  }
+}
+
+@media (max-width: 560px) {
+  .panel {
+    padding: 14px 15px 13px;
+    border-left-width: 2px;
+  }
+  .panelEyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    margin-bottom: 5px;
+  }
+  .panelName {
+    font-size: 19px;
+  }
+  .panelName em {
+    font-size: 14px;
+  }
+  .panelMeta {
+    display: none; /* eyebrow already carries color + Hz — space is precious */
+  }
+  .panelBody {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 10px;
+  }
+}
+
 /* ---------- sound toggle ---------- */
 
 .soundBar {
+  grid-area: sound;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -372,7 +441,7 @@
   }
   .core,
   .listBtn,
-  .listDot {
+  .listSym {
     transition: none;
   }
 }

@@ -4,16 +4,32 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CHAKRAS } from "@/lib/chakras";
 import s from "./ChakraExperience.module.css";
 
-const CYCLE_MS = 6000;
+const CYCLE_MS = 10000; // long enough to read the panel before it moves on
 const CX = 220; // figure midline in the 440x480 viewBox
 
 /* ---------------------------------------------------------------- audio --
-   Synthesized crystal singing bowl: layered sine partials — fundamental,
-   a slightly detuned twin (the slow "beating" shimmer of a real bowl),
-   and soft upper harmonics — with a slow swell and a long ringing decay.
+   Modal synthesis of a struck crystal singing bowl. What makes a bowl sound
+   like a bowl (and not a synth pad): a near-instant mallet onset, inharmonic
+   overtones (~2.71× and ~5.18× the fundamental — shell modes, not a harmonic
+   series) that die within a second or two, a fundamental split into a
+   detuned pair whose slow beating is the characteristic shimmer, and a long
+   ring that settles into an almost pure sine — all inside a soft room.
    Created lazily on the user's "Enable sound" gesture (autoplay policy). */
 
-type Bowl = { ctx: AudioContext; master: GainNode };
+type Bowl = { ctx: AudioContext; master: GainNode; noise: AudioBuffer };
+
+function makeImpulse(ctx: AudioContext, seconds: number, curve: number) {
+  const rate = ctx.sampleRate;
+  const len = Math.floor(rate * seconds);
+  const buf = ctx.createBuffer(2, len, rate);
+  for (let ch = 0; ch < 2; ch++) {
+    const d = buf.getChannelData(ch);
+    for (let i = 0; i < len; i++) {
+      d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, curve);
+    }
+  }
+  return buf;
+}
 
 function makeBowl(): Bowl {
   const Ctor =
@@ -24,34 +40,162 @@ function makeBowl(): Bowl {
   const master = ctx.createGain();
   master.gain.value = 0.5;
   master.connect(ctx.destination);
-  return { ctx, master };
+  // soft synthetic room so the ring blooms instead of dying bone-dry
+  const convolver = ctx.createConvolver();
+  convolver.buffer = makeImpulse(ctx, 3.2, 4.5);
+  const wet = ctx.createGain();
+  wet.gain.value = 0.4;
+  master.connect(convolver);
+  convolver.connect(wet);
+  wet.connect(ctx.destination);
+  // short white-noise buffer reused for the mallet-contact transient
+  const noise = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.25), ctx.sampleRate);
+  const nd = noise.getChannelData(0);
+  for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+  return { ctx, master, noise };
 }
 
 function strikeBowl(bowl: Bowl, freq: number, velocity: number) {
-  const { ctx, master } = bowl;
+  const { ctx, master, noise } = bowl;
   if (ctx.state === "suspended") void ctx.resume();
   const t = ctx.currentTime;
-  // ratio, gain, attack seconds, decay seconds
-  const partials: [number, number, number, number][] = [
-    [1.0, 0.5, 0.16, 6.5],
-    [1.004, 0.38, 0.2, 6.0], // detuned twin → slow beating shimmer
-    [2.004, 0.11, 0.08, 4.0],
-    [3.01, 0.05, 0.05, 2.6],
-    [4.2, 0.02, 0.04, 1.6],
+  const end = t + 18;
+  // Each mode is a pair split by `split` Hz — the split IS the beat rate.
+  // Ring time (tau) falls off sharply with pitch: overtones color the strike,
+  // then the fundamental is left singing alone.
+  const modes = [
+    { ratio: 1, split: 0.9, gain: 0.42, tau: 3.8 },
+    { ratio: 2.71, split: 2.2, gain: 0.07, tau: 1.1 },
+    { ratio: 5.18, split: 3.1, gain: 0.018, tau: 0.45 },
   ];
-  const drift = 1 + (Math.random() - 0.5) * 0.0012; // organic, never identical
-  for (const [ratio, gain, attack, decay] of partials) {
-    const osc = ctx.createOscillator();
-    const env = ctx.createGain();
-    osc.type = "sine";
-    osc.frequency.value = freq * ratio * drift;
-    env.gain.setValueAtTime(0.0001, t);
-    env.gain.linearRampToValueAtTime(gain * velocity, t + attack);
-    env.gain.exponentialRampToValueAtTime(0.0001, t + attack + decay);
-    osc.connect(env).connect(master);
-    osc.start(t);
-    osc.stop(t + attack + decay + 0.1);
+  const drift = 1 + (Math.random() - 0.5) * 0.001; // organic, never identical
+  for (const m of modes) {
+    for (const sign of [-0.5, 0.5]) {
+      const osc = ctx.createOscillator();
+      const env = ctx.createGain();
+      osc.type = "sine";
+      const f = freq * m.ratio * drift + sign * m.split;
+      // struck glass starts a hair sharp, then settles flat as it rings
+      osc.frequency.setValueAtTime(f * 1.0012, t);
+      osc.frequency.exponentialRampToValueAtTime(f, t + 3);
+      env.gain.setValueAtTime(0.0001, t);
+      env.gain.exponentialRampToValueAtTime(m.gain * velocity, t + 0.012);
+      env.gain.setTargetAtTime(0, t + 0.012, m.tau);
+      osc.connect(env).connect(master);
+      osc.start(t);
+      osc.stop(end);
+    }
   }
+  // mallet contact: a soft band-limited tick, gone in ~100ms
+  const src = ctx.createBufferSource();
+  src.buffer = noise;
+  const bp = ctx.createBiquadFilter();
+  bp.type = "bandpass";
+  bp.frequency.value = freq * 2.71;
+  bp.Q.value = 1.4;
+  const nEnv = ctx.createGain();
+  nEnv.gain.setValueAtTime(0.09 * velocity, t);
+  nEnv.gain.setTargetAtTime(0, t, 0.035);
+  src.connect(bp);
+  bp.connect(nEnv);
+  nEnv.connect(master);
+  src.start(t);
+  src.stop(t + 0.25);
+}
+
+/* -------------------------------------------------------------- symbols --
+   Traditional chakra glyphs, simplified for small sizes: a lotus ring with
+   the correct petal count around each center's classic inner mark. Rendered
+   as a plain <g> centered on (0,0) so it works inside the figure SVG and in
+   the list buttons alike. */
+
+const SYMBOL_PETALS: Record<string, number> = {
+  root: 4,
+  sacral: 6,
+  "solar-plexus": 10,
+  heart: 12,
+  throat: 16,
+  "third-eye": 2,
+  crown: 20, // stands in for the thousand-petal lotus
+};
+
+function petalPath(r: number, petals: number) {
+  const inner = r * 0.48;
+  const mid = (inner + r) / 2;
+  const w = Math.min(r * 0.3, (Math.PI * mid * 0.72) / petals);
+  return `M 0 ${-inner} Q ${w} ${-mid} 0 ${-r} Q ${-w} ${-mid} 0 ${-inner} Z`;
+}
+
+function glyph(id: string, s: number, color: string) {
+  const triDown = (k: number) =>
+    `M 0 ${s * 0.62 * k} L ${s * 0.56 * k} ${-s * 0.34 * k} L ${-s * 0.56 * k} ${-s * 0.34 * k} Z`;
+  switch (id) {
+    case "root": // square of earth + inverted triangle
+      return (
+        <>
+          <rect x={-s * 0.62} y={-s * 0.62} width={s * 1.24} height={s * 1.24} />
+          <path d={triDown(0.72)} />
+        </>
+      );
+    case "sacral": // crescent moon
+      return (
+        <path
+          d={`M ${-s * 0.6} 0 A ${s * 0.65} ${s * 0.65} 0 0 0 ${s * 0.6} 0 A ${s} ${s} 0 0 1 ${-s * 0.6} 0 Z`}
+        />
+      );
+    case "solar-plexus": // inverted triangle, the inner fire
+      return <path d={triDown(1)} />;
+    case "heart": // two triangles meeting — the hexagram
+      return (
+        <>
+          <path d={`M 0 ${-s * 0.62} L ${s * 0.54} ${s * 0.31} L ${-s * 0.54} ${s * 0.31} Z`} />
+          <path d={`M 0 ${s * 0.62} L ${s * 0.54} ${-s * 0.31} L ${-s * 0.54} ${-s * 0.31} Z`} />
+        </>
+      );
+    case "throat": // circle of ether holding a small triangle
+      return (
+        <>
+          <circle r={s * 0.58} />
+          <path d={triDown(0.52)} />
+        </>
+      );
+    case "third-eye": // inverted triangle beneath the bindu
+      return (
+        <>
+          <path d={`M 0 ${s * 0.5} L ${s * 0.52} ${-s * 0.28} L ${-s * 0.52} ${-s * 0.28} Z`} />
+          <circle cy={-s * 0.58} r={s * 0.13} fill={color} stroke="none" />
+        </>
+      );
+    case "crown": // the still point within the thousand petals
+      return (
+        <>
+          <circle r={s * 0.5} />
+          <circle r={s * 0.13} fill={color} stroke="none" />
+        </>
+      );
+    default:
+      return <circle r={s * 0.5} />;
+  }
+}
+
+function ChakraSymbol({ id, r, color }: { id: string; r: number; color: string }) {
+  const petals = SYMBOL_PETALS[id] ?? 8;
+  const d = petalPath(r, petals);
+  return (
+    <g stroke={color} fill="none" strokeWidth={r * 0.1} strokeLinejoin="round">
+      {Array.from({ length: petals }, (_, k) => (
+        <path
+          key={k}
+          d={d}
+          fill={color}
+          fillOpacity={0.22}
+          transform={`rotate(${(360 / petals) * k})`}
+        />
+      ))}
+      <circle r={r * 0.46} />
+      {glyph(id, r * 0.46, color)}
+    </g>
+  );
 }
 
 /* ------------------------------------------------------------- component */
@@ -71,7 +215,7 @@ function usePrefersReducedMotion() {
 export default function ChakraExperience() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [soundOn, setSoundOn] = useState(false);
-  const [cycleKey, setCycleKey] = useState(0); // bump to restart the 6s clock
+  const [cycleKey, setCycleKey] = useState(0); // bump to restart the cycle clock
   const reduced = usePrefersReducedMotion();
 
   const bowlRef = useRef<Bowl | null>(null);
@@ -106,7 +250,7 @@ export default function ChakraExperience() {
 
   const select = useCallback((i: number) => {
     setActiveIdx(i);
-    setCycleKey((k) => k + 1); // give the visitor a full 6s on their choice
+    setCycleKey((k) => k + 1); // give the visitor a full cycle on their choice
     if (soundOnRef.current && bowlRef.current) {
       strikeBowl(bowlRef.current, CHAKRAS[i].frequency, 1);
     }
@@ -257,103 +401,104 @@ export default function ChakraExperience() {
                   r={30}
                   fill={`url(#ck-glow-${c.id})`}
                 />
-                <circle
-                  className={s.core}
-                  cx={CX}
-                  cy={c.y}
-                  r={8}
-                  fill={c.hex}
-                  stroke="rgba(255, 255, 255, 0.55)"
-                  strokeWidth={1}
-                />
-                {/* generous invisible hit target */}
-                <circle cx={CX} cy={c.y} r={27} fill="transparent" />
+                <g transform={`translate(${CX} ${c.y})`}>
+                  <g className={s.core}>
+                    {/* dark backing disc so the glyph reads over the gold line art */}
+                    <circle r={16} fill="rgba(10, 9, 16, 0.55)" />
+                    <ChakraSymbol id={c.id} r={14} color={c.hex} />
+                  </g>
+                </g>
+                {/* generous invisible hit target (figure shrinks on phones) */}
+                <circle cx={CX} cy={c.y} r={34} fill="transparent" />
               </g>
             );
           })}
         </svg>
       </div>
 
-      {/* -------------------------------------------- list + info panel */}
-      <div className={s.side}>
-        <div className={s.soundBar}>
-          <button
-            type="button"
-            className={soundOn ? `${s.soundBtn} ${s.soundBtnOn}` : s.soundBtn}
-            aria-pressed={soundOn}
-            onClick={toggleSound}
-          >
-            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      {/* --------------------------------- sound toggle / list / panel.
+          Direct children of the stage grid so the info panel can sit
+          beside the figure on medium and small screens. */}
+      <div className={s.soundBar}>
+        <button
+          type="button"
+          className={soundOn ? `${s.soundBtn} ${s.soundBtnOn}` : s.soundBtn}
+          aria-pressed={soundOn}
+          onClick={toggleSound}
+        >
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <path
+              d="M4 10 v4 h4 l5 4 V6 L8 10 Z"
+              fill="currentColor"
+            />
+            {soundOn && (
               <path
-                d="M4 10 v4 h4 l5 4 V6 L8 10 Z"
-                fill="currentColor"
+                d="M16 9 a4 4 0 0 1 0 6 M18.5 7 a7.5 7.5 0 0 1 0 10"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
               />
-              {soundOn && (
-                <path
-                  d="M16 9 a4 4 0 0 1 0 6 M18.5 7 a7.5 7.5 0 0 1 0 10"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                />
-              )}
-            </svg>
-            {soundOn ? "Sound on" : "Enable sound"}
-          </button>
-          <p className={s.soundNote}>
-            Gentle synthesized bowl tones — each chakra sings its own note.
-          </p>
-        </div>
+            )}
+          </svg>
+          {soundOn ? "Sound on" : "Hear your chakras"}
+        </button>
+        <p className={s.soundNote}>
+          Gentle crystal-bowl tones — each chakra sings its own note.
+        </p>
+      </div>
 
-        <div className={s.list} role="group" aria-label="Choose a chakra">
-          {[...CHAKRAS]
-            .slice()
-            .reverse()
-            .map((c) => {
-              const i = CHAKRAS.indexOf(c);
-              const isActive = i === activeIdx;
-              return (
-                <button
-                  key={c.id}
-                  type="button"
-                  className={
-                    isActive ? `${s.listBtn} ${s.listBtnActive}` : s.listBtn
-                  }
-                  aria-pressed={isActive}
-                  onClick={() => select(i)}
+      <div className={s.list} role="group" aria-label="Choose a chakra">
+        {[...CHAKRAS]
+          .slice()
+          .reverse()
+          .map((c) => {
+            const i = CHAKRAS.indexOf(c);
+            const isActive = i === activeIdx;
+            return (
+              <button
+                key={c.id}
+                type="button"
+                className={
+                  isActive ? `${s.listBtn} ${s.listBtnActive}` : s.listBtn
+                }
+                aria-pressed={isActive}
+                onClick={() => select(i)}
+              >
+                <svg
+                  className={s.listSym}
+                  viewBox="-16 -16 32 32"
+                  style={{ color: c.hex }}
+                  aria-hidden="true"
                 >
-                  <span
-                    className={s.listDot}
-                    style={{ background: c.hex, color: c.hex }}
-                    aria-hidden="true"
-                  />
-                  {c.english}
-                  <em className={s.listSanskrit}>{c.sanskrit}</em>
-                </button>
-              );
-            })}
-        </div>
+                  <ChakraSymbol id={c.id} r={14} color={c.hex} />
+                </svg>
+                {c.english}
+                <em className={s.listSanskrit}>{c.sanskrit}</em>
+              </button>
+            );
+          })}
+      </div>
 
-        <div aria-live="polite">
-          <div className={s.panel} style={{ borderLeftColor: active.hex }}>
-            <div key={active.id} className={s.panelInner}>
-              <div className={s.panelEyebrow} style={{ color: active.hex }}>
-                {active.colorName} · {active.frequency} Hz
-              </div>
-              <div className={s.panelName}>
-                {active.english} <em>· {active.sanskrit}</em>
-              </div>
-              <div className={s.panelMeta}>
-                <span className={s.metaChip}>
-                  Bowl note <strong>{active.bowlNote}</strong>
-                </span>
-                <span className={s.metaChip}>
-                  <strong>{active.frequency} Hz</strong> solfeggio
-                </span>
-                <span className={s.metaChip}>{active.colorName}</span>
-              </div>
-              <p className={s.panelBody}>{active.supports}</p>
+      <div className={s.panelArea} aria-live="polite">
+        <div className={s.panel} style={{ borderLeftColor: active.hex }}>
+          <div key={active.id} className={s.panelInner}>
+            <div className={s.panelEyebrow} style={{ color: active.hex }}>
+              {active.colorName} · {active.frequency} Hz
             </div>
+            <div className={s.panelName}>
+              {active.english} <em>· {active.sanskrit}</em>
+            </div>
+            <div className={s.panelMeta}>
+              <span className={s.metaChip}>
+                Bowl note <strong>{active.bowlNote}</strong>
+              </span>
+              <span className={s.metaChip}>
+                <strong>{active.frequency} Hz</strong> solfeggio
+              </span>
+              <span className={s.metaChip}>{active.colorName}</span>
+            </div>
+            <p className={s.panelBody}>{active.supports}</p>
           </div>
         </div>
       </div>
