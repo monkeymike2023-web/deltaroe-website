@@ -110,14 +110,15 @@ export function strikeGlass(bowl: Bowl, velocity: number) {
   src.buffer = noise;
   const hp = ctx.createBiquadFilter();
   hp.type = "highpass";
-  hp.frequency.value = 1800;
+  hp.frequency.value = 1300;
   const bp = ctx.createBiquadFilter();
   bp.type = "bandpass";
-  bp.frequency.value = 3400;
-  bp.Q.value = 0.7;
+  bp.frequency.value = 3000;
+  bp.Q.value = 0.9;
   const nEnv = ctx.createGain();
-  nEnv.gain.setValueAtTime(0.05 * velocity, t);
-  nEnv.gain.setTargetAtTime(0, t, 0.028);
+  // audible crack — sits beside the bowl strike instead of hiding under it
+  nEnv.gain.setValueAtTime(0.3 * velocity, t);
+  nEnv.gain.setTargetAtTime(0, t, 0.045);
   src.connect(hp);
   hp.connect(bp);
   bp.connect(nEnv);
@@ -125,20 +126,21 @@ export function strikeGlass(bowl: Bowl, velocity: number) {
   src.start(t);
   src.stop(t + 0.14);
   // the shards: 3–5 tiny sine pings, 2–6 kHz, gone inside 150ms
-  const pings = 3 + Math.floor(Math.random() * 3);
+  const pings = 4 + Math.floor(Math.random() * 3);
   for (let i = 0; i < pings; i++) {
-    const f = 2000 + Math.random() * 4000;
-    const dt = Math.random() * 0.045;
+    // one lower "clink" for body, the rest high glassy tinkles
+    const f = i === 0 ? 1200 + Math.random() * 700 : 2000 + Math.random() * 4000;
+    const dt = Math.random() * 0.06;
     const osc = ctx.createOscillator();
     osc.type = "sine";
     osc.frequency.value = f;
     const env = ctx.createGain();
     env.gain.setValueAtTime(0.0001, t + dt);
-    env.gain.exponentialRampToValueAtTime(0.014 * velocity, t + dt + 0.004);
-    env.gain.setTargetAtTime(0, t + dt + 0.004, 0.03 + Math.random() * 0.03);
+    env.gain.exponentialRampToValueAtTime(0.07 * velocity, t + dt + 0.004);
+    env.gain.setTargetAtTime(0, t + dt + 0.004, 0.045 + Math.random() * 0.05);
     osc.connect(env).connect(master);
     osc.start(t + dt);
-    osc.stop(t + dt + 0.2);
+    osc.stop(t + dt + 0.35);
   }
 }
 
