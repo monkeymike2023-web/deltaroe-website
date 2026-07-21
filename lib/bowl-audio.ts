@@ -96,6 +96,52 @@ export function strikeBowl(bowl: Bowl, freq: number, velocity: number) {
   src.stop(t + 0.25);
 }
 
+/** A soft glass break — delicate, wind-chime-adjacent, never harsh.
+    A short bright filtered-noise burst (highpass ~1.8 kHz, fast decay)
+    plus a few tiny inharmonic high pings, all at low gain so it sits
+    UNDER a bowl strike rather than competing with it. Routed through
+    the same master, so it blooms in the same soft room. */
+export function strikeGlass(bowl: Bowl, velocity: number) {
+  const { ctx, master, noise } = bowl;
+  if (ctx.state === "suspended") void ctx.resume();
+  const t = ctx.currentTime;
+  // the crack: band-shaped noise, audible ~90ms
+  const src = ctx.createBufferSource();
+  src.buffer = noise;
+  const hp = ctx.createBiquadFilter();
+  hp.type = "highpass";
+  hp.frequency.value = 1800;
+  const bp = ctx.createBiquadFilter();
+  bp.type = "bandpass";
+  bp.frequency.value = 3400;
+  bp.Q.value = 0.7;
+  const nEnv = ctx.createGain();
+  nEnv.gain.setValueAtTime(0.05 * velocity, t);
+  nEnv.gain.setTargetAtTime(0, t, 0.028);
+  src.connect(hp);
+  hp.connect(bp);
+  bp.connect(nEnv);
+  nEnv.connect(master);
+  src.start(t);
+  src.stop(t + 0.14);
+  // the shards: 3–5 tiny sine pings, 2–6 kHz, gone inside 150ms
+  const pings = 3 + Math.floor(Math.random() * 3);
+  for (let i = 0; i < pings; i++) {
+    const f = 2000 + Math.random() * 4000;
+    const dt = Math.random() * 0.045;
+    const osc = ctx.createOscillator();
+    osc.type = "sine";
+    osc.frequency.value = f;
+    const env = ctx.createGain();
+    env.gain.setValueAtTime(0.0001, t + dt);
+    env.gain.exponentialRampToValueAtTime(0.014 * velocity, t + dt + 0.004);
+    env.gain.setTargetAtTime(0, t + dt + 0.004, 0.03 + Math.random() * 0.03);
+    osc.connect(env).connect(master);
+    osc.start(t + dt);
+    osc.stop(t + dt + 0.2);
+  }
+}
+
 /** Fade the room quiet and suspend the context (sound-off toggle). */
 export function hushBowl(bowl: Bowl) {
   const t = bowl.ctx.currentTime;

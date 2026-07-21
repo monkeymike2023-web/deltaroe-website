@@ -73,6 +73,17 @@ function watchConsole(page, tag, errors) {
     }
   }
 
+  // the release: a chain of seven links breaks root -> crown (ascending
+  // bowl scale), then dissolves upward before the constellation assembles
+  await page.waitForSelector('svg[class*="chainSvg"]', { timeout: 25000 });
+  const links = await page.locator('svg[class*="chainSvg"] g[class*="link"]').count();
+  ok(links === 7, `release: chain has ${links} links`);
+  await page.waitForTimeout(2300); // mid-sequence: a few links snapped
+  await page.screenshot({ path: ".data-snap-clearing-chain.png" });
+  await page.waitForSelector("text=What was holding you", { timeout: 20000 });
+  ok(true, "release: copy beat renders after crown link snaps");
+  await page.screenshot({ path: ".data-snap-clearing-release.png" });
+
   await page.waitForSelector("text=You cleared what you were carrying.", { timeout: 30000 });
   ok(true, "finale: closing copy renders");
   await page.waitForTimeout(2500); // let stars enter

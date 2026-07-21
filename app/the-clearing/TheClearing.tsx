@@ -20,6 +20,7 @@ import {
   type Bowl,
   makeBowl,
   strikeBowl,
+  strikeGlass,
   hushBowl,
   wakeBowl,
 } from "@/lib/bowl-audio";
@@ -102,8 +103,15 @@ const SHARD_CLIPS = [
 ];
 
 const ROUND_INTRO_MS = 2400; // lotus + name breathes before play begins
-const SHATTER_MS = 700; // fragments fly + fade
+const SHATTER_MS = 760; // fragments fly, arc under gravity, fade
 const GLIDE_MS = 900; // mote travels home to the vessel
+
+// The release: chain-break cadence. Each link glows for a beat, then snaps
+// on its chakra's bowl tone — the ascending seven-note scale IS the sound
+// of the chain breaking.
+const CHAIN_START_MS = 700;
+const CHAIN_STEP_MS = 580;
+const CHAIN_GLOW_MS = 280;
 
 /* --------------------------------------------------------------- helpers */
 
@@ -126,14 +134,15 @@ function inkOn(hex: string) {
   return lum > 0.6 ? "#241c10" : "#fdf6e6";
 }
 
-// Shatter fragments: 8 directions, varied reach and spin, precomputed once.
-const FRAGS = Array.from({ length: 8 }, (_, k) => {
-  const a = (k / 8) * Math.PI * 2 + 0.4;
-  const d = 48 + rand(k + 7) * 44;
+// Shatter fragments: 12 directions with jitter, varied reach and spin,
+// precomputed once. The keyframes add a gravity arc on the back half.
+const FRAGS = Array.from({ length: 12 }, (_, k) => {
+  const a = (k / 12) * Math.PI * 2 + rand(k) * 0.5;
+  const d = 44 + rand(k + 7) * 56;
   return {
     x: Math.round(Math.cos(a) * d),
-    y: Math.round(Math.sin(a) * d - 14),
-    r: Math.round((rand(k + 3) - 0.5) * 240),
+    y: Math.round(Math.sin(a) * d - 10),
+    r: Math.round((rand(k + 3) - 0.5) * 320),
   };
 });
 
@@ -161,8 +170,9 @@ function useMediaQuery(query: string) {
 
 /* -------------------------------------------------------------- component */
 
-type Phase = "intro" | "roundIntro" | "playing" | "finale";
+type Phase = "intro" | "roundIntro" | "playing" | "release" | "finale";
 type ItemState = "idle" | "leaving" | "gone";
+type LinkState = "idle" | "glow" | "broken";
 type Kept = { word: string; hex: string };
 
 export default function TheClearing() {
@@ -171,6 +181,8 @@ export default function TheClearing() {
   const [shards, setShards] = useState<ItemState[]>(Array(5).fill("idle"));
   const [motes, setMotes] = useState<ItemState[]>(Array(3).fill("idle"));
   const [gathered, setGathered] = useState<Kept[]>([]);
+  const [chain, setChain] = useState<LinkState[]>(Array(7).fill("idle"));
+  const [chainDone, setChainDone] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
   const [live, setLive] = useState("");
   const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
@@ -208,6 +220,12 @@ export default function TheClearing() {
   const strike = useCallback((freq: number, velocity: number) => {
     if (soundOnRef.current && bowlRef.current) {
       strikeBowl(bowlRef.current, freq, velocity);
+    }
+  }, []);
+
+  const glass = useCallback((velocity: number) => {
+    if (soundOnRef.current && bowlRef.current) {
+      strikeGlass(bowlRef.current, velocity);
     }
   }, []);
 
@@ -252,13 +270,48 @@ export default function TheClearing() {
     (i: number) => {
       if (shardsRef.current[i] !== "idle") return;
       setShards((prev) => prev.map((v, k) => (k === i ? "leaving" : v)));
-      strike(CHAKRAS[roundRef.current].frequency, 0.5);
+      // bowl sits a touch lower so the glass crack can glint on top of it
+      strike(CHAKRAS[roundRef.current].frequency, 0.42);
+      glass(0.9);
       after(reducedRef.current ? 420 : SHATTER_MS, () =>
         setShards((prev) => prev.map((v, k) => (k === i ? "gone" : v)))
       );
     },
-    [after, strike]
+    [after, strike, glass]
   );
+
+  // The release: seven links snap root → crown on the ascending bowl scale,
+  // then the remnants rise away as light and the constellation assembles.
+  const startRelease = useCallback(() => {
+    setChain(Array(7).fill("idle"));
+    setChainDone(false);
+    setPhase("release");
+    setLive(
+      "The things that were weighing you down held together as a chain. Root to crown, it is breaking."
+    );
+    for (let i = 0; i < 7; i++) {
+      const at = CHAIN_START_MS + i * CHAIN_STEP_MS;
+      after(at, () =>
+        setChain((p) => p.map((v, k) => (k === i ? "glow" : v)))
+      );
+      after(at + CHAIN_GLOW_MS, () => {
+        setChain((p) => p.map((v, k) => (k === i ? "broken" : v)));
+        strike(CHAKRAS[i].frequency, 0.55 + i * 0.05);
+        glass(0.5);
+      });
+    }
+    const end = CHAIN_START_MS + 6 * CHAIN_STEP_MS + CHAIN_GLOW_MS + 750;
+    after(end, () => {
+      setChainDone(true);
+      setLive("Released.");
+    });
+    after(end + 2300, () => {
+      setPhase("finale");
+      setLive(
+        "The ritual is complete. Everything you gathered is waiting for you below — all twenty-one words, kept."
+      );
+    });
+  }, [after, strike, glass]);
 
   const collectMote = useCallback(
     (i: number, auto = false) => {
@@ -310,13 +363,10 @@ export default function TheClearing() {
       if (r < CHAKRAS.length - 1) {
         startRound(r + 1);
       } else {
-        setPhase("finale");
-        setLive(
-          "The ritual is complete. Everything you gathered is waiting for you below — all twenty-one words, kept."
-        );
+        startRelease();
       }
     });
-  }, [shards, phase, after, collectMote, startRound]);
+  }, [shards, phase, after, collectMote, startRound, startRelease]);
 
   /* ------------------------------------------------------------- render */
 
@@ -356,7 +406,7 @@ export default function TheClearing() {
         <div className={s.intro}>
           <p className={s.introCopy}>
             Life hands you heavy things and expects you to carry every single
-            one. Not in here. In here, you get to break what&apos;s been
+            one. Not in here, friend. In here, you get to break what&apos;s been
             weighing on you — and gather up what was yours the whole time.
           </p>
           <p className={s.introNote}>
@@ -478,6 +528,7 @@ export default function TheClearing() {
                     </div>
                     {state === "leaving" && !reduced && (
                       <span className={s.frags} aria-hidden="true">
+                        <span className={s.crackFlash} />
                         {FRAGS.map((f, k) => (
                           <i
                             key={k}
@@ -585,6 +636,88 @@ export default function TheClearing() {
         </>
       )}
 
+      {/* ------------------------------------------------- the release */}
+      {phase === "release" && (
+        <div className={s.release}>
+          <div
+            className={
+              chainDone ? `${s.chainWrap} ${s.chainDissolve}` : s.chainWrap
+            }
+          >
+            <svg
+              className={s.chainSvg}
+              viewBox="0 0 620 120"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              {CHAKRAS.map((c, i) => {
+                const cx = 70 + i * 80;
+                const state = chain[i];
+                const cls =
+                  state === "glow"
+                    ? `${s.link} ${s.linkGlow}`
+                    : state === "broken"
+                      ? `${s.link} ${s.linkBroken}`
+                      : s.link;
+                return (
+                  <g
+                    key={c.id}
+                    className={cls}
+                    transform={`translate(${cx} 60) rotate(${i % 2 === 0 ? -5 : 6})`}
+                    style={
+                      {
+                        "--link-c": c.hex,
+                        animationDelay: chainDone ? `${i * 50}ms` : undefined,
+                      } as React.CSSProperties
+                    }
+                  >
+                    <path className={s.halfL} d="M 0 -24 A 44 24 0 0 0 0 24" />
+                    <path className={s.halfR} d="M 0 -24 A 44 24 0 0 1 0 24" />
+                  </g>
+                );
+              })}
+            </svg>
+            {/* fragment bursts over each snapped link */}
+            {!reduced &&
+              !chainDone &&
+              CHAKRAS.map((c, i) =>
+                chain[i] === "broken" ? (
+                  <span
+                    key={c.id}
+                    className={s.frags}
+                    style={{ left: `${((70 + i * 80) / 620) * 100}%`, top: "50%" }}
+                    aria-hidden="true"
+                  >
+                    <span className={s.crackFlash} />
+                    {FRAGS.map((f, k) => (
+                      <i
+                        key={k}
+                        style={
+                          {
+                            "--fx": `${f.x}px`,
+                            "--fy": `${f.y}px`,
+                            "--fr": `${f.r}deg`,
+                            animationDelay: `${k * 12}ms`,
+                            borderColor: rgba(c.hex, 0.4),
+                          } as React.CSSProperties
+                        }
+                      />
+                    ))}
+                  </span>
+                ) : null
+              )}
+            {chainDone && !reduced && (
+              <span className={s.lightRise} aria-hidden="true" />
+            )}
+          </div>
+          {chainDone && (
+            <p className={s.releaseCopy}>
+              What was holding you — isn&apos;t anymore.
+            </p>
+          )}
+        </div>
+      )}
+
       {/* ------------------------------------------------------- finale */}
       {phase === "finale" && (
         <div className={s.finale}>
@@ -615,7 +748,7 @@ export default function TheClearing() {
             You cleared what you were carrying.
           </h2>
           <p className={s.finaleCopy}>
-            Take the feeling with you — it was yours the whole time. And if
+            Take the feeling with you, friend — it was yours the whole time. And if
             you want more than a screen&apos;s worth, thirty unbroken minutes
             of this feeling exists: lying down in candlelight while real
             crystal bowls sing over you, root to crown.
