@@ -492,7 +492,7 @@ const ALL_SERVICES: Service[] = [
     ],
     review: {
       quote:
-        "Queens don't stumble into sanctuaries by accident.",
+        "Nobody stumbles into a sanctuary by accident.",
       source: "The Delta Roe welcome",
     },
     seoTitle: "Free Discovery Call — Start Your Healing Journey | Delta Roe",

@@ -52,7 +52,7 @@ export const KB: KbEntry[] = [
     keywords: ["never", "first", "time", "new", "beginner", "nervous", "scared", "anxious", "start", "afraid"],
     boost: ["never", "first time", "beginner", "nervous"],
     answer:
-      "First of all — the fact that you're here means something in you is ready. Queens don't stumble into sanctuaries by accident. 👑 For a first visit, I always suggest the Sound Bath ($77, 30 min): no touch, nothing to believe, nothing to be good at. You lie down under blankets and let bowls tuned to 432 Hz do the work. Or start with a free 30-minute Discovery Call and let Tamika point you to the right door.",
+      "First of all — the fact that you're here means something in you is ready. Nobody stumbles into a sanctuary by accident. ✨ For a first visit, I always suggest the Sound Bath ($77, 30 min): no touch, nothing to believe, nothing to be good at. You lie down under blankets and let bowls tuned to 432 Hz do the work. Or start with a free 30-minute Discovery Call and let Tamika point you to the right door.",
     link: { href: "https://www.deltaroe.com/book-online", label: "Book your first session" },
     chips: ["What happens in a sound bath?", "What should I wear?", "Is reiki safe?"],
   },

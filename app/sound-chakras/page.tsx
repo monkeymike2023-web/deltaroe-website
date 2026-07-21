@@ -110,7 +110,7 @@ export default function SoundChakrasPage() {
             you don&apos;t have to do a single thing but receive.
           </p>
           <p style={{ marginBottom: 34 }}>
-            You&apos;ve heard sixty seconds of it through a screen. Queen,
+            You&apos;ve heard sixty seconds of it through a screen. Now
             imagine what the real thing does.
           </p>
           <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>

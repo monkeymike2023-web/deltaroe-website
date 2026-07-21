@@ -356,7 +356,7 @@ export default function TheClearing() {
         <div className={s.intro}>
           <p className={s.introCopy}>
             Life hands you heavy things and expects you to carry every single
-            one. Not in here, queen. In here, you get to break what&apos;s been
+            one. Not in here. In here, you get to break what&apos;s been
             weighing on you — and gather up what was yours the whole time.
           </p>
           <p className={s.introNote}>
@@ -615,10 +615,10 @@ export default function TheClearing() {
             You cleared what you were carrying.
           </h2>
           <p className={s.finaleCopy}>
-            Take the feeling with you, queen. And if you want more than a
-            screen&apos;s worth — thirty unbroken minutes of this feeling
-            exists, lying down in candlelight while real crystal bowls sing
-            over you, root to crown.
+            Take the feeling with you — it was yours the whole time. And if
+            you want more than a screen&apos;s worth, thirty unbroken minutes
+            of this feeling exists: lying down in candlelight while real
+            crystal bowls sing over you, root to crown.
           </p>
           <div className={s.finaleActions}>
             <a className={s.beginBtn} href={SITE.bookingUrl}>
