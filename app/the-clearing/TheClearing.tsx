@@ -271,8 +271,8 @@ export default function TheClearing() {
       if (shardsRef.current[i] !== "idle") return;
       setShards((prev) => prev.map((v, k) => (k === i ? "leaving" : v)));
       // bowl sits a touch lower so the glass crack can glint on top of it
-      strike(CHAKRAS[roundRef.current].frequency, 0.42);
-      glass(0.9);
+      strike(CHAKRAS[roundRef.current].frequency, 0.32); // bowl underneath —
+      glass(1); // — the break leads
       after(reducedRef.current ? 420 : SHATTER_MS, () =>
         setShards((prev) => prev.map((v, k) => (k === i ? "gone" : v)))
       );

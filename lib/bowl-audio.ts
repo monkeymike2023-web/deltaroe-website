@@ -105,42 +105,57 @@ export function strikeGlass(bowl: Bowl, velocity: number) {
   const { ctx, master, noise } = bowl;
   if (ctx.state === "suspended") void ctx.resume();
   const t = ctx.currentTime;
-  // the crack: band-shaped noise, audible ~90ms
-  const src = ctx.createBufferSource();
-  src.buffer = noise;
-  const hp = ctx.createBiquadFilter();
-  hp.type = "highpass";
-  hp.frequency.value = 1300;
-  const bp = ctx.createBiquadFilter();
-  bp.type = "bandpass";
-  bp.frequency.value = 3000;
-  bp.Q.value = 0.9;
-  const nEnv = ctx.createGain();
-  // audible crack — sits beside the bowl strike instead of hiding under it
-  nEnv.gain.setValueAtTime(0.3 * velocity, t);
-  nEnv.gain.setTargetAtTime(0, t, 0.045);
-  src.connect(hp);
-  hp.connect(bp);
-  bp.connect(nEnv);
-  nEnv.connect(master);
-  src.start(t);
-  src.stop(t + 0.14);
-  // the shards: 3–5 tiny sine pings, 2–6 kHz, gone inside 150ms
-  const pings = 4 + Math.floor(Math.random() * 3);
+  // helper: one noise layer through a filter with its own envelope
+  const noiseLayer = (
+    type: BiquadFilterType,
+    freq: number,
+    q: number,
+    gain: number,
+    tau: number,
+    start = 0,
+    dur = 0.5,
+  ) => {
+    const s = ctx.createBufferSource();
+    s.buffer = noise;
+    s.loop = true;
+    const f = ctx.createBiquadFilter();
+    f.type = type;
+    f.frequency.value = freq;
+    f.Q.value = q;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t + start);
+    g.gain.exponentialRampToValueAtTime(gain, t + start + 0.006);
+    g.gain.setTargetAtTime(0, t + start + 0.006, tau);
+    s.connect(f);
+    f.connect(g);
+    g.connect(master);
+    s.start(t + start);
+    s.stop(t + start + dur);
+  };
+  // 1. the CRASH — bright crack plus a mid-body layer so it has weight
+  noiseLayer("highpass", 1400, 0.8, 0.55 * velocity, 0.07);
+  noiseLayer("bandpass", 1100, 1.1, 0.3 * velocity, 0.09);
+  // 2. the debris tail — shards settling for about half a second
+  noiseLayer("highpass", 2400, 0.7, 0.16 * velocity, 0.18, 0.05, 0.8);
+  // 3. the shards: a burst of glassy pings, then late tinkles as debris falls
+  const pings = 8 + Math.floor(Math.random() * 3);
   for (let i = 0; i < pings; i++) {
-    // one lower "clink" for body, the rest high glassy tinkles
-    const f = i === 0 ? 1200 + Math.random() * 700 : 2000 + Math.random() * 4000;
-    const dt = Math.random() * 0.06;
+    // two lower "clinks" for body, the rest bright tinkles; later pings are
+    // quieter and more delayed — glass settling on the floor
+    const late = i > 4;
+    const f = i < 2 ? 1100 + Math.random() * 800 : 2200 + Math.random() * 4200;
+    const dt = late ? 0.12 + Math.random() * 0.28 : Math.random() * 0.07;
     const osc = ctx.createOscillator();
     osc.type = "sine";
     osc.frequency.value = f;
     const env = ctx.createGain();
+    const peak = (late ? 0.06 : 0.13) * velocity;
     env.gain.setValueAtTime(0.0001, t + dt);
-    env.gain.exponentialRampToValueAtTime(0.07 * velocity, t + dt + 0.004);
-    env.gain.setTargetAtTime(0, t + dt + 0.004, 0.045 + Math.random() * 0.05);
+    env.gain.exponentialRampToValueAtTime(peak, t + dt + 0.004);
+    env.gain.setTargetAtTime(0, t + dt + 0.004, 0.05 + Math.random() * 0.06);
     osc.connect(env).connect(master);
     osc.start(t + dt);
-    osc.stop(t + dt + 0.35);
+    osc.stop(t + dt + 0.5);
   }
 }
 
