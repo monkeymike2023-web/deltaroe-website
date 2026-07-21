@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/services",
     "/sound-chakras",
+    "/the-clearing",
     "/memberships",
     "/events",
     "/soulful-journey",

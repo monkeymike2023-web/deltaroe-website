@@ -1,0 +1,823 @@
+/* /the-clearing — a tiny ritual for heavy days.
+
+   Timing tokens (the motion system):
+     --cl-in: 500ms entrances, expo-out
+     --cl-out: 260ms exits, ease-in
+     --cl-shatter: 620ms fragment flight
+     --cl-glide: 900ms mote homecoming
+     --cl-drift: 11–22s idle drift loops (seamless, alternate-free keyframes)
+   Rules: compositor-only transforms/opacity on anything continuous;
+   entrance choreography < 1.2s; everything falls back to a calm static
+   grid under prefers-reduced-motion. */
+
+.root {
+  --cl-in: 500ms;
+  --cl-out: 260ms;
+  --cl-shatter: 620ms;
+  --cl-glide: 900ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-soft: cubic-bezier(0.55, 0.03, 0.35, 1);
+  position: relative;
+}
+
+.tint {
+  position: absolute;
+  inset: -60px 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.root > *:not(.tint) {
+  position: relative;
+  z-index: 1;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- intro ---------- */
+
+.intro {
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 18px 0 30px;
+  animation: fadeUp 0.7s var(--ease-out-expo) both;
+}
+
+.introCopy {
+  font-size: 21px;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+
+.introNote {
+  font-style: italic;
+  color: var(--muted);
+  font-size: 17px;
+  margin: 0 0 30px;
+}
+
+.introActions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.introSoundNote {
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 16px 0 0;
+}
+
+.beginBtn {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 17px 34px;
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.25s, box-shadow 0.25s;
+}
+
+.beginBtn:hover {
+  background: var(--gold-bright);
+  box-shadow: 0 0 30px rgba(201, 164, 100, 0.35);
+}
+
+.ghostBtn {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 17px 34px;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold-bright);
+  transition: background 0.25s;
+}
+
+.ghostBtn:hover {
+  background: rgba(201, 164, 100, 0.12);
+}
+
+.soundBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  background: transparent;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s, box-shadow 0.25s;
+}
+
+.soundBtn:hover {
+  background: rgba(201, 164, 100, 0.12);
+}
+
+.soundBtnOn {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.soundBtnOn:hover {
+  background: var(--gold-bright);
+  box-shadow: 0 0 22px rgba(201, 164, 100, 0.3);
+}
+
+/* ---------- HUD ---------- */
+
+.hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 4px 0 10px;
+  animation: fadeUp 0.5s var(--ease-out-expo) both;
+}
+
+.hudChakra {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hudGlyph {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.hudName {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.hudName em {
+  display: block;
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.hudCount {
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--gold-bright);
+}
+
+.hudCount span {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-left: 6px;
+}
+
+/* ---------- playfield ---------- */
+
+.field {
+  position: relative;
+  height: clamp(440px, 60vh, 560px);
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .field {
+    height: 560px;
+  }
+}
+
+.slot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.slot:has(button:focus-visible) {
+  outline: 2px solid var(--gold);
+  outline-offset: 5px;
+  border-radius: 6px;
+}
+
+/* idle drift — very slow, transform-only, seamless loop */
+.drift {
+  animation: drift 18s ease-in-out infinite;
+}
+
+.driftSoft {
+  animation: driftSoft 12s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(9px, -7px) rotate(0.7deg);
+  }
+  50% {
+    transform: translate(-7px, 6px) rotate(-0.6deg);
+  }
+  75% {
+    transform: translate(6px, 9px) rotate(0.4deg);
+  }
+}
+
+@keyframes driftSoft {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(-6px, 6px);
+  }
+  66% {
+    transform: translate(6px, -5px);
+  }
+}
+
+/* ---------- shards (the heavy words) ---------- */
+
+.shard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 132px;
+  min-height: 96px;
+  padding: 14px 16px;
+  border: 0;
+  cursor: pointer;
+  background:
+    linear-gradient(155deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0) 38%),
+    linear-gradient(160deg, #2b2620 0%, #14110d 55%, #0d0b09 100%);
+  color: #beb098;
+  animation: shardIn var(--cl-in) var(--ease-out-expo) both;
+  transition: transform 140ms ease;
+}
+
+.shard:hover {
+  transform: scale(1.04);
+}
+
+.shard:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 600px) {
+  .shard {
+    width: 108px;
+    min-height: 86px;
+    padding: 12px;
+  }
+}
+
+.shardWord {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .shardWord {
+    font-size: 12px;
+  }
+}
+
+@keyframes shardIn {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.shardSlotLeaving .shard {
+  animation: shatterCore 200ms ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes shatterCore {
+  to {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+}
+
+/* fragments fly from the shard's center and dissolve */
+.frags {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.frags i {
+  position: absolute;
+  left: -7px;
+  top: -7px;
+  width: 14px;
+  height: 14px;
+  border: 1px solid transparent;
+  background: linear-gradient(150deg, #38322a, #141109);
+  clip-path: polygon(50% 0%, 100% 60%, 20% 100%);
+  animation: frag var(--cl-shatter) cubic-bezier(0.2, 0.6, 0.3, 1) forwards;
+}
+
+.frags i:nth-child(2n) {
+  width: 10px;
+  height: 10px;
+  clip-path: polygon(0% 20%, 100% 0%, 60% 100%);
+}
+
+.frags i:nth-child(3n) {
+  width: 17px;
+  height: 17px;
+  clip-path: polygon(30% 0%, 100% 35%, 65% 100%, 0% 70%);
+}
+
+@keyframes frag {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--fx), var(--fy)) rotate(var(--fr)) scale(0.55);
+  }
+}
+
+/* ---------- motes (the bright words) ---------- */
+
+.mote {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  min-height: 58px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  animation: moteIn var(--cl-in) var(--ease-out-expo) both;
+  transition: transform 140ms ease;
+}
+
+.mote:hover {
+  transform: scale(1.08);
+}
+
+.mote:active {
+  transform: scale(0.95);
+}
+
+@keyframes moteIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* the homecoming: whole slot glides into the vessel */
+.moteSlotLeaving {
+  animation: glide var(--cl-glide) var(--ease-in-soft) forwards;
+  pointer-events: none;
+  z-index: 6;
+}
+
+@keyframes glide {
+  to {
+    transform: translate(
+        calc(-50% + var(--dx, 0px)),
+        calc(-50% + var(--dy, 0px))
+      )
+      scale(0.22);
+    opacity: 0.05;
+  }
+}
+
+/* ---------- round intro veil ---------- */
+
+.roundIntro {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  pointer-events: none;
+  z-index: 4;
+  animation: veil 2.4s ease-in-out both;
+}
+
+@keyframes veil {
+  0% {
+    opacity: 0;
+  }
+  14% {
+    opacity: 1;
+  }
+  86% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.roundIntroGlyph {
+  width: 118px;
+  height: 118px;
+  filter: drop-shadow(0 0 18px currentColor);
+  animation: glyphIn 0.9s var(--ease-out-expo) both;
+}
+
+@keyframes glyphIn {
+  from {
+    opacity: 0;
+    transform: scale(0.78);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.roundIntroName {
+  font-family: var(--font-display);
+  font-size: 36px;
+  color: var(--gold-bright);
+  letter-spacing: 0.05em;
+  animation: fadeUp 0.7s var(--ease-out-expo) 0.15s both;
+}
+
+.roundIntroSub {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation: fadeUp 0.7s var(--ease-out-expo) 0.3s both;
+}
+
+/* ---------- the vessel ---------- */
+
+.lanternZone {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+  padding-bottom: 6px;
+}
+
+.keptRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3px 12px;
+  max-width: 560px;
+  padding: 0 12px;
+}
+
+.keptWord {
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+  text-shadow: 0 0 8px currentColor;
+  animation: keptIn 0.5s var(--ease-out-expo) both;
+}
+
+@keyframes keptIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 0.75;
+    transform: none;
+  }
+}
+
+.lantern {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lanternSvg {
+  width: 84px;
+  height: 66px;
+  display: block;
+}
+
+.lanternPulse {
+  position: absolute;
+  top: 8px;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 164, 100, 0.5), transparent 68%);
+  animation: pulse 0.9s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.lanternCount {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ---------- finale ---------- */
+
+.finale {
+  text-align: center;
+  animation: fadeUp 0.8s var(--ease-out-expo) both;
+}
+
+.finaleLive {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.constellation {
+  position: relative;
+  height: clamp(320px, 46vh, 420px);
+  margin-bottom: 18px;
+}
+
+.star {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  color: var(--gold-bright);
+  text-shadow: 0 0 14px rgba(230, 205, 149, 0.55);
+  white-space: nowrap;
+  animation:
+    starIn 0.7s var(--ease-out-expo) var(--in-delay, 0ms) both,
+    starBreathe 8s ease-in-out calc(var(--in-delay, 0ms) + 900ms) infinite
+      alternate;
+}
+
+@media (max-width: 560px) {
+  .star {
+    font-size: 13.5px;
+  }
+}
+
+@keyframes starIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes starBreathe {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+.finaleTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(28px, 4.5vw, 40px);
+  color: var(--gold-bright);
+  letter-spacing: 0.04em;
+  margin: 0 0 14px;
+}
+
+.finaleCopy {
+  max-width: 560px;
+  margin: 0 auto 30px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.finaleActions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.againLink {
+  margin-top: 26px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.25s;
+}
+
+.againLink:hover {
+  color: var(--gold-bright);
+}
+
+/* ---------- shared keyframes ---------- */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fadeDissolve {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ---------- reduced motion: calm static grid, fade dissolves ---------- */
+
+.rootReduced .field {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  align-items: center;
+  justify-items: center;
+  height: auto;
+  min-height: 0;
+  padding: 16px 0 26px;
+  overflow: visible;
+}
+
+.rootReduced .slot {
+  position: static;
+  transform: none;
+}
+
+.rootReduced .lanternZone {
+  position: static;
+  grid-column: 1 / -1;
+  margin-top: 10px;
+}
+
+.rootReduced .roundIntro {
+  position: static;
+  grid-column: 1 / -1;
+  padding: 14px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro,
+  .hud,
+  .finale,
+  .drift,
+  .driftSoft,
+  .shard,
+  .mote,
+  .roundIntro,
+  .roundIntroGlyph,
+  .roundIntroName,
+  .roundIntroSub,
+  .keptWord,
+  .lanternPulse {
+    animation: none;
+  }
+
+  .keptWord {
+    opacity: 0.75;
+  }
+
+  .lanternPulse {
+    opacity: 0;
+  }
+
+  .shard,
+  .mote {
+    transition: none;
+  }
+
+  .shard:hover,
+  .mote:hover,
+  .shard:active,
+  .mote:active {
+    transform: none;
+  }
+
+  /* tap = quiet dissolve, no particles, no glide */
+  .shardSlotLeaving .shard {
+    animation: fadeDissolve 380ms ease forwards;
+  }
+
+  .moteSlotLeaving {
+    animation: fadeDissolve 380ms ease forwards;
+  }
+
+  .frags i {
+    animation: none;
+    opacity: 0;
+  }
+
+  .star {
+    animation: none;
+    opacity: 0.85;
+  }
+}

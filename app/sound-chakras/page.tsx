@@ -127,6 +127,50 @@ export default function SoundChakrasPage() {
         </div>
       </section>
 
+      <section style={{ padding: "64px 0 0" }}>
+        <div className="narrow">
+          <Link
+            href="/the-clearing"
+            style={{
+              display: "block",
+              border: "1px solid var(--line)",
+              borderLeft: "3px solid var(--gold)",
+              background: "var(--surface)",
+              padding: "26px 30px",
+              textDecoration: "none",
+            }}
+          >
+            <span
+              className="eyebrow"
+              style={{ display: "block", marginBottom: 8 }}
+            >
+              A tiny ritual
+            </span>
+            <span
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: 24,
+                color: "var(--gold-bright)",
+                display: "block",
+              }}
+            >
+              Carrying something heavy today? Try The Clearing →
+            </span>
+            <span
+              style={{
+                color: "var(--muted)",
+                fontSize: 16,
+                display: "block",
+                marginTop: 8,
+              }}
+            >
+              Break the words weighing on each chakra, gather the ones that are
+              yours — two gentle minutes, bowls included.
+            </span>
+          </Link>
+        </div>
+      </section>
+
       <section style={{ padding: "48px 0 72px" }}>
         <div className="narrow">
           <p

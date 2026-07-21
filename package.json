@@ -19,6 +19,7 @@
   "devDependencies": {
     "@types/node": "^22",
     "@types/react": "^19",
+    "playwright": "^1.61.1",
     "tsx": "^4.23.1",
     "typescript": "^5"
   }
