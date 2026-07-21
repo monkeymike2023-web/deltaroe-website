@@ -128,7 +128,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
     faqs: [
       {
         q: "What memberships does Delta Roe offer?",
-        a: "Three tiers: The Sanctuary Circle ($33/month, virtual — live monthly Zoom sound bath, the recorded 432 Hz library, a new meditation each month); The Ritual Membership ($129/month — one in-studio session monthly with rollover, priority booking, 10% off everything); and The Soulful Journey ($399/month — a 12-month transformation program with master classes, four reiki sessions monthly, and bi-weekly one-on-one coaching).",
+        a: "Three tiers: The Sanctuary Circle ($33/month, virtual — live monthly Zoom sound bath, the recorded 432 Hz library, a new meditation each month); The Ritual Membership ($129/month — one in-studio session monthly with rollover, priority booking, 10% off everything); and The Soulful Journey ($399/month — a 12-month transformation program with three private sessions monthly, a personalized wellness plan, the full digital library, and member privileges).",
       },
       {
         q: "Is the Ritual Membership actually a better deal?",
@@ -136,7 +136,7 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
       },
       {
         q: "What is the Soulful Journey Transformation Program?",
-        a: "Delta Roe's deepest offering: twelve months of structured transformation at $399/month. Every month includes a live master class, four 30-minute reiki sessions, and bi-weekly 50-minute one-on-one coaching sessions built around your personal roadmap, plus quarterly live panels. It's built for seasons of real change — career shifts, healing after loss, or the year you decide to stop circling.",
+        a: "Delta Roe's deepest offering: twelve months of structured transformation at $399/month. Every month includes three private 30-minute sessions (coaching or wellness work, your choice), a personalized wellness plan, a guided journal with reflection prompts, and unlimited access to the full digital library of premium sound baths and meditations — plus priority messaging support, 15% off additional services and the Apothecary, and early access to workshops and retreats. It's built for seasons of real change — career shifts, healing after loss, or the year you decide to stop circling.",
       },
       {
         q: "What is life coaching with Tamika like?",

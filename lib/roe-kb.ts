@@ -128,7 +128,7 @@ export const KB: KbEntry[] = [
     keywords: ["soulful", "journey", "transformation", "program", "coaching", "coach", "life", "change", "stuck", "purpose"],
     boost: ["soulful journey", "coaching", "life coach"],
     answer:
-      "Tamika wrote in FLY Queen that transformation starts the day you decide you're worth the work — the Soulful Journey is that decision, structured. Twelve months at $399/mo: monthly master classes, four reiki sessions every month, and bi-weekly one-on-one coaching built around your personal roadmap. If you're not ready for the year, start with a single 90-minute coaching session ($250) or the free Discovery Call. Tamika coaches like she writes: direct, warm, and entirely in your corner.",
+      "Tamika wrote in FLY Queen that transformation starts the day you decide you're worth the work — the Soulful Journey is that decision, structured. Twelve months at $399/mo: three private 30-minute sessions every month (coaching or wellness work, your choice), a personalized monthly wellness plan, a guided journal, the full premium sound bath and meditation library, priority messaging support, 15% off everything else, and early access to workshops and retreats. If you're not ready for the year, start with a single 90-minute coaching session ($250) or the free Discovery Call. Tamika coaches like she writes: direct, warm, and entirely in your corner.",
     link: { href: "/soulful-journey", label: "Explore the Soulful Journey" },
     chips: ["Book a free Discovery Call", "What are her books about?", "What does coaching cost?"],
   },

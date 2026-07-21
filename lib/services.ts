@@ -305,7 +305,7 @@ const ALL_SERVICES: Service[] = [
       },
       {
         q: "What is the Soulful Journey Transformation Program?",
-        a: "A 12-month container at $399/month: monthly master classes, four 30-minute reiki sessions, bi-weekly one-on-one coaching, and quarterly live panels. It's the deepest way to work with Tamika.",
+        a: "A 12-month container at $399/month: three private 30-minute sessions monthly (coaching or wellness, your choice), a personalized wellness plan, guided journaling, the full premium sound bath and meditation library, priority support, and member discounts. It's the deepest way to work with Tamika.",
       },
       {
         q: "Can I try coaching before committing?",

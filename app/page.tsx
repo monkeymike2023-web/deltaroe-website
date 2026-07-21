@@ -236,8 +236,8 @@ export default function Home() {
             <Link href="/soulful-journey" className="card" style={{ textDecoration: "none" }}>
               <h3>The Soulful Journey — $399/mo</h3>
               <p>
-                The 12-month transformation container: master classes, reiki,
-                and bi-weekly one-on-one coaching.
+                The 12-month transformation container: three private sessions a
+                month, your personalized plan, and the full practice library.
               </p>
             </Link>
           </div>

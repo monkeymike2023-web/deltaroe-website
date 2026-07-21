@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Soulful Journey Transformation Program — 12 Months of Guided Growth",
   description:
-    "Delta Roe's 12-month transformation container: monthly master classes, reiki sessions, bi-weekly 1-on-1 coaching, and quarterly live panels. $399/month.",
+    "Delta Roe's 12-month transformation container: three private sessions monthly, a personalized wellness plan, the full digital practice library, priority support, and member privileges. $399/month.",
 };
 
 export default function SoulfulJourneyPage() {
@@ -36,8 +36,9 @@ export default function SoulfulJourneyPage() {
           <p style={{ fontSize: 21 }}>
             The Soulful Journey Transformation Program is Delta Roe&rsquo;s
             deepest offering: a full year of structured, personal guidance —
-            energy work, coaching, teaching, and community — designed for a
-            profound journey of self-discovery and empowerment.
+            private sessions, a plan built around you, a rich practice library,
+            and member privileges — designed for a profound journey of
+            self-discovery and empowerment.
           </p>
         </div>
       </section>
@@ -49,33 +50,46 @@ export default function SoulfulJourneyPage() {
           </div>
           <div className="grid-2">
             <div className="card">
-              <h3>Monthly Master Class</h3>
+              <h3>Three Private Sessions</h3>
               <p>
-                A live teaching session — Zoom or in-person, 7–9 pm — on the
-                month&rsquo;s theme: energy hygiene, boundaries, manifestation,
-                self-trust.
+                Three 30-minute one-on-one sessions each month — coaching or
+                wellness work, your choice, in-person or over Zoom.
               </p>
             </div>
             <div className="card">
-              <h3>Four Reiki Sessions</h3>
+              <h3>Your Personalized Wellness Plan</h3>
               <p>
-                Four 30-minute reiki sessions each month, in-person or over
-                Zoom — the energetic maintenance that keeps the deeper work
-                moving.
+                A monthly plan built around your season, your goals, and what
+                the work is showing — so every month has a direction.
               </p>
             </div>
             <div className="card">
-              <h3>Bi-Weekly 1-on-1 Coaching</h3>
+              <h3>The Full Practice Library</h3>
               <p>
-                Fifty-minute private sessions every two weeks, built around
-                your personal capstone and roadmap.
+                Unlimited access to the Ritual Membership library plus the
+                premium sound bath and meditation collection — your practice
+                between sessions, on demand.
               </p>
             </div>
             <div className="card">
-              <h3>Quarterly Live Panels</h3>
+              <h3>Guided Journal &amp; Reflection</h3>
               <p>
-                Four live panel discussions a year — community, accountability,
-                and perspectives from fellow travelers.
+                A monthly guided journal with reflection prompts that carry the
+                session work into your everyday.
+              </p>
+            </div>
+            <div className="card">
+              <h3>Priority Support</h3>
+              <p>
+                Priority messaging support within business hours — a guide in
+                your corner between sessions, not just during them.
+              </p>
+            </div>
+            <div className="card">
+              <h3>Member Privileges</h3>
+              <p>
+                15% off additional services and Apothecary purchases, plus
+                early access to workshops, retreats, and new offerings.
               </p>
             </div>
           </div>
