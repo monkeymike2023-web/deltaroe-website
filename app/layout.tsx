@@ -164,6 +164,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
               <div>
                 <h4>Explore</h4>
+                <Link href="/intake">New Client Intake</Link>
                 <Link href="/memberships">Memberships</Link>
                 <Link href="/the-clearing">The Clearing</Link>
                 <Link href="/events">Events</Link>

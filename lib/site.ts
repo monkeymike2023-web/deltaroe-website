@@ -36,19 +36,22 @@ export const SITE = {
 };
 
 // One nav, both headers: desktop row and the mobile menu.
+// The Clearing + New Clients promoted per Mike 7/20; FAQ moved to the mobile
+// extras (still linked in the footer) to keep the desktop row breathable.
 export const NAV = [
   { href: "/services", label: "Services" },
   { href: "/sound-chakras", label: "Chakras" },
+  { href: "/the-clearing", label: "The Clearing" },
   { href: "/memberships", label: "Memberships" },
   { href: "/shop", label: "Apothecary" },
   { href: "/events", label: "Events" },
   { href: "/about", label: "About" },
-  { href: "/faq", label: "FAQ" },
+  { href: "/intake", label: "New Clients" },
 ] as const;
 
 // Extra destinations that only fit in the roomier mobile menu.
 export const NAV_MOBILE_EXTRA = [
-  { href: "/the-clearing", label: "The Clearing" },
+  { href: "/faq", label: "FAQ" },
   { href: "/journal", label: "Journal" },
   { href: "/reviews", label: "Reviews" },
   { href: "/contact", label: "Contact" },
